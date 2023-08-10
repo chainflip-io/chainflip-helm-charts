@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "chainflip-node.fullname" . }}
+  {{- with .Values.node.service.annotations }}
+  annotations:
+    {{ . | toYaml | nindent 4 }}
+  {{- end }}
+  labels:
+  {{- include "chainflip-node.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.node.service.type }}
+  ports:
+    - name: ws
+      port: {{ .Values.node.ports.ws }}
+      targetPort: ws
+      protocol: TCP
+    - name: rpc
+      port: {{ .Values.node.ports.rpc }}
+      targetPort: rpc
+      protocol: TCP
+    - name: p2p
+      port: {{ .Values.node.ports.p2p }}
+      targetPort: p2p
+      protocol: TCP
+    {{- if .Values.node.metrics.enabled }}
+    - name: metrics
+      port: {{ .Values.node.metrics.port }}
+      targetPort: metrics
+      protocol: TCP
+    {{- end }}
+  selector:
+  {{- include "chainflip-node.selectorLabels" . | nindent 4 }}

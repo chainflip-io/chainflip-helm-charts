@@ -1,0 +1,44 @@
+{{- if and (eq .Values.common.role "validator") (eq .Values.engine.settings.existingConfigMap "") }}
+{{- $node_endpoint := printf "ws://%s:%s" (include "chainflip-node.fullname" .) .Values.node.ports.ws -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "chainflip-engine.fullname" . }}
+data:
+  Settings.toml: |
+    # Default configurations for the CFE
+    [node_p2p]
+    node_key_file = "{{ .Values.common.keys.keysPath }}/{{ .Values.common.keys.nodeKeyFileName }}"
+    ip_address = "{{ .Values.engine.settings.node_p2p.ip_address | required "You must set an IP address for the node_p2p section e.g. 172.20.220.1" }}"
+    port = {{ .Values.engine.ports.ip }}
+    allow_local_ip = {{ .Values.engine.settings.node_p2p.allow_local_ip }}
+
+    [state_chain]
+    # 32 byte hex secret key - associated with the node's public id (public key)
+    signing_key_file = "{{ .Values.common.keys.keysPath }}/{{ .Values.common.keys.signingKeyFileName }}"
+    ws_endpoint = "{{ $node_endpoint }}"
+
+    [eth]
+    # Ethereum private key file path. Default is the docker secrets path. This file should contain a hex-encoded private key.
+    private_key_file = "{{ .Values.common.keys.keysPath }}/{{ .Values.common.keys.ethereumKeyFileName }}"
+    ws_node_endpoint = "{{ required "Please provide a ws_node_endpoint of an Ethereum node" .Values.engine.settings.eth.ws_node_endpoint }}"
+    http_node_endpoint = "{{ required "Please provide a http_node_endpoint of an Ethereum node" .Values.engine.settings.eth.http_node_endpoint }}"
+
+    {{ if .Values.engine.healthcheck.enabled }}
+    [health_check]
+    hostname = "{{ .Values.engine.healthcheck.hostname }}"
+    port = {{ .Values.engine.healthcheck.port }}
+    {{- end }}
+
+    [signing]
+    db_file = "{{ .Values.common.basePath }}/data.db"
+
+    [dot]
+    ws_node_endpoint = "{{ required "Please provide a ws_node_endpoint of an Polkadot node" .Values.engine.settings.dot.ws_node_endpoint }}"
+    http_node_endpoint = "{{ required "Please provide a http_node_endpoint of an Polkadot node" .Values.engine.settings.dot.http_node_endpoint }}"
+
+    [btc]
+    http_node_endpoint = "{{ required "Please provide a http_node_endpoint of an Bitcoin node" .Values.engine.settings.btc.http_node_endpoint }}"
+    rpc_user = "{{ .Values.engine.settings.btc.rpc_user }}"
+    rpc_password = "{{ .Values.engine.settings.btc.rpc_password }}"
+  {{- end }}
