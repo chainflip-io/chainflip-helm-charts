@@ -1,6 +1,0 @@
-{{ with .Values.extraManifests }}
-{{- range $manifest := . }}
-{{ $manifest }}
-{{- end }}
----
-{{ end }}
