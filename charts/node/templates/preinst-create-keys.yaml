@@ -1,0 +1,71 @@
+{{- if .Values.common.keys.generateKeysOnStart }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "{{ include "node.fullname" . }}-create-keys"
+  labels:
+    {{ include "node.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": post-install
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": hook-succeeded, hook-failed
+spec:
+  template:
+    metadata:
+      name: "{{ include "node.fullname" . }}-create-keys"
+      labels:
+        {{ include "node.labels" . | nindent 8 }}
+    spec:
+      serviceAccountName: {{ include "node.fullname" . }}
+      restartPolicy: Never
+      {{- with .Values.node.imagePullSecrets }}
+      imagePullSecrets:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      initContainers:
+        - name: create-keys
+          image: "chainfliplabs/chainflip-cli:{{ .Values.network.chain.name }}"
+          securityContext:
+            allowPrivilegeEscalation: false
+          volumeMounts:
+            - name: keys
+              mountPath: /tmp
+          command:
+            - sh
+            - -c
+            - |
+              chainflip-cli generate-keys json > /tmp/keys.json
+        - name: extract-keys
+          image: stedolan/jq:latest
+          securityContext:
+            allowPrivilegeEscalation: false
+          volumeMounts:
+            - name: keys
+              mountPath: /tmp
+          command:
+            - /bin/sh
+            - -c
+            - |
+              jq -j '.signing_key.secret_key' /tmp/keys.json > /tmp/signing-key
+              jq -j '.node_key.secret_key' /tmp/keys.json > /tmp/node-key
+              jq -j '.ethereum_key.secret_key' /tmp/keys.json > /tmp/ethereum-key
+      containers:
+        - name: kubectl-create-secret
+          image: "bitnami/kubectl:latest"
+          securityContext:
+            allowPrivilegeEscalation: false
+          volumeMounts:
+            - name: keys
+              mountPath: /tmp
+          command:
+            - /bin/sh
+            - -c
+            - |
+              kubectl create secret generic {{ include "node.fullname" . }} \
+                --from-file=/tmp/signing-key \
+                --from-file=/tmp/node-key \
+                --from-file=/tmp/ethereum-key
+      volumes:
+        - name: keys
+          emptyDir: {}
+{{- end }}

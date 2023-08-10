@@ -1,0 +1,51 @@
+{{- if .Values.cli.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "chainflip-cli.fullname" . }}
+  labels:
+    app: {{ include "chainflip-cli.fullname" . }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "chainflip-cli.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      name: {{ include "chainflip-cli.fullname" . }}
+      labels:
+        {{- include "chainflip-cli.selectorLabels" . | nindent 8 }}
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      containers:
+        - name: chainflip-cli
+          image: "{{ include "chainflip-cli.image" . }}"
+          imagePullPolicy: IfNotPresent
+          command:
+            - sleep
+            - "infinity"
+          volumeMounts:
+            - name: settings
+              mountPath: {{ .Values.common.basePath }}/config
+              readOnly: true
+            - mountPath: {{ .Values.common.keys.keysPath }}
+              name: keys
+              readOnly: true
+      volumes:
+        - name: settings
+          configMap:
+            name: {{ .Values.engine.settings.existingConfigMap | default (include "chainflip-engine.fullname" .) }}
+        - name: keys
+          secret:
+            secretName: {{ .Values.common.keys.existingSecret | default (include "node.fullname" .) }}
+            items:
+              - key: signing-key
+                path: {{ .Values.common.keys.signingKeyFileName }}
+              - key: node-key
+                path: {{ .Values.common.keys.nodeKeyFileName }}
+              - key: ethereum-key
+                path: {{ .Values.common.keys.ethereumKeyFileName }}
+{{- end }}

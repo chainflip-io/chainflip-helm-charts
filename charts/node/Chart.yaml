@@ -1,0 +1,15 @@
+apiVersion: v2
+name: node
+description: |
+  Deploy a Chainflip Validator or Archive node on Kubernetes
+  
+maintainers:
+  - name: Chainflip Labs
+    email: dev@chainflip.io
+    url: https://chainflip.io
+
+type: application
+
+version: 0.1.0
+
+appVersion: "0.8.7"
