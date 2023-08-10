@@ -98,6 +98,12 @@ spec:
                 path: signing_key_file
               - key: ethereum-key
                 path: ethereum_key_file
+        {{- if .Values.engine.persistence.existingClaim }}
+        - name: data
+          persistentVolumeClaim:
+            claimName: {{ .Values.engine.persistence.existingClaim }}
+        {{- end }}
+  {{- if eq .Values.engine.persistence.existingClaim "" }}
   volumeClaimTemplates:
     - apiVersion: v1
       kind: PersistentVolumeClaim
@@ -116,4 +122,5 @@ spec:
         resources:
           requests:
             storage: "{{ .Values.engine.persistence.size }}"
+  {{- end }}
 {{- end }}

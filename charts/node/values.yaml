@@ -105,6 +105,9 @@ node:
     # -- enable chaindata persistence
     enabled: true
 
+    # -- reference an existing PVC
+    existingClaim: ""
+
     # -- chaindata volume size
     size: 100Gi
 
@@ -168,6 +171,9 @@ engine:
   persistence:
     # -- enable chainflip-engine persistence
     enabled: true
+
+    # -- reference an existing PVC
+    existingClaim: ""
 
     # -- chainflip-engine volume size
     size: 5Gi

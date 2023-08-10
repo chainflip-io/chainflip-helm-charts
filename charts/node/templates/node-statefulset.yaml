@@ -138,6 +138,12 @@ spec:
               - key: ethereum-key
                 path: {{ .Values.common.keys.ethereumKeyFileName }}
         {{- end }}
+        {{- if .Values.node.persistence.existingClaim }}
+        - name: data
+          persistentVolumeClaim:
+            claimName: {{ .Values.node.persistence.existingClaim }}
+        {{- end }}
+  {{- if eq .Values.node.persistence.existingClaim "" }}
   volumeClaimTemplates:
     - apiVersion: v1
       kind: PersistentVolumeClaim
@@ -156,3 +162,4 @@ spec:
         resources:
           requests:
             storage: "{{ .Values.node.persistence.size }}"
+  {{- end }}
