@@ -1,6 +1,6 @@
 suite: chainflip-node tests
 templates:
-  - node-statefulset.yaml
+  - engine-statefulset.yaml
 tests:
   - it: should template the node statefulset
     asserts:
@@ -8,10 +8,10 @@ tests:
           of: StatefulSet
       - equal:
           path: spec.template.spec.containers[0].image
-          value: chainfliplabs/chainflip-node:perseverance
+          value: chainfliplabs/chainflip-engine:perseverance
   - it: should not create a pvc if supplying an existing claim
     set:
-      node.persistence.existingClaim: "test"
+      engine.persistence.existingClaim: "test"
     asserts:
       - notExists:
           path: spec.volumeClaimTemplates
