@@ -253,5 +253,10 @@ cli:
     # -- chainflip-cli image pull policy
     pullPolicy: Always
 
+# -- hook configuration
+hook:
+  # -- add extra annotations to the create-keys hook
+  extraAnnotations: {}
+
 # -- create extra kubernetes manifests
 extraManifests: []

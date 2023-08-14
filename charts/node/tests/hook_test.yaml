@@ -1,0 +1,44 @@
+suite: hook tests
+templates:
+  - hook-create-keys.yaml
+  - hook-rbac.yaml
+tests:
+  - it: should template the create-keys hook if generateKeysOnStart is true
+    set:
+      common.keys.generateKeysOnStart: true
+    asserts:
+      - hasDocuments:
+          count: 1
+        template: hook-create-keys.yaml
+      - hasDocuments:
+          count: 3
+        template: hook-rbac.yaml
+      - isKind:
+          of: Job
+        template: hook-create-keys.yaml
+      - isKind:
+          of: ServiceAccount
+        template: hook-rbac.yaml
+        documentIndex: 0
+      - isKind:
+          of: Role
+        template: hook-rbac.yaml
+        documentIndex: 1
+      - isKind:
+          of: RoleBinding
+        template: hook-rbac.yaml
+        documentIndex: 2
+  - it: should create annotations on the job if set
+    set:
+      common.keys.generateKeysOnStart: true
+      hook.extraAnnotations:
+        foo: bar
+    asserts:
+      - hasDocuments:
+          count: 1
+        template: hook-create-keys.yaml
+      - equal:
+          path: metadata.annotations.foo
+          value: bar
+        documentIndex: 0
+        template: hook-create-keys.yaml
