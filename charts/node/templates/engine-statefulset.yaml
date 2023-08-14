@@ -14,7 +14,7 @@ spec:
     metadata:
       name: {{ include "chainflip-engine.fullname" . }}
       labels:
-        {{- include "chainflip-engine.labels" . | nindent 8 }}
+        {{- include "chainflip-engine.selectorLabels" . | nindent 8 }}
     spec:
       securityContext:
         runAsUser: 1000
@@ -110,7 +110,7 @@ spec:
       metadata:
         name: data
         labels:
-          {{- include "chainflip-engine.labels" . | nindent 10 }}
+          {{- include "chainflip-engine.selectorLabels" . | nindent 10 }}
       spec:
         {{- with .Values.engine.persistence.accessModes }}
         accessModes:
