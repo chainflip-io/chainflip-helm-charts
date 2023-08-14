@@ -150,7 +150,7 @@ spec:
       metadata:
         name: data
         labels:
-          {{- include "chainflip-node.labels" . | nindent 10 }}
+          {{- include "chainflip-node.selectorLabels" . | nindent 10 }}
       spec:
         {{- with .Values.node.persistence.accessModes }}
         accessModes:
