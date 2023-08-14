@@ -75,6 +75,10 @@ spec:
             timeoutSeconds: 5
             successThreshold: 1
             failureThreshold: 3
+          {{- with .Values.engine.resources }}
+          resources:
+          {{- toYaml . | nindent 12 }}
+          {{- end }}
           volumeMounts:
             - name: data
               mountPath: {{ .Values.common.basePath }}
