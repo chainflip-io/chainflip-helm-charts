@@ -1,0 +1,23 @@
+suite: tests for if role is archive
+templates:
+  - node-statefulset.yaml
+  - engine-statefulset.yaml
+values:
+  - values/happy.values.yaml
+  - values/archive.values.yaml
+tests:
+  - it: should template the node statefulset
+    template: node-statefulset.yaml
+    asserts:
+      - isKind:
+          of: StatefulSet
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: chainfliplabs/chainflip-node:perseverance
+      - notExists:
+          path: spec.template.spec.containers[0].volumeMounts[1]
+  - it: should not create the engine template
+    asserts:
+      - hasDocuments:
+          count: 0
+        template: engine-statefulset.yaml
