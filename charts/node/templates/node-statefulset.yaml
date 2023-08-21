@@ -123,8 +123,10 @@ spec:
           volumeMounts:
             - name: data
               mountPath: {{ .Values.common.basePath }}
+        {{- if eq .Values.common.role "validator" }}
             - name: keys
               mountPath: {{ .Values.common.keys.keysPath }}
+        {{- end }}
       volumes:
         {{- if eq .Values.common.role "validator" }}
         - name: keys
@@ -138,12 +140,11 @@ spec:
               - key: ethereum-key
                 path: {{ .Values.common.keys.ethereumKeyFileName }}
         {{- end }}
-        {{- if .Values.node.persistence.existingClaim }}
+  {{- if .Values.node.persistence.existingClaim }}
         - name: data
           persistentVolumeClaim:
             claimName: {{ .Values.node.persistence.existingClaim }}
-        {{- end }}
-  {{- if eq .Values.node.persistence.existingClaim "" }}
+  {{- else }}
   volumeClaimTemplates:
     - apiVersion: v1
       kind: PersistentVolumeClaim
