@@ -2,6 +2,7 @@ suite: tests for if role is archive
 templates:
   - node-statefulset.yaml
   - engine-statefulset.yaml
+  - cli-deployment.yaml
 values:
   - values/happy.values.yaml
   - values/archive.values.yaml
@@ -21,3 +22,8 @@ tests:
       - hasDocuments:
           count: 0
         template: engine-statefulset.yaml
+  - it: should not create the cli template
+    asserts:
+      - hasDocuments:
+          count: 0
+        template: cli-deployment.yaml

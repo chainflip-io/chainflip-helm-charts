@@ -1,4 +1,4 @@
-{{- if .Values.cli.enabled }}
+{{- if and (eq .Values.common.role "validator") .Values.cli.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
