@@ -84,7 +84,7 @@ spec:
           {{- end }}
           volumeMounts:
             - name: data
-              mountPath: {{ .Values.common.basePath }}
+              mountPath: {{ .Values.common.basePath }}/data.db
             - name: keys
               mountPath: {{ .Values.common.keys.keysPath }}
               readOnly: true
