@@ -1,0 +1,39 @@
+suite: node ingress tests
+release:
+  name: test
+templates:
+  - node-ingress.yaml
+values:
+  - values/happy.values.yaml
+tests:
+  - it: should create an ingress if enabled
+    set:
+      node:
+        ingress:
+          enabled: true
+          tls:
+            - secretName: test-tls
+              hosts:
+                - test.chainflip.io
+          hosts:
+            - host: test.chainflip.io
+              paths:
+                - path: /
+    asserts:
+      - hasDocuments:
+          count: 1
+      - equal:
+          path: spec.rules[0].host
+          value: test.chainflip.io
+      - equal:
+          path: spec.tls[0].secretName
+          value: test-tls
+      - equal:
+          path: spec.tls[0].hosts[0]
+          value: test.chainflip.io
+      - equal:
+          path: spec.rules[0].http.paths[0].backend.service.name
+          value: test-chainflip-node
+      - equal:
+          path: spec.rules[0].http.paths[0].backend.service.port.number
+          value: 9944
