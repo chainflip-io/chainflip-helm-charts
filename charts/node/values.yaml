@@ -48,10 +48,10 @@ network:
   # -- chain settings
   chain:
     # -- chain name; `perseverance`
-    name: "perseverance"
+    name: "test"
 
     # -- download the chainspec from a URL
-    chainspecUrl: "https://s3.eu-central-1.amazonaws.com/repo.chainflip.io/chainspecs/perseverance.chainspec.json"
+    chainspecUrl: ""
 
   # -- network bootnodes
   bootnodes:

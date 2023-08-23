@@ -62,10 +62,11 @@ chainflip.io/name: {{ .Release.Name }}
 Chain name
 */}}
 {{- define "chainflip-node.chain" -}}
+{{- $chain := .Values.network.chain.name | required ".Values.network.chain.name is required." -}}
 {{- if .Values.network.chain.chainspecUrl }}
-{{- printf "%s/%s.chainspec.json" .Values.common.basePath .Values.network.chain.name }}
+{{- printf "%s/%s.chainspec.json" .Values.common.basePath $chain }}
 {{- else -}}
-{{- printf "%s" .Values.network.chain.name }}
+{{- printf "%s" $chain }}
 {{- end }}
 {{- end }}
 

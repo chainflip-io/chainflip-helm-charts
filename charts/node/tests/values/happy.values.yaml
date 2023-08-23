@@ -1,3 +1,6 @@
+network:
+  chain:
+    name: test
 engine:
   settings:
     node_p2p:

@@ -44,7 +44,7 @@ jobs:
 
       - name: Test charts
         run: |
-          helm unittest ./charts/*
+          helm unittest ./charts/* 
 
   check_version:
     runs-on: ubuntu-latest
