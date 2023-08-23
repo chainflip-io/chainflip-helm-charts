@@ -51,34 +51,6 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
-      with:
-        fetch-depth: 2 # fetch the last two commits
-
-    - name: Check Chart.yaml version
-      run: |
-
-To check if the chart.yaml version has been updated relative to the main branch, you can modify the GitHub Action to compare the changes against the main branch instead of the previous commit. Here's how to do it:
-
-Create a .github/workflows/check_chart_version.yml in your repository.
-
-Populate the file with the following content:
-
-yaml
-Copy code
-name: Check chart.yaml version update
-
-on:
-  pull_request:
-    paths:
-      - 'path_to_chart_folder/chart.yaml'
-
-jobs:
-  check_version:
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
 
     - name: Check Chart.yaml version
       run: |
