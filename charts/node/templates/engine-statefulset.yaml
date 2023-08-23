@@ -117,7 +117,7 @@ spec:
             name: {{ .Values.engine.settings.existingConfigMap | default (include "chainflip-engine.fullname" .) }}
         - name: keys
           secret:
-            secretName: {{ include "node.fullname" . }}
+            secretName: {{ .Values.common.keys.existingSecret | default (include "node.fullname" . ) }}
             items:
               - key: node-key
                 path: node_key_file
