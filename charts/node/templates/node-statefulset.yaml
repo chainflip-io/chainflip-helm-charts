@@ -73,6 +73,7 @@ spec:
           args:
             - --base-path={{ .Values.common.basePath }}
             - --chain={{ include "chainflip-node.chain" . }}
+            - --trie-cache-size=0
             {{- range .Values.network.bootnodes }}
             - --bootnodes={{ . }}
             {{- end }}
@@ -86,7 +87,6 @@ spec:
             - --state-pruning=archive
             {{- end }}
             - --port={{ .Values.node.ports.p2p  }}
-            - --ws-port={{ .Values.node.ports.ws }}
             - --rpc-port={{ .Values.node.ports.rpc }}
             {{- if .Values.node.metrics.enabled }}
             - --prometheus-port={{ .Values.node.metrics.port }}
@@ -97,14 +97,10 @@ spec:
             - --rpc-cors=all
             - --rpc-methods=unsafe
             - --unsafe-rpc-external
-            - --unsafe-ws-external
             {{- with .Values.node.extraArgs }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
           ports:
-            - name: ws
-              containerPort: {{ .Values.node.ports.ws }}
-              protocol: TCP
             - name: rpc
               containerPort: {{ .Values.node.ports.rpc }}
               protocol: TCP

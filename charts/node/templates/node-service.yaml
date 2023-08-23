@@ -11,10 +11,6 @@ metadata:
 spec:
   type: {{ .Values.node.service.type }}
   ports:
-    - name: ws
-      port: {{ .Values.node.ports.ws }}
-      targetPort: ws
-      protocol: TCP
     - name: rpc
       port: {{ .Values.node.ports.rpc }}
       targetPort: rpc

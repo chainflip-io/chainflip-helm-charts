@@ -86,10 +86,8 @@ node:
 
   # -- ports exposed by the chainflip-node
   ports:
-    # -- chainflip-node ws port
-    ws: "9944"
     # -- chainflip-node rpc port
-    rpc: "9933"
+    rpc: "9944"
     # -- chainflip-node p2p port
     p2p: "30333"
 
