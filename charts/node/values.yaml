@@ -48,7 +48,7 @@ network:
   # -- chain settings
   chain:
     # -- chain name; `perseverance`
-    name: ""
+    name: "test"
 
     # -- download the chainspec from a URL
     chainspecUrl: ""
