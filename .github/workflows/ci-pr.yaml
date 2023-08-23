@@ -45,3 +45,22 @@ jobs:
       - name: Test charts
         run: |
           helm unittest ./charts/*
+
+  check_version:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Check Chart.yaml version
+      run: |
+        git fetch origin main:main
+        VERSION_PR=$(yq .version charts/node/Chart.yaml)
+        git checkout main
+        VERSION_MAIN=$(yq .version charts/node/Chart.yaml)
+        if [ "$VERSION_PR" == "$VERSION_MAIN" ]; then
+          echo "chart.yaml version has not been updated!"
+          exit 1
+        else
+          echo "chart.yaml version has been updated."
+        fi

@@ -39,6 +39,9 @@ spec:
                 fi
                 sleep 1
               done
+      {{- with .Values.engine.extraInitContainers }}
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
         - name: chainflip-engine
           image: "{{ include "chainflip-engine.image" . }}"
@@ -88,6 +91,26 @@ spec:
             - name: settings
               mountPath: {{ .Values.common.basePath }}/config
               readOnly: true
+          {{- with .Values.engine.extraEnv }}
+          env:
+          {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.engine.extraEnvFrom }}
+          envFrom:
+          {{- toYaml . | nindent 12 }}
+          {{- end }}
+      {{- with .Values.engine.affinity }}
+      affinity:
+          {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.engine.nodeSelector }}
+      nodeSelector:
+          {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.engine.tolerations }}
+      tolerations:
+          {{- toYaml . | nindent 8 }}
+      {{- end }}
       volumes:
         - name: settings
           configMap:
