@@ -133,6 +133,13 @@ node:
     # -- chainflip-node service annotations
     annotations: {}
 
+  ingress:
+    enabled: false
+    ingressClassName: ""
+    annotations: {}
+    hosts: []
+    tls: {}
+
   # -- set node selector
   nodeSelector: {}
 
