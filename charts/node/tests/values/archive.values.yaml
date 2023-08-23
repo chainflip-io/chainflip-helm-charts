@@ -1,2 +1,5 @@
+network:
+  chain:
+    name: test
 common:
   role: "archive"
