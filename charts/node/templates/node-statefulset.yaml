@@ -127,6 +127,26 @@ spec:
             - name: keys
               mountPath: {{ .Values.common.keys.keysPath }}
         {{- end }}
+          {{- with .Values.node.extraEnv }}
+          env:
+          {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.node.extraEnvFrom }}
+          envFrom:
+          {{- toYaml . | nindent 12 }}
+          {{- end }}
+    {{- with .Values.node.affinity }}
+      affinity:
+          {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.node.nodeSelector }}
+      nodeSelector:
+          {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.node.tolerations }}
+      tolerations:
+          {{- toYaml . | nindent 8 }}
+      {{- end }}
       volumes:
         {{- if eq .Values.common.role "validator" }}
         - name: keys

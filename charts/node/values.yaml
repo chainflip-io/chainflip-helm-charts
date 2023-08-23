@@ -78,6 +78,12 @@ node:
   extraArgs:
     - --name="Chainflip Node"
 
+  # -- set extra environment variables
+  extraEnv: []
+
+  # -- set extra environment variables from a secret
+  extraEnvFrom: []
+
   # -- ports exposed by the chainflip-node
   ports:
     # -- chainflip-node ws port
@@ -129,6 +135,15 @@ node:
     # -- chainflip-node service annotations
     annotations: {}
 
+  # -- set node selector
+  nodeSelector: {}
+
+  # -- set pod affinity
+  affinity: {}
+
+  # -- set pod tolerations
+  tolerations: []
+
 # -- chainflip-engine configuration
 engine:
   # -- override the default value of the engine pod
@@ -147,6 +162,12 @@ engine:
 
   # -- chainflip-engine extra arguments
   extraArgs: {}
+
+  # -- set extra environment variables
+  extraEnv: []
+
+  # -- set extra environment variables from a secret
+  extraEnvFrom: []
 
   # -- chainflip-engine resources
   resources: {}
@@ -236,6 +257,18 @@ engine:
 
     # -- chainflip-engine service annotations
     annotations: {}
+
+  # -- define extra init containers on the engine
+  extraInitContainers: []
+
+  # -- set node selector
+  nodeSelector: {}
+
+  # -- set pod affinity
+  affinity: {}
+
+  # -- set pod tolerations
+  tolerations: []
 
 # -- chainflip-cli configuration
 cli:
