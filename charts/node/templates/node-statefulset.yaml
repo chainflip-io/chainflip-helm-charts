@@ -80,7 +80,6 @@ spec:
             {{- if eq .Values.common.role "validator" }}
             - --node-key-file={{ .Values.common.keys.keysPath }}/{{ .Values.common.keys.nodeKeyFileName }}
             - --validator
-            - --sync=warp
             {{- end }}
             {{- if eq .Values.common.role "archive" }}
             - --blocks-pruning=archive
