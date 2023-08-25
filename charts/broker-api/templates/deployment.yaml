@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "broker-api.fullname" . }}
+  labels:
+  {{- include "broker-api.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+  {{- include "broker-api.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+    {{- include "broker-api.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default "latest" }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - /usr/local/bin/chainflip-broker-api
+          args:
+            - --port={{ .Values.containerPort }}
+            - --state_chain.signing_key_file={{ .Values.config.key.signingKeyFilePath }}
+            - --state_chain.ws_endpoint={{ .Values.config.stateChainWsEndpoint }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.containerPort }}
+              protocol: TCP
+          resources:
+          {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: signing-key
+              mountPath: {{ .Values.config.key.signingKeyFilePath }}
+              subPath: signing_key_file
+      volumes:
+        - name: signing-key
+          secret:
+            secretName: {{ .Values.config.key.existingSecret | default (include "broker-api.fullname" .) }}
+            items:
+              - key: {{ .Values.config.key.existingSecretKey | default "signing-key" }}
+                path: signing_key_file
