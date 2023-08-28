@@ -1,0 +1,76 @@
+# -- image repository and tag
+image:
+
+  # -- set the repository name
+  repository: chainfliplabs/chainflip-broker-api
+
+  # -- set the pull policy
+  pullPolicy: IfNotPresent
+
+  # -- set the image tag
+  tag: ""
+
+# -- reference to the secret containing repository credentials
+imagePullSecrets: []
+
+# -- provide extra arguments to the broker-api
+extraArgs: {}
+
+# -- set pod annotations
+podAnnotations: {}
+
+# -- broker-api configuration
+config:
+
+  # -- set the websocket endpoint for the state-chain
+  stateChainWsEndpoint: ""
+
+  # -- set the broker-api signing key
+  key:
+
+    # -- set the base path
+    basePath: "/etc/chainflip/keys"
+
+    # -- set the signing key, it is recommended you use a secret
+    signingKey: ""
+
+    # -- set the signing key file name
+    signingKeyFileName: signing_key_file
+
+    # -- existing secret containing the signing-key
+    existingSecret: ""
+
+    # -- existing secret key containing the signing-key
+    existingSecretKey: ""
+
+
+# -- set the container port
+containerPort: 8080
+
+# -- service configuration
+service:
+
+  # -- set the service type
+  type: ClusterIP
+
+  # -- set the service port
+  port: 80
+
+# -- set the ingress configuration
+ingress:
+
+  # -- set the ingress enabled flag
+  enabled: false
+
+  # -- set the ingress annotations
+  annotations: {}
+
+  # -- set the ingress hosts
+  hosts: []
+
+  # -- set the ingress tls configuration
+  tls: {}
+
+
+# -- set the resources for the pods
+resources: {}
