@@ -1,0 +1,41 @@
+suite: broker tests
+templates:
+  - deployment.yaml
+  - secret.yaml
+values:
+  - values/happy.values.yaml
+tests:
+  - it: should create a deployment
+    templates:
+      - deployment.yaml
+    asserts:
+      - containsDocument:
+          kind: Deployment
+          apiVersion: apps/v1
+  - it: should create a secret if you provide the signing key
+    templates:
+      - secret.yaml
+    asserts:
+      - containsDocument:
+          kind: Secret
+          apiVersion: v1
+      - equal:
+          path: data.signing-key
+          value: "MHgwMDAwMDA="
+  - it: should not create a secret if you provide an existing secret
+    set:
+      config.key.existingSecret: "my-secret"
+    templates:
+      - secret.yaml
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: should set the volume to correct secret if you provide an existing secret
+    set:
+      config.key.existingSecret: "my-secret"
+    templates:
+      - deployment.yaml
+    asserts:
+      - equal:
+          path: spec.template.spec.volumes[0].secret.secretName
+          value: "my-secret"

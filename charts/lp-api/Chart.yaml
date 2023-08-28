@@ -1,0 +1,6 @@
+apiVersion: v2
+name: lp-api
+description: Deploy a lp-api for the Chainflip network
+type: application
+version: 0.1.0
+appVersion: "0.9.0"

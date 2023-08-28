@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "lp-api.fullname" . }}
+  labels:
+  {{- include "lp-api.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+  {{- include "lp-api.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+    {{- include "lp-api.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - /usr/local/bin/chainflip-lp-api
+          args:
+            - --port={{ .Values.containerPort }}
+            - --state_chain.signing_key_file={{ .Values.config.key.basePath }}/{{ .Values.config.key.signingKeyFileName }}
+            - --state_chain.ws_endpoint={{ .Values.config.stateChainWsEndpoint }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.containerPort }}
+              protocol: TCP
+          resources:
+          {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: signing-key
+              mountPath: {{ .Values.config.key.basePath }}
+      volumes:
+        - name: signing-key
+          secret:
+            secretName: {{ .Values.config.key.existingSecret | default (include "lp-api.fullname" .) }}
+            items:
+              - key: {{ .Values.config.key.existingSecretKey | default "signing-key" }}
+                path: {{ .Values.config.key.signingKeyFileName }}
