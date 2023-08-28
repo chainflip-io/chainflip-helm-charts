@@ -1,0 +1,4 @@
+# Sets the minimum required values for the lp-api chart
+config:
+  key:
+    signingKey: "0x000000"
