@@ -23,13 +23,13 @@ spec:
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default "latest" }}"
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command:
             - /usr/local/bin/chainflip-broker-api
           args:
             - --port={{ .Values.containerPort }}
-            - --state_chain.signing_key_file={{ .Values.config.key.signingKeyFilePath }}
+            - --state_chain.signing_key_file={{ .Values.config.key.basePath }}/{{ .Values.config.key.signingKeyFileName }}
             - --state_chain.ws_endpoint={{ .Values.config.stateChainWsEndpoint }}
           ports:
             - name: http
@@ -38,13 +38,12 @@ spec:
           resources:
           {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
-            - name: signing-key
-              mountPath: {{ .Values.config.key.signingKeyFilePath }}
-              subPath: signing_key_file
+            - name: key
+              mountPath: {{ .Values.config.key.basePath }}
       volumes:
-        - name: signing-key
+        - name: key
           secret:
             secretName: {{ .Values.config.key.existingSecret | default (include "broker-api.fullname" .) }}
             items:
               - key: {{ .Values.config.key.existingSecretKey | default "signing-key" }}
-                path: signing_key_file
+                path: {{ .Values.config.key.signingKeyFileName }}

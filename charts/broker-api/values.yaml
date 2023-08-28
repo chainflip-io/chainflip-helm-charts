@@ -28,11 +28,14 @@ config:
   # -- set the broker-api signing key
   key:
 
+    # -- set the base path
+    basePath: "/etc/chainflip/keys"
+
     # -- set the signing key, it is recommended you use a secret
     signingKey: ""
 
     # -- set the signing key file name
-    signingKeyFilePath: /etc/chainflip/keys/signing_key_file
+    signingKeyFileName: signing_key_file
 
     # -- existing secret containing the signing-key
     existingSecret: ""
