@@ -53,13 +53,18 @@ spec:
           {{- toYaml . | nindent 12 }}
           {{- end }}
           ports:
+            - containerPort: {{ .Values.engine.ports.ip }}
+              name: ip
+              protocol: TCP
             {{- if  .Values.engine.healthcheck.enabled }}
             - containerPort: {{ .Values.engine.healthcheck.port }}
               name: healthcheck
             {{- end }}
-            - containerPort: {{ .Values.engine.ports.ip }}
-              name: ip
+            {{- if .Values.engine.metrics.enabled }}
+            - containerPort: {{ .Values.engine.metrics.port }}
+              name: metrics
               protocol: TCP
+            {{- end }}
           readinessProbe:
             httpGet:
               path: /health
