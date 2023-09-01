@@ -23,6 +23,12 @@ spec:
       targetPort: healthcheck
       protocol: TCP
     {{- end }}
+    {{- if .Values.engine.metrics.enabled }}
+    - name: metrics
+      port: {{ .Values.engine.metrics.port }}
+      targetPort: metrics
+      protocol: TCP
+    {{- end }}
   selector:
     {{- include "chainflip-engine.selectorLabels" . | nindent 4 }}
 {{- end }}

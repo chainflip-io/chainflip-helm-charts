@@ -41,4 +41,9 @@ data:
     http_node_endpoint = "{{ required "Please provide a http_node_endpoint of an Bitcoin node" .Values.engine.settings.btc.http_node_endpoint }}"
     rpc_user = "{{ .Values.engine.settings.btc.rpc_user }}"
     rpc_password = "{{ .Values.engine.settings.btc.rpc_password }}"
-  {{- end }}
+    {{- if .Values.engine.metrics.enabled }}
+    [prometheus]
+    hostname = "{{ .Values.engine.metrics.hostname }}"
+    port = {{ .Values.engine.metrics.port }}
+    {{- end }}
+    {{- end }}

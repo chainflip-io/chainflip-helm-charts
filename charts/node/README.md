@@ -1,6 +1,6 @@
 # node
 
-![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.8.7](https://img.shields.io/badge/AppVersion-0.8.7-informational?style=flat-square)
+![Version: 0.2.1](https://img.shields.io/badge/Version-0.2.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.9.0](https://img.shields.io/badge/AppVersion-0.9.0-informational?style=flat-square)
 
 Deploy a Chainflip Validator or Archive node on Kubernetes
 
@@ -33,8 +33,12 @@ Deploy a Chainflip Validator or Archive node on Kubernetes
 | common.keys.signingKey | string | `""` | signing key; recommended to leave empty and provide through a secret |
 | common.keys.signingKeyFileName | string | `"signing_key_file"` | signing key file name |
 | common.role | string | `"validator"` | desired role for your node; `validator` or `archive` |
-| engine | object | `{"extraArgs":{},"fullnameOverride":"","healthcheck":{"enabled":true,"hostname":"0.0.0.0","port":"5555"},"image":{"pullPolicy":"Always","repository":"chainfliplabs/chainflip-engine","tag":""},"persistence":{"accessModes":["ReadWriteOnce"],"enabled":true,"size":"5Gi","storageClass":""},"ports":{"ip":"8078"},"resources":{},"service":{"annotations":{},"port":80,"type":"ClusterIP"},"settings":{"btc":{"http_node_endpoint":"","rpc_password":"flip","rpc_user":"flip"},"dot":{"http_node_endpoint":"","ws_node_endpoint":""},"eth":{"http_node_endpoint":"","ws_node_endpoint":""},"existingConfigMap":"","node_p2p":{"allow_local_ip":true,"ip_address":""}}}` | chainflip-engine configuration |
+| engine | object | `{"affinity":{},"extraArgs":{},"extraEnv":[],"extraEnvFrom":[],"extraInitContainers":[],"fullnameOverride":"","healthcheck":{"enabled":true,"hostname":"0.0.0.0","port":"5555"},"image":{"pullPolicy":"Always","repository":"chainfliplabs/chainflip-engine","tag":""},"metrics":{"enabled":false,"hostname":"0.0.0.0","port":5566},"nodeSelector":{},"persistence":{"accessModes":["ReadWriteOnce"],"enabled":true,"existingClaim":"","size":"5Gi","storageClass":""},"ports":{"ip":"8078"},"resources":{},"service":{"annotations":{},"port":80,"type":"ClusterIP"},"settings":{"btc":{"http_node_endpoint":"","rpc_password":"flip","rpc_user":"flip"},"dot":{"http_node_endpoint":"","ws_node_endpoint":""},"eth":{"http_node_endpoint":"","ws_node_endpoint":""},"existingConfigMap":"","node_p2p":{"allow_local_ip":true,"ip_address":""}},"tolerations":[]}` | chainflip-engine configuration |
+| engine.affinity | object | `{}` | set pod affinity |
 | engine.extraArgs | object | `{}` | chainflip-engine extra arguments |
+| engine.extraEnv | list | `[]` | set extra environment variables |
+| engine.extraEnvFrom | list | `[]` | set extra environment variables from a secret |
+| engine.extraInitContainers | list | `[]` | define extra init containers on the engine |
 | engine.fullnameOverride | string | `""` | override the default value of the engine pod |
 | engine.healthcheck | object | `{"enabled":true,"hostname":"0.0.0.0","port":"5555"}` | chainflip-engine healthcheck settings |
 | engine.healthcheck.enabled | bool | `true` | enable chainflip-engine healthcheck |
@@ -44,9 +48,14 @@ Deploy a Chainflip Validator or Archive node on Kubernetes
 | engine.image.pullPolicy | string | `"Always"` | chainflip-engine image pull policy |
 | engine.image.repository | string | `"chainfliplabs/chainflip-engine"` | chainflip-engine image repository |
 | engine.image.tag | string | `""` | chainflip-engine image tag |
-| engine.persistence | object | `{"accessModes":["ReadWriteOnce"],"enabled":true,"size":"5Gi","storageClass":""}` | chainflip-engine persistence settings |
+| engine.metrics.enabled | bool | `false` | enable prometheus metrics |
+| engine.metrics.hostname | string | `"0.0.0.0"` | expose prometheus metrics |
+| engine.metrics.port | int | `5566` | prometheus metrics port |
+| engine.nodeSelector | object | `{}` | set node selector |
+| engine.persistence | object | `{"accessModes":["ReadWriteOnce"],"enabled":true,"existingClaim":"","size":"5Gi","storageClass":""}` | chainflip-engine persistence settings |
 | engine.persistence.accessModes | list | `["ReadWriteOnce"]` | chainflip-engine volume access mode |
 | engine.persistence.enabled | bool | `true` | enable chainflip-engine persistence |
+| engine.persistence.existingClaim | string | `""` | reference an existing PVC |
 | engine.persistence.size | string | `"5Gi"` | chainflip-engine volume size |
 | engine.persistence.storageClass | string | `""` | chainflip-engine volume storage class |
 | engine.ports | object | `{"ip":"8078"}` | chainflip-engine ports |
@@ -71,16 +80,22 @@ Deploy a Chainflip Validator or Archive node on Kubernetes
 | engine.settings.node_p2p | object | `{"allow_local_ip":true,"ip_address":""}` | node_p2p settings |
 | engine.settings.node_p2p.allow_local_ip | bool | `true` | allow local ip addresses |
 | engine.settings.node_p2p.ip_address | string | `""` | local ip address; this will set the ClusterIP of the service |
+| engine.tolerations | list | `[]` | set pod tolerations |
 | extraManifests | list | `[]` | create extra kubernetes manifests |
 | fullnameOverride | string | `""` | override the naming of the node chart |
+| hook | object | `{"extraAnnotations":{}}` | hook configuration |
+| hook.extraAnnotations | object | `{}` | add extra annotations to the create-keys hook |
 | imagePullSecrets | list | `[]` | select an existing secret where your repository credentials are stored |
 | nameOverride | string | `""` | override the default value of the name |
 | network.bootnodes | list | `["/ip4/167.99.129.29/tcp/30333/p2p/12D3KooWPFZo5JzqiWASDSrAtbyKgW2kw4Rb5FruE29PAhJ1u4xL"]` | network bootnodes |
-| network.chain | object | `{"chainspecUrl":"https://s3.eu-central-1.amazonaws.com/repo.chainflip.io/chainspecs/perseverance.chainspec.json","name":"perseverance"}` | chain settings |
-| network.chain.chainspecUrl | string | `"https://s3.eu-central-1.amazonaws.com/repo.chainflip.io/chainspecs/perseverance.chainspec.json"` | download the chainspec from a URL |
-| network.chain.name | string | `"perseverance"` | chain name; `perseverance` |
-| node | object | `{"extraArgs":["--name=\"Chainflip Node\""],"fullnameOverride":"","image":{"pullPolicy":"Always","repository":"chainfliplabs/chainflip-node","tag":""},"metrics":{"enabled":true,"expose":true,"port":9615},"persistence":{"accessModes":["ReadWriteOnce"],"enabled":true,"size":"100Gi","storageClass":""},"ports":{"p2p":"30333","rpc":"9933","ws":"9944"},"resources":{},"service":{"annotations":{},"port":80,"type":"ClusterIP"}}` | chainflip-node configuration |
+| network.chain | object | `{"chainspecUrl":"","name":"test"}` | chain settings |
+| network.chain.chainspecUrl | string | `""` | download the chainspec from a URL |
+| network.chain.name | string | `"test"` | chain name; `perseverance` |
+| node | object | `{"affinity":{},"extraArgs":["--name=\"Chainflip Node\""],"extraEnv":[],"extraEnvFrom":[],"fullnameOverride":"","image":{"pullPolicy":"Always","repository":"chainfliplabs/chainflip-node","tag":""},"ingress":{"annotations":{},"enabled":false,"hosts":[],"ingressClassName":"","tls":{}},"metrics":{"enabled":true,"expose":true,"port":9615},"nodeSelector":{},"persistence":{"accessModes":["ReadWriteOnce"],"enabled":true,"existingClaim":"","size":"100Gi","storageClass":""},"ports":{"p2p":"30333","rpc":"9944"},"resources":{},"service":{"annotations":{},"port":80,"type":"ClusterIP"},"tolerations":[]}` | chainflip-node configuration |
+| node.affinity | object | `{}` | set pod affinity |
 | node.extraArgs | list | `["--name=\"Chainflip Node\""]` | chainflip-node extra arguments |
+| node.extraEnv | list | `[]` | set extra environment variables |
+| node.extraEnvFrom | list | `[]` | set extra environment variables from a secret |
 | node.fullnameOverride | string | `""` | override the default value of the node pod |
 | node.image | object | `{"pullPolicy":"Always","repository":"chainfliplabs/chainflip-node","tag":""}` | chainflip-node image settings |
 | node.image.pullPolicy | string | `"Always"` | chainflip-node image pull policy |
@@ -89,20 +104,22 @@ Deploy a Chainflip Validator or Archive node on Kubernetes
 | node.metrics.enabled | bool | `true` | enable prometheus metrics |
 | node.metrics.expose | bool | `true` | expose prometheus metrics |
 | node.metrics.port | int | `9615` | prometheus metrics port |
-| node.persistence | object | `{"accessModes":["ReadWriteOnce"],"enabled":true,"size":"100Gi","storageClass":""}` | chaindata volume settings |
+| node.nodeSelector | object | `{}` | set node selector |
+| node.persistence | object | `{"accessModes":["ReadWriteOnce"],"enabled":true,"existingClaim":"","size":"100Gi","storageClass":""}` | chaindata volume settings |
 | node.persistence.accessModes | list | `["ReadWriteOnce"]` | chaindata volume access mode |
 | node.persistence.enabled | bool | `true` | enable chaindata persistence |
+| node.persistence.existingClaim | string | `""` | reference an existing PVC |
 | node.persistence.size | string | `"100Gi"` | chaindata volume size |
 | node.persistence.storageClass | string | `""` | chaindata volume storage class |
-| node.ports | object | `{"p2p":"30333","rpc":"9933","ws":"9944"}` | ports exposed by the chainflip-node |
+| node.ports | object | `{"p2p":"30333","rpc":"9944"}` | ports exposed by the chainflip-node |
 | node.ports.p2p | string | `"30333"` | chainflip-node p2p port |
-| node.ports.rpc | string | `"9933"` | chainflip-node rpc port |
-| node.ports.ws | string | `"9944"` | chainflip-node ws port |
+| node.ports.rpc | string | `"9944"` | chainflip-node rpc port |
 | node.resources | object | `{}` | chainflip-node resources |
 | node.service | object | `{"annotations":{},"port":80,"type":"ClusterIP"}` | chainflip-node service configuration |
 | node.service.annotations | object | `{}` | chainflip-node service annotations |
 | node.service.port | int | `80` | chainflip-node service port |
 | node.service.type | string | `"ClusterIP"` | chainflip-node service type |
+| node.tolerations | list | `[]` | set pod tolerations |
 
 ----------------------------------------------
 Autogenerated from chart metadata using [helm-docs v1.11.0](https://github.com/norwoodj/helm-docs/releases/v1.11.0)

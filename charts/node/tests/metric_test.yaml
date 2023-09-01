@@ -1,0 +1,52 @@
+suite: test metrics
+templates:
+  - engine-statefulset.yaml
+  - engine-service.yaml
+  - engine-cm.yaml
+values:
+  - values/happy.values.yaml
+tests:
+  - it: should expose a port in the engine statefulset
+    templates:
+      - engine-statefulset.yaml
+    set:
+      engine.metrics.enabled: true
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].ports[2].containerPort
+          value: 5566
+      - equal:
+          path: spec.template.spec.containers[0].ports[2].name
+          value: metrics
+  - it: should expose a port in the engine service
+    templates:
+      - engine-service.yaml
+    set:
+      engine.metrics.enabled: true
+    asserts:
+      - equal:
+          path: spec.ports[2].port
+          value: 5566
+      - equal:
+          path: spec.ports[2].name
+          value: metrics
+      - equal:
+          path: spec.ports[2].targetPort
+          value: metrics
+
+  - it: should create prometheus config in the engine configmap
+    templates:
+      - engine-cm.yaml
+    set:
+      engine.metrics.enabled: true
+    asserts:
+      - matchRegex:
+          path: data['Settings.toml']
+          pattern: "prometheus"
+  - it: should NOT create prometheus config in the engine configmap if not enabled
+    templates:
+      - engine-cm.yaml
+    asserts:
+      - notMatchRegex:
+          path: data['Settings.toml']
+          pattern: "prometheus"
