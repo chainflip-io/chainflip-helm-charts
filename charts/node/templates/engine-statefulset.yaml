@@ -89,7 +89,7 @@ spec:
           {{- end }}
           volumeMounts:
             - name: data
-              mountPath: {{ .Values.common.basePath }}/data.db
+              mountPath: {{ .Values.common.basePath }}
             - name: keys
               mountPath: {{ .Values.common.keys.keysPath }}
               readOnly: true
@@ -134,8 +134,10 @@ spec:
         - name: data
           persistentVolumeClaim:
             claimName: {{ .Values.engine.persistence.existingClaim }}
-        {{- end }}
-  {{- if eq .Values.engine.persistence.existingClaim "" }}
+        {{- else }}
+        - name: data
+          persistentVolumeClaim:
+            claimName: data
   volumeClaimTemplates:
     - apiVersion: v1
       kind: PersistentVolumeClaim
