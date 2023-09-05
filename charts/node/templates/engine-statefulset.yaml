@@ -135,9 +135,6 @@ spec:
           persistentVolumeClaim:
             claimName: {{ .Values.engine.persistence.existingClaim }}
         {{- else }}
-        - name: data
-          persistentVolumeClaim:
-            claimName: data
   volumeClaimTemplates:
     - apiVersion: v1
       kind: PersistentVolumeClaim
