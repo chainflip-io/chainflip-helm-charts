@@ -19,11 +19,25 @@ spec:
       port: {{ .Values.node.ports.p2p }}
       targetPort: p2p
       protocol: TCP
-    {{- if .Values.node.metrics.enabled }}
+---
+{{- if .Values.node.metrics.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "chainflip-node.fullname" . }}-metrics
+  {{- with .Values.node.metrics.service.annotations }}
+  annotations:
+    {{ . | toYaml | nindent 4 }}
+  {{- end }}
+  labels:
+  {{- include "chainflip-node.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.node.metrics.service.type }}
+  ports:
     - name: metrics
       port: {{ .Values.node.metrics.port }}
       targetPort: metrics
       protocol: TCP
-    {{- end }}
   selector:
   {{- include "chainflip-node.selectorLabels" . | nindent 4 }}
+{{- end }}

@@ -101,6 +101,16 @@ node:
     # -- expose prometheus metrics
     expose: true
 
+    # -- prometheus metrics service configuration
+    service:
+      # -- prometheus metrics service type
+      type: ClusterIP
+
+      # -- prometheus metrics service port
+      annotations: {}
+#        prometheus.io/chainflip-unit: "chainflip-engine"
+#        prometheus.io/port: "metrics"
+
   # -- chainflip-node resources
   resources: {}
 
@@ -191,6 +201,18 @@ engine:
 
     # -- expose prometheus metrics
     hostname: "0.0.0.0"
+
+    # -- prometheus metrics service configuration
+    service:
+      # -- prometheus metrics service type
+      type: ClusterIP
+
+      # -- prometheus metrics service port
+      annotations: {}
+  #        prometheus.io/chainflip-unit: "chainflip-engine"
+  #        prometheus.io/port: "metrics"
+
+
   # -- chainflip-engine healthcheck settings
   healthcheck:
     # -- enable chainflip-engine healthcheck

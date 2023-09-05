@@ -1,4 +1,6 @@
 suite: test metrics
+release:
+  name: validator
 templates:
   - engine-statefulset.yaml
   - engine-service.yaml
@@ -23,15 +25,19 @@ tests:
       - engine-service.yaml
     set:
       engine.metrics.enabled: true
+    documentIndex: 1
     asserts:
       - equal:
-          path: spec.ports[2].port
+          path: metadata.name
+          value: validator-chainflip-engine-metrics
+      - equal:
+          path: spec.ports[0].port
           value: 5566
       - equal:
-          path: spec.ports[2].name
+          path: spec.ports[0].name
           value: metrics
       - equal:
-          path: spec.ports[2].targetPort
+          path: spec.ports[0].targetPort
           value: metrics
 
   - it: should create prometheus config in the engine configmap

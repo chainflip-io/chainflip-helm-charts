@@ -23,12 +23,28 @@ spec:
       targetPort: healthcheck
       protocol: TCP
     {{- end }}
-    {{- if .Values.engine.metrics.enabled }}
+  selector:
+    {{- include "chainflip-engine.selectorLabels" . | nindent 4 }}
+{{- end }}
+---
+{{- if .Values.engine.metrics.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "chainflip-engine.fullname" . }}-metrics
+  {{- with .Values.engine.metrics.service.annotations }}
+  annotations:
+    {{ . | toYaml | nindent 4 }}
+  {{- end }}
+  labels:
+  {{- include "chainflip-engine.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.engine.metrics.service.type }}
+  ports:
     - name: metrics
       port: {{ .Values.engine.metrics.port }}
       targetPort: metrics
       protocol: TCP
-    {{- end }}
   selector:
-    {{- include "chainflip-engine.selectorLabels" . | nindent 4 }}
+  {{- include "chainflip-engine.selectorLabels" . | nindent 4 }}
 {{- end }}
