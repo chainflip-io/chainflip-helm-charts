@@ -10,6 +10,8 @@ metadata:
   {{- include "chainflip-node.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.node.service.type }}
+  selector:
+  {{- include "chainflip-node.selectorLabels" . | nindent 4 }}
   ports:
     - name: rpc
       port: {{ .Values.node.ports.rpc }}
