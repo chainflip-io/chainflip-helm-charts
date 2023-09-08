@@ -34,3 +34,47 @@ tests:
             requests:
               cpu: 100m
               memory: 100Mi
+  - it: should include legacy rpc commands if selected
+    set:
+      node.legacyRpc: true
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].args
+          value:
+            - --base-path=/etc/chainflip
+            - --chain=test
+            - --trie-cache-size=0
+            - --bootnodes=/ip4/167.99.129.29/tcp/30333/p2p/12D3KooWPFZo5JzqiWASDSrAtbyKgW2kw4Rb5FruE29PAhJ1u4xL
+            - --node-key-file=/etc/chainflip/keys/node_key_file
+            - --validator
+            - --port=30333
+            - --prometheus-port=9615
+            - --prometheus-external
+            - --rpc-port=9933
+            - --ws-port=9944
+            - --unsafe-ws-external
+            - --rpc-cors=all
+            - --rpc-methods=unsafe
+            - --unsafe-rpc-external
+            - --name="Chainflip Node"
+  - it: should include new rpc commands if not selected
+    set:
+      node.legacyRpc: false
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].args
+          value:
+            - --base-path=/etc/chainflip
+            - --chain=test
+            - --trie-cache-size=0
+            - --bootnodes=/ip4/167.99.129.29/tcp/30333/p2p/12D3KooWPFZo5JzqiWASDSrAtbyKgW2kw4Rb5FruE29PAhJ1u4xL
+            - --node-key-file=/etc/chainflip/keys/node_key_file
+            - --validator
+            - --port=30333
+            - --prometheus-port=9615
+            - --prometheus-external
+            - --rpc-port=9944
+            - --rpc-cors=all
+            - --rpc-methods=unsafe
+            - --unsafe-rpc-external
+            - --name="Chainflip Node"

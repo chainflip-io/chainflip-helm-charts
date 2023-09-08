@@ -86,12 +86,18 @@ spec:
             - --state-pruning=archive
             {{- end }}
             - --port={{ .Values.node.ports.p2p  }}
-            - --rpc-port={{ .Values.node.ports.rpc }}
             {{- if .Values.node.metrics.enabled }}
             - --prometheus-port={{ .Values.node.metrics.port }}
             {{- if .Values.node.metrics.expose }}
             - --prometheus-external
             {{- end }}
+            {{- end }}
+            {{- if .Values.node.legacyRpc }}
+            - --rpc-port=9933
+            - --ws-port={{ .Values.node.ports.rpc }}
+            - --unsafe-ws-external
+            {{- else }}
+            - --rpc-port={{ .Values.node.ports.rpc }}
             {{- end }}
             - --rpc-cors=all
             - --rpc-methods=unsafe

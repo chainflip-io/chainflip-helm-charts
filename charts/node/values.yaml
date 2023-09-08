@@ -74,6 +74,9 @@ node:
     # -- chainflip-node image pull policy
     pullPolicy: Always
 
+  # -- use the legacy rpc commands for the node
+  legacyRpc: false
+
   # -- chainflip-node extra arguments
   extraArgs:
     - --name="Chainflip Node"
