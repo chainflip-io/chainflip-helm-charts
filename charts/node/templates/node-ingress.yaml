@@ -1,6 +1,6 @@
 {{- if .Values.node.ingress.enabled -}}
 {{- $fullName := include "chainflip-node.fullname" . -}}
-{{- $svcPort := .Values.node.ports.rpc -}}
+{{- $svcPort := .Values.node.ports.rpc.port -}}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:

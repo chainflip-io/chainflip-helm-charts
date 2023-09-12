@@ -37,7 +37,7 @@ spec:
             - sh
             - -c
             - |
-              chainflip-cli generate-keys json > /tmp/keys.json
+              chainflip-cli generate-keys --json > /tmp/keys.json
         - name: extract-keys
           image: stedolan/jq:latest
           securityContext:
@@ -64,10 +64,15 @@ spec:
             - /bin/sh
             - -c
             - |
-              kubectl create secret generic {{ include "node.fullname" . }} \
-                --from-file=/tmp/signing-key \
-                --from-file=/tmp/node-key \
-                --from-file=/tmp/ethereum-key
+              if ! kubectl get secret {{ include "node.fullname" . }}; then
+                echo "Secret does not exist, creating..."
+                kubectl create secret generic {{ include "node.fullname" . }} \
+                  --from-file=/tmp/signing-key \
+                  --from-file=/tmp/node-key \
+                  --from-file=/tmp/ethereum-key
+              else
+                echo "Secret already exists, skipping..."
+              fi
       volumes:
         - name: keys
           emptyDir: {}

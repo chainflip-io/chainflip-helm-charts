@@ -100,6 +100,7 @@ Common labels
 Selector labels
 */}}
 {{- define "chainflip-engine.selectorLabels" -}}
+chainflip.io/name: {{ .Release.Name }}
 chainflip.io/unit: chainflip-engine
 {{- end }}
 

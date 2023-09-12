@@ -12,19 +12,19 @@ tests:
     templates:
       - engine-statefulset.yaml
     set:
-      engine.metrics.enabled: true
+      engine.ports.metrics.enabled: true
     asserts:
       - equal:
-          path: spec.template.spec.containers[0].ports[2].containerPort
+          path: spec.template.spec.containers[0].ports[1].containerPort
           value: 5566
       - equal:
-          path: spec.template.spec.containers[0].ports[2].name
+          path: spec.template.spec.containers[0].ports[1].name
           value: metrics
   - it: should expose a port in the engine service
     templates:
       - engine-service.yaml
     set:
-      engine.metrics.enabled: true
+      engine.ports.metrics.enabled: true
     documentIndex: 1
     asserts:
       - equal:
@@ -44,7 +44,7 @@ tests:
     templates:
       - engine-cm.yaml
     set:
-      engine.metrics.enabled: true
+      engine.ports.metrics.enabled: true
     asserts:
       - matchRegex:
           path: data['Settings.toml']

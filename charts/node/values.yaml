@@ -54,9 +54,7 @@ network:
     chainspecUrl: ""
 
   # -- network bootnodes
-  bootnodes:
-    - /ip4/167.99.129.29/tcp/30333/p2p/12D3KooWPFZo5JzqiWASDSrAtbyKgW2kw4Rb5FruE29PAhJ1u4xL
-
+  bootnodes: []
 
 # -- chainflip-node configuration
 node:
@@ -90,29 +88,68 @@ node:
   # -- ports exposed by the chainflip-node
   ports:
     # -- chainflip-node rpc port
-    rpc: "9944"
+    rpc:
+      # -- enabled
+      enabled: true
+
+      # -- chainflip-node rpc port
+      port: "9944"
+
+      # -- expose chainflip-node rpc port
+      expose: true
+
+      # -- chainflip-node rpc service configuration
+      service:
+        # -- chainflip-node rpc service type
+        type: ClusterIP
+
+        # -- chainflip-node rpc service port
+        port: 9944
+
+        # -- chainflip-node rpc service annotations
+        annotations: {}
     # -- chainflip-node p2p port
-    p2p: "30333"
+    p2p:
+      # -- enabled
+      enabled: true
 
-  metrics:
-    # -- enable prometheus metrics
-    enabled: true
+      # -- chainflip-node rpc port
+      port: 30333
 
-    # -- prometheus metrics port
-    port: 9615
+      # -- chainflip-node rpc service configuration
+      service:
+        # -- chainflip-node rpc service type
+        type: NodePort
 
-    # -- expose prometheus metrics
-    expose: true
+        # -- chainflip-node rpc service port
+        port: 30333
 
-    # -- prometheus metrics service configuration
-    service:
-      # -- prometheus metrics service type
-      type: ClusterIP
+        # -- chainflip-node rpc node port, if type is NodePort. Defaults to `ports.p2p.port`
+        # nodePort: 30333
 
-      # -- prometheus metrics service port
-      annotations: {}
-#        prometheus.io/chainflip-unit: "chainflip-engine"
-#        prometheus.io/port: "metrics"
+        # -- chainflip-node rpc service annotations
+        annotations: {}
+
+
+    metrics:
+      # -- enable prometheus metrics
+      enabled: false
+
+      # -- prometheus metrics port
+      port: 9615
+
+      # -- expose prometheus metrics
+      expose: true
+
+      # -- prometheus metrics service configuration
+      service:
+        # -- prometheus metrics service type
+        type: ClusterIP
+
+        # -- prometheus metrics service port
+        annotations: {}
+  #        prometheus.io/chainflip-unit: "chainflip-engine"
+  #        prometheus.io/port: "metrics"
 
   # -- chainflip-node resources
   resources: {}
@@ -193,39 +230,66 @@ engine:
   # -- chainflip-engine ports
   ports:
     # -- chainflip-engine p2p port
-    ip: "8078"
+    ip:
+      # -- chainflip-engine p2p port
+      port: 30078
 
-  metrics:
-    # -- enable prometheus metrics
-    enabled: false
+      # -- expose chainflip-engine p2p port
+      expose: true
 
-    # -- prometheus metrics port
-    port: 5566
+      # -- chainflip-engine p2p service configuration
+      service:
+        # -- chainflip-engine p2p service type
+        type: NodePort
 
-    # -- expose prometheus metrics
-    hostname: "0.0.0.0"
+        # -- chainflip-engine p2p service port
+        port: 30078
 
-    # -- prometheus metrics service configuration
-    service:
-      # -- prometheus metrics service type
-      type: ClusterIP
+        # -- chainflip-engine p2p service annotations
+        annotations: {}
 
-      # -- prometheus metrics service port
-      annotations: {}
-  #        prometheus.io/chainflip-unit: "chainflip-engine"
-  #        prometheus.io/port: "metrics"
+    metrics:
+      # -- enable prometheus metrics
+      enabled: false
+
+      # -- prometheus metrics port
+      port: 5566
+
+      # -- expose prometheus metrics
+      hostname: "0.0.0.0"
+
+      # -- prometheus metrics service configuration
+      service:
+        # -- prometheus metrics service type
+        type: ClusterIP
+
+        # -- prometheus metrics service port
+        annotations: {}
+    #        prometheus.io/chainflip-unit: "chainflip-engine"
+    #        prometheus.io/port: "metrics"
 
 
-  # -- chainflip-engine healthcheck settings
-  healthcheck:
-    # -- enable chainflip-engine healthcheck
-    enabled: true
+    # -- chainflip-engine healthcheck settings
+    healthcheck:
+      # -- enable chainflip-engine healthcheck
+      enabled: true
 
-    # -- chainflip-engine healthcheck hostname
-    hostname: "0.0.0.0"
+      # -- chainflip-engine healthcheck hostname
+      hostname: "0.0.0.0"
 
-    # -- chainflip-engine healthcheck port
-    port: "5555"
+      # -- chainflip-engine healthcheck port
+      port: "5555"
+
+      # -- chainflip-engine healthcheck service configuration
+      service:
+        # -- chainflip-engine healthcheck service type
+        type: ClusterIP
+
+        # -- chainflip-engine healthcheck service port
+        port: 5555
+
+        # -- chainflip-engine healthcheck service annotations
+        annotations: {}
 
   # -- chainflip-engine persistence settings
   persistence:
@@ -257,7 +321,7 @@ engine:
       ip_address: ""
 
       # -- allow local ip addresses
-      allow_local_ip: true
+      allow_local_ip: false
 
     # -- ethereum settings
     eth:
@@ -285,17 +349,6 @@ engine:
 
       # -- bitcoin rpc password
       rpc_password: "flip"
-
-  # -- chainflip-engine service configuration
-  service:
-    # -- chainflip-engine service type
-    type: ClusterIP
-
-    # -- chainflip-engine service port
-    port: 80
-
-    # -- chainflip-engine service annotations
-    annotations: {}
 
   # -- define extra init containers on the engine
   extraInitContainers: []

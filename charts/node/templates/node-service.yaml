@@ -1,43 +1,66 @@
+{{- if .Values.node.ports.rpc.enabled }}
 apiVersion: v1
 kind: Service
 metadata:
   name: {{ include "chainflip-node.fullname" . }}
-  {{- with .Values.node.service.annotations }}
+  {{- with .Values.node.ports.rpc.service.annotations }}
   annotations:
     {{ . | toYaml | nindent 4 }}
   {{- end }}
   labels:
   {{- include "chainflip-node.labels" . | nindent 4 }}
 spec:
-  type: {{ .Values.node.service.type }}
+  type: {{ .Values.node.ports.rpc.service.type }}
   selector:
   {{- include "chainflip-node.selectorLabels" . | nindent 4 }}
   ports:
     - name: rpc
-      port: {{ .Values.node.ports.rpc }}
+      port: {{ .Values.node.ports.rpc.port }}
       targetPort: rpc
       protocol: TCP
-    - name: p2p
-      port: {{ .Values.node.ports.p2p }}
-      targetPort: p2p
-      protocol: TCP
 ---
-{{- if .Values.node.metrics.enabled }}
+{{- end }}
+{{- if .Values.node.ports.p2p.enabled }}
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "chainflip-node.fullname" . }}-metrics
-  {{- with .Values.node.metrics.service.annotations }}
+  name: {{ include "chainflip-node.fullname" . }}-p2p
+  {{- with .Values.node.ports.p2p.service.annotations }}
   annotations:
     {{ . | toYaml | nindent 4 }}
   {{- end }}
   labels:
   {{- include "chainflip-node.labels" . | nindent 4 }}
 spec:
-  type: {{ .Values.node.metrics.service.type }}
+  type: {{ .Values.node.ports.p2p.service.type }}
+  selector:
+  {{- include "chainflip-node.selectorLabels" . | nindent 4 }}
+  ports:
+    - name: p2p
+      port: {{ .Values.node.ports.p2p.port }}
+      {{- if eq .Values.node.ports.p2p.service.type "NodePort" }}
+      nodePort: {{ .Values.node.ports.p2p.service.nodePort | default .Values.node.ports.p2p.port }}
+      {{- end }}
+      targetPort: p2p
+      protocol: TCP
+---
+{{- end }}
+{{- if .Values.node.ports.metrics.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "chainflip-node.fullname" . }}-metrics
+  {{- with .Values.node.ports.metrics.service.annotations }}
+  annotations:
+    {{ . | toYaml | nindent 4 }}
+  {{- end }}
+  labels:
+  {{- include "chainflip-node.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.node.ports.metrics.service.type }}
   ports:
     - name: metrics
-      port: {{ .Values.node.metrics.port }}
+      port: {{ .Values.node.ports.metrics.port }}
       targetPort: metrics
       protocol: TCP
   selector:

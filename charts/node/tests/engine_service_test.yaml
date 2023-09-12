@@ -1,0 +1,26 @@
+suite: Engine service tests
+templates:
+  - engine-service.yaml
+values:
+  - values/happy.values.yaml
+tests:
+  - it: should create two engine services by default
+    asserts:
+      - hasDocuments:
+          count: 2
+      - isKind:
+          of: Service
+  - it: should assign the default ip port if no nodePort is set
+    asserts:
+      - equal:
+          path: spec.ports[0].port
+          value: 30078
+        documentIndex: 0
+      - equal:
+          path: spec.ports[0].name
+          value: ip
+        documentIndex: 0
+      - equal:
+          path: spec.ports[0].targetPort
+          value: ip
+        documentIndex: 0
