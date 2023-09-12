@@ -1,0 +1,118 @@
+suite: node port tests
+release:
+  name: validator
+templates:
+  - node-service.yaml
+  - node-statefulset.yaml
+values:
+  - values/happy.values.yaml
+tests:
+  - it: should by default create three container ports on the statefulset
+    templates:
+      - node-statefulset.yaml
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].ports[0].containerPort
+          value: 9944
+      - equal:
+          path: spec.template.spec.containers[0].ports[0].name
+          value: rpc
+      - equal:
+          path: spec.template.spec.containers[0].ports[1].containerPort
+          value: 30333
+      - equal:
+          path: spec.template.spec.containers[0].ports[1].name
+          value: p2p
+  - it: should create two services by default
+    templates:
+      - node-service.yaml
+    asserts:
+      - hasDocuments:
+          count: 2
+      - equal:
+          path: metadata.name
+          value: validator-chainflip-node
+        documentIndex: 0
+      - equal:
+          path: spec.ports[0].port
+          value: 9944
+        documentIndex: 0
+      - equal:
+          path: spec.ports[0].name
+          value: rpc
+        documentIndex: 0
+      - equal:
+          path: spec.ports[0].targetPort
+          value: rpc
+        documentIndex: 0
+      - equal:
+          path: metadata.name
+          value: validator-chainflip-node-p2p
+        documentIndex: 1
+      - equal:
+          path: spec.ports[0].port
+          value: 30333
+        documentIndex: 1
+      - equal:
+          path: spec.ports[0].name
+          value: p2p
+        documentIndex: 1
+      - equal:
+          path: spec.ports[0].targetPort
+          value: p2p
+        documentIndex: 1
+  - it: should default to the p2p port if no node port is set
+    templates:
+      - node-service.yaml
+      - node-statefulset.yaml
+    asserts:
+      - equal:
+          path: spec.ports[0].nodePort
+          value: 30333
+        documentIndex: 1
+        template: node-service.yaml
+      - equal:
+          path: spec.template.spec.containers[0].ports[1].containerPort
+          value: 30333
+        template: node-statefulset.yaml
+  - it: should update the node port if set
+    set:
+      node.ports.p2p.port: 30334
+    templates:
+      - node-service.yaml
+      - node-statefulset.yaml
+    asserts:
+      - equal:
+          path: spec.ports[0].nodePort
+          value: 30334
+        documentIndex: 1
+        template: node-service.yaml
+      - equal:
+          path: spec.template.spec.containers[0].ports[1].containerPort
+          value: 30334
+        template: node-statefulset.yaml
+  - it: should create three services if metrics is enabled
+    templates:
+      - node-service.yaml
+      - node-statefulset.yaml
+    set:
+      node.ports.metrics.enabled: true
+    asserts:
+      - hasDocuments:
+          count: 3
+        template: node-service.yaml
+      - equal:
+          path: metadata.name
+          value: validator-chainflip-node-metrics
+        documentIndex: 2
+        template: node-service.yaml
+      - equal:
+          path: spec.ports[0].port
+          value: 9615
+        documentIndex: 2
+        template: node-service.yaml
+      - equal:
+          path: spec.ports[0].name
+          value: metrics
+        documentIndex: 2
+        template: node-service.yaml

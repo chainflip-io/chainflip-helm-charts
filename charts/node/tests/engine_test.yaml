@@ -1,4 +1,4 @@
-suite: chainflip-node tests
+suite: chainflip-engine tests
 templates:
   - engine-statefulset.yaml
 tests:
