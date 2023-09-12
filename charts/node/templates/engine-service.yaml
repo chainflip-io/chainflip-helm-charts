@@ -25,7 +25,6 @@ spec:
   selector:
     {{- include "chainflip-engine.selectorLabels" . | nindent 4 }}
 ---
-{{- end }}
 {{- if .Values.engine.ports.metrics.enabled }}
 apiVersion: v1
 kind: Service
@@ -68,4 +67,5 @@ spec:
       protocol: TCP
   selector:
   {{- include "chainflip-engine.selectorLabels" . | nindent 4 }}
+{{- end }}
 {{- end }}
