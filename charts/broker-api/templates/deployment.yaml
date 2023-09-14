@@ -21,6 +21,21 @@ spec:
       imagePullSecrets:
       {{- toYaml . | nindent 8 }}
       {{- end }}
+      initContainers:
+        - name: port-check
+          image: solsson/websocat
+          command:
+            - sh
+            - -c
+            - |
+              set -xe
+              while true; do
+                echo system_health | websocat {{ .Values.config.stateChainWsEndpoint }} --jsonrpc
+                if [ $? -eq 0 ]; then
+                  exit 0
+                fi
+                sleep 1
+              done
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
