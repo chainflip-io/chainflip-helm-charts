@@ -23,13 +23,13 @@ data:
     private_key_file = "{{ .Values.common.keys.keysPath }}/{{ .Values.common.keys.ethereumKeyFileName }}"
 
     [eth.rpc]
-    ws_node_endpoint = "{{ required "Please provide a ws_node_endpoint of an Ethereum node" .Values.engine.settings.eth.ws_node_endpoint }}"
-    http_node_endpoint = "{{ required "Please provide a http_node_endpoint of an Ethereum node" .Values.engine.settings.eth.http_node_endpoint }}"
+    ws_endpoint = "{{ required "Please provide a ws_endpoint of an Ethereum node" .Values.engine.settings.eth.ws_endpoint }}"
+    http_endpoint = "{{ required "Please provide a http_endpoint of an Ethereum node" .Values.engine.settings.eth.http_endpoint }}"
 
     {{ if .Values.engine.settings.eth_backup.enabled }}
     [eth.backup_rpc]
-    http_node_endpoint = "{{ .Values.engine.settings.eth_backup.http_node_endpoint }}"
-    ws_node_endpoint = "{{ .Values.engine.settings.eth_backup.ws_node_endpoint }}"
+    http_endpoint = "{{ .Values.engine.settings.eth_backup.http_endpoint }}"
+    ws_endpoint = "{{ .Values.engine.settings.eth_backup.ws_endpoint }}"
     {{- end }}
 
     {{ if .Values.engine.ports.healthcheck.enabled }}
@@ -42,23 +42,23 @@ data:
     db_file = "{{ .Values.common.basePath }}/data.db"
 
     [dot.rpc]
-    ws_node_endpoint = "{{ required "Please provide a ws_node_endpoint of an Polkadot node" .Values.engine.settings.dot.ws_node_endpoint }}"
-    http_node_endpoint = "{{ required "Please provide a http_node_endpoint of an Polkadot node" .Values.engine.settings.dot.http_node_endpoint }}"
+    ws_endpoint = "{{ required "Please provide a ws_endpoint of an Polkadot node" .Values.engine.settings.dot.ws_endpoint }}"
+    http_endpoint = "{{ required "Please provide a http_endpoint of an Polkadot node" .Values.engine.settings.dot.http_endpoint }}"
 
     {{ if .Values.engine.settings.dot_backup.enabled }}
     [dot.backup_rpc]
-    http_node_endpoint = "{{ .Values.engine.settings.dot_backup.http_node_endpoint }}"
-    ws_node_endpoint = "{{ .Values.engine.settings.dot_backup.ws_node_endpoint }}"
+    http_endpoint = "{{ .Values.engine.settings.dot_backup.http_endpoint }}"
+    ws_endpoint = "{{ .Values.engine.settings.dot_backup.ws_endpoint }}"
     {{- end }}
 
     [btc.rpc]
-    http_node_endpoint = "{{ required "Please provide a http_node_endpoint of an Bitcoin node" .Values.engine.settings.btc.http_node_endpoint }}"
+    http_endpoint = "{{ required "Please provide a http_endpoint of an Bitcoin node" .Values.engine.settings.btc.http_endpoint }}"
     rpc_user = "{{ .Values.engine.settings.btc.rpc_user }}"
     rpc_password = "{{ .Values.engine.settings.btc.rpc_password }}"
 
     {{ if .Values.engine.settings.btc_backup.enabled }}
     [btc.backup_rpc]
-    http_node_endpoint = "{{ .Values.engine.settings.btc_backup.http_node_endpoint }}"
+    http_endpoint = "{{ .Values.engine.settings.btc_backup.http_endpoint }}"
     rpc_user = "{{ .Values.engine.settings.btc_backup.rpc_user }}"
     rpc_password = "{{ .Values.engine.settings.btc_backup.rpc_password }}"
     {{- end }}

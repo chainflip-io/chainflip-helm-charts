@@ -326,10 +326,10 @@ engine:
     # -- ethereum settings
     eth:
       # -- ethereum node http endpoint
-      ws_node_endpoint: ""
+      ws_endpoint: ""
 
       # -- ethereum node ws endpoint
-      http_node_endpoint: ""
+      http_endpoint: ""
 
     # -- set up an optional backup ethereum node
     eth_backup:
@@ -338,18 +338,18 @@ engine:
       enabled: false
 
       # -- ethereum backup node ws endpoint
-      ws_node_endpoint: ""
+      ws_endpoint: ""
 
       # -- ethereum backup node http endpoint
-      http_node_endpoint: ""
+      http_endpoint: ""
 
     # -- polkadot settings
     dot:
       # -- polkadot node ws endpoint
-      ws_node_endpoint: ""
+      ws_endpoint: ""
 
       # -- polkadot node http endpoint
-      http_node_endpoint: ""
+      http_endpoint: ""
 
     # -- set up an optional backup ethereum node
     dot_backup:
@@ -358,15 +358,15 @@ engine:
       enabled: false
 
       # -- polkadot backup node ws endpoint
-      ws_node_endpoint: ""
+      ws_endpoint: ""
 
       # -- polkadot backup node http endpoint
-      http_node_endpoint: ""
+      http_endpoint: ""
 
     # -- bitcoin settings
     btc:
       # -- bitcoin node http endpoint
-      http_node_endpoint: ""
+      http_endpoint: ""
 
       # -- bitcoin rpc user
       rpc_user: ""
@@ -379,7 +379,7 @@ engine:
       enabled: false
 
       # -- bitcoin backup node http endpoint
-      http_node_endpoint: ""
+      http_endpoint: ""
 
       # -- bitcoin backup rpc user
       rpc_user: ""

@@ -27,15 +27,15 @@ common:
 engine:
   settings:
     btc:
-      http_node_endpoint: http://a108a82b574a640359e360cf66afd45d-424380952.eu-central-1.elb.amazonaws.com
+      http_endpoint: http://a108a82b574a640359e360cf66afd45d-424380952.eu-central-1.elb.amazonaws.com
       rpc_password: flip
       rpc_user: flip
     dot:
-      http_node_endpoint: https://pdot-rpc.chainflip.xyz:443
-      ws_node_endpoint: wss://pdot-rpc.chainflip.xyz:443
+      http_endpoint: https://pdot-rpc.chainflip.xyz:443
+      ws_endpoint: wss://pdot-rpc.chainflip.xyz:443
     eth:
-      http_node_endpoint: <YOUR_HTTP_NODE_ENDPOINT>
-      ws_node_endpoint: <YOUR_WS_NODE_ENDPOINT>
+      http_endpoint: <YOUR_http_endpoint>
+      ws_endpoint: <YOUR_ws_endpoint>
     node_p2p:
       ip_address: <YOUR_IP_ADDRESS> # pick a ClusterIP for the service
 ```

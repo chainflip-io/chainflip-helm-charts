@@ -33,7 +33,7 @@ Deploy a Chainflip Validator or Archive node on Kubernetes
 | common.keys.signingKey | string | `""` | signing key; recommended to leave empty and provide through a secret |
 | common.keys.signingKeyFileName | string | `"signing_key_file"` | signing key file name |
 | common.role | string | `"validator"` | desired role for your node; `validator` or `archive` |
-| engine | object | `{"affinity":{},"extraArgs":{},"extraEnv":[],"extraEnvFrom":[],"extraInitContainers":[],"fullnameOverride":"","healthcheck":{"enabled":true,"hostname":"0.0.0.0","port":"5555"},"image":{"pullPolicy":"Always","repository":"chainfliplabs/chainflip-engine","tag":""},"metrics":{"enabled":false,"hostname":"0.0.0.0","port":5566},"nodeSelector":{},"persistence":{"accessModes":["ReadWriteOnce"],"enabled":true,"existingClaim":"","size":"5Gi","storageClass":""},"ports":{"ip":"8078"},"resources":{},"service":{"annotations":{},"port":80,"type":"ClusterIP"},"settings":{"btc":{"http_node_endpoint":"","rpc_password":"flip","rpc_user":"flip"},"dot":{"http_node_endpoint":"","ws_node_endpoint":""},"eth":{"http_node_endpoint":"","ws_node_endpoint":""},"existingConfigMap":"","node_p2p":{"allow_local_ip":true,"ip_address":""}},"tolerations":[]}` | chainflip-engine configuration |
+| engine | object | `{"affinity":{},"extraArgs":{},"extraEnv":[],"extraEnvFrom":[],"extraInitContainers":[],"fullnameOverride":"","healthcheck":{"enabled":true,"hostname":"0.0.0.0","port":"5555"},"image":{"pullPolicy":"Always","repository":"chainfliplabs/chainflip-engine","tag":""},"metrics":{"enabled":false,"hostname":"0.0.0.0","port":5566},"nodeSelector":{},"persistence":{"accessModes":["ReadWriteOnce"],"enabled":true,"existingClaim":"","size":"5Gi","storageClass":""},"ports":{"ip":"8078"},"resources":{},"service":{"annotations":{},"port":80,"type":"ClusterIP"},"settings":{"btc":{"http_endpoint":"","rpc_password":"flip","rpc_user":"flip"},"dot":{"http_endpoint":"","ws_endpoint":""},"eth":{"http_endpoint":"","ws_endpoint":""},"existingConfigMap":"","node_p2p":{"allow_local_ip":true,"ip_address":""}},"tolerations":[]}` | chainflip-engine configuration |
 | engine.affinity | object | `{}` | set pod affinity |
 | engine.extraArgs | object | `{}` | chainflip-engine extra arguments |
 | engine.extraEnv | list | `[]` | set extra environment variables |
@@ -65,17 +65,17 @@ Deploy a Chainflip Validator or Archive node on Kubernetes
 | engine.service.annotations | object | `{}` | chainflip-engine service annotations |
 | engine.service.port | int | `80` | chainflip-engine service port |
 | engine.service.type | string | `"ClusterIP"` | chainflip-engine service type |
-| engine.settings | object | `{"btc":{"http_node_endpoint":"","rpc_password":"flip","rpc_user":"flip"},"dot":{"http_node_endpoint":"","ws_node_endpoint":""},"eth":{"http_node_endpoint":"","ws_node_endpoint":""},"existingConfigMap":"","node_p2p":{"allow_local_ip":true,"ip_address":""}}` | chainflip-engine Settings.toml configuration |
-| engine.settings.btc | object | `{"http_node_endpoint":"","rpc_password":"flip","rpc_user":"flip"}` | bitcoin settings |
-| engine.settings.btc.http_node_endpoint | string | `""` | bitcoin node http endpoint |
+| engine.settings | object | `{"btc":{"http_endpoint":"","rpc_password":"flip","rpc_user":"flip"},"dot":{"http_endpoint":"","ws_endpoint":""},"eth":{"http_endpoint":"","ws_endpoint":""},"existingConfigMap":"","node_p2p":{"allow_local_ip":true,"ip_address":""}}` | chainflip-engine Settings.toml configuration |
+| engine.settings.btc | object | `{"http_endpoint":"","rpc_password":"flip","rpc_user":"flip"}` | bitcoin settings |
+| engine.settings.btc.http_endpoint | string | `""` | bitcoin node http endpoint |
 | engine.settings.btc.rpc_password | string | `"flip"` | bitcoin rpc password |
 | engine.settings.btc.rpc_user | string | `"flip"` | bitcoin rpc user |
-| engine.settings.dot | object | `{"http_node_endpoint":"","ws_node_endpoint":""}` | polkadot settings |
-| engine.settings.dot.http_node_endpoint | string | `""` | polkadot node http endpoint |
-| engine.settings.dot.ws_node_endpoint | string | `""` | polkadot node ws endpoint |
-| engine.settings.eth | object | `{"http_node_endpoint":"","ws_node_endpoint":""}` | ethereum settings |
-| engine.settings.eth.http_node_endpoint | string | `""` | ethereum node ws endpoint |
-| engine.settings.eth.ws_node_endpoint | string | `""` | ethereum node http endpoint |
+| engine.settings.dot | object | `{"http_endpoint":"","ws_endpoint":""}` | polkadot settings |
+| engine.settings.dot.http_endpoint | string | `""` | polkadot node http endpoint |
+| engine.settings.dot.ws_endpoint | string | `""` | polkadot node ws endpoint |
+| engine.settings.eth | object | `{"http_endpoint":"","ws_endpoint":""}` | ethereum settings |
+| engine.settings.eth.http_endpoint | string | `""` | ethereum node ws endpoint |
+| engine.settings.eth.ws_endpoint | string | `""` | ethereum node http endpoint |
 | engine.settings.existingConfigMap | string | `""` | existing configMap with Settings.toml |
 | engine.settings.node_p2p | object | `{"allow_local_ip":true,"ip_address":""}` | node_p2p settings |
 | engine.settings.node_p2p.allow_local_ip | bool | `true` | allow local ip addresses |
