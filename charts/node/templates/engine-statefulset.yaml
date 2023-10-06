@@ -27,7 +27,6 @@ spec:
       initContainers:
         - name: port-check
           image: alpine:latest
-          imagePullPolicy: {{ .Values.engine.image.pullPolicy }}
           command:
             - sh
             - -c
@@ -46,6 +45,7 @@ spec:
       containers:
         - name: chainflip-engine
           image: "{{ include "chainflip-engine.image" . }}"
+          imagePullPolicy: {{ .Values.engine.image.pullPolicy }}
           command:
             - /usr/local/bin/chainflip-engine
           args:

@@ -27,7 +27,6 @@ spec:
         {{- if .Values.network.chain.chainspecUrl }}
         - name: download-chainspec
           image: curlimages/curl:latest
-          imagePullPolicy: {{ .Values.node.image.pullPolicy }}
           command:
             - /bin/sh
             - -c
