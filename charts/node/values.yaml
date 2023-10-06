@@ -188,7 +188,7 @@ node:
     ingressClassName: ""
     annotations: {}
     hosts: []
-    tls: {}
+    tls: []
 
   # -- set node selector
   nodeSelector: {}

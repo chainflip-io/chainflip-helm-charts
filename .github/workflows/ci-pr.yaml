@@ -40,7 +40,7 @@ jobs:
 
       - name: Install helm-unittest
         run: |
-          helm plugin install https://github.com/helm-unittest/helm-unittest.git
+          helm plugin install https://github.com/helm-unittest/helm-unittest --version 0.3.4
 
       - name: Test charts
         run: |
