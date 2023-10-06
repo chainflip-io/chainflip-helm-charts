@@ -369,10 +369,10 @@ engine:
       http_endpoint: ""
 
       # -- bitcoin rpc user
-      rpc_user: ""
+      basic_auth_user: ""
 
       # -- bitcoin rpc password
-      rpc_password: ""
+      basic_auth_password: ""
 
     btc_backup:
       # -- enabled

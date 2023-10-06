@@ -53,8 +53,8 @@ data:
 
     [btc.rpc]
     http_endpoint = "{{ required "Please provide a http_endpoint of an Bitcoin node" .Values.engine.settings.btc.http_endpoint }}"
-    rpc_user = "{{ .Values.engine.settings.btc.rpc_user }}"
-    rpc_password = "{{ .Values.engine.settings.btc.rpc_password }}"
+    basic_auth_user = "{{ .Values.engine.settings.btc.basic_auth_user }}"
+    basic_auth_password = "{{ .Values.engine.settings.btc.basic_auth_password }}"
 
     {{ if .Values.engine.settings.btc_backup.enabled }}
     [btc.backup_rpc]
