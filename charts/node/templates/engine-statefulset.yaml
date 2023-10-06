@@ -27,6 +27,7 @@ spec:
       initContainers:
         - name: port-check
           image: alpine:latest
+          imagePullPolicy: {{ .Values.engine.image.pullPolicy }}
           command:
             - sh
             - -c
