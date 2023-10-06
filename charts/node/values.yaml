@@ -188,7 +188,7 @@ node:
     ingressClassName: ""
     annotations: {}
     hosts: []
-    tls: {}
+    tls: []
 
   # -- set node selector
   nodeSelector: {}
@@ -331,6 +331,18 @@ engine:
       # -- ethereum node ws endpoint
       http_node_endpoint: ""
 
+    # -- set up an optional backup ethereum node
+    eth_backup:
+
+      # -- enabled
+      enabled: false
+
+      # -- ethereum backup node ws endpoint
+      ws_node_endpoint: ""
+
+      # -- ethereum backup node http endpoint
+      http_node_endpoint: ""
+
     # -- polkadot settings
     dot:
       # -- polkadot node ws endpoint
@@ -339,16 +351,41 @@ engine:
       # -- polkadot node http endpoint
       http_node_endpoint: ""
 
+    # -- set up an optional backup ethereum node
+    dot_backup:
+
+      # -- enabled
+      enabled: false
+
+      # -- polkadot backup node ws endpoint
+      ws_node_endpoint: ""
+
+      # -- polkadot backup node http endpoint
+      http_node_endpoint: ""
+
     # -- bitcoin settings
     btc:
       # -- bitcoin node http endpoint
       http_node_endpoint: ""
 
       # -- bitcoin rpc user
-      rpc_user: "flip"
+      rpc_user: ""
 
       # -- bitcoin rpc password
-      rpc_password: "flip"
+      rpc_password: ""
+
+    btc_backup:
+      # -- enabled
+      enabled: false
+
+      # -- bitcoin backup node http endpoint
+      http_node_endpoint: ""
+
+      # -- bitcoin backup rpc user
+      rpc_user: ""
+
+      # -- bitcoin backup rpc password
+      rpc_password: ""
 
   # -- define extra init containers on the engine
   extraInitContainers: []
