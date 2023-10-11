@@ -1,0 +1,111 @@
+suite: New runtime and engine config migration tests
+release:
+  name: validator
+templates:
+  - engine-statefulset.yaml
+  - engine-service-lsr.yaml
+  - engine-cm.yaml
+values:
+  - values/happy.values.yaml
+tests:
+  - it: should create a statefulset with two engine containers
+    templates:
+      - engine-statefulset.yaml
+    set:
+      engine.image.current_tag: "0.9.3"
+      engine.image.lsr_tag: "0.10.0"
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: "chainfliplabs/chainflip-engine:0.9.3"
+      - equal:
+          path: spec.template.spec.containers[1].image
+          value: "chainfliplabs/chainflip-engine:0.10.0"
+      - equal:
+          path: spec.template.spec.containers[1].ports[0].containerPort
+          value: 30079
+      - equal:
+          path: spec.template.spec.containers[1].volumeMounts[2].name
+          value: settings
+      - notEqual:
+          path: spec.template.spec.volumes[1].name
+          value: settings
+  - it: should use the lsr configmap if migration_mode is active
+    templates:
+      - engine-statefulset.yaml
+    set:
+      engine.image.current_tag: "0.9.3"
+      engine.image.lsr_tag: "0.10.0"
+      engine:
+        settings:
+          migration_mode: true
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[1].volumeMounts[2].name
+          value: settings-lsr
+      - equal:
+          path: spec.template.spec.volumes[1].name
+          value: settings-lsr
+  - it: should NOT create a statefulset with two engine containers if lsr_tag is equal to current_tag
+    templates:
+      - engine-statefulset.yaml
+    set:
+      engine.image.current_tag: "0.9.3"
+      engine.image.lsr_tag: "0.9.3"
+
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: "chainfliplabs/chainflip-engine:0.9.3"
+      - notExists:
+          path: spec.template.spec.containers[1]
+  - it: should NOT create a statefulset with two engine containers if lsr_tag is less than current_tag
+    templates:
+      - engine-statefulset.yaml
+    set:
+      engine.image.current_tag: "0.9.3"
+      engine.image.lsr_tag: "0.9.1"
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: "chainfliplabs/chainflip-engine:0.9.3"
+      - notExists:
+          path: spec.template.spec.containers[1]
+  - it: should create a new service for the lsr engine
+    templates:
+      - engine-service-lsr.yaml
+    set:
+      engine.image.current_tag: "0.9.3"
+      engine.image.lsr_tag: "0.10.0"
+    asserts:
+      - equal:
+          path: metadata.name
+          value: "validator-chainflip-engine-lsr"
+        documentIndex: 0
+      - equal:
+          path: spec.ports[0].targetPort
+          value: ip-lsr
+        documentIndex: 0
+      - equal:
+          path: spec.ports[0].nodePort
+          value: 30079 # default port +1
+        documentIndex: 0
+  - it: should create a separate engine settings file if migration is enabled
+    templates:
+      - engine-cm.yaml
+    set:
+      engine.image.current_tag: "0.9.3"
+      engine.image.lsr_tag: "0.10.0"
+      engine:
+        settings:
+          migration_mode: true
+    asserts:
+      - equal:
+          path: metadata.name
+          value: "validator-chainflip-engine"
+        documentIndex: 0
+      - exists:
+          path: "data['lsr.Settings.toml']"
+      - matchRegex:
+          path: "data['lsr.Settings.toml']"
+          pattern: "port = 30079"

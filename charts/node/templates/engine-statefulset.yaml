@@ -1,3 +1,5 @@
+{{- $lrsGtCurrent := (lt (semver .Values.engine.image.lsr_tag | (semver .Values.engine.image.current_tag).Compare) 0) }}
+{{- $migrationMode := .Values.engine.settings.migration_mode -}}
 {{- if eq .Values.common.role "validator" }}
 apiVersion: apps/v1
 kind: StatefulSet
@@ -105,6 +107,74 @@ spec:
           envFrom:
           {{- toYaml . | nindent 12 }}
           {{- end }}
+        {{- if $lrsGtCurrent }}
+        - name: chainflip-engine-lsr
+          image: "{{ include "chainflip-engine-lsr.image" . }}"
+          imagePullPolicy: {{ .Values.engine.image.pullPolicy }}
+          command:
+            - /usr/local/bin/chainflip-engine
+          args:
+            - --config-root={{ .Values.common.basePath }}
+          {{- with .Values.engine.extraArgs }}
+          {{- toYaml . | nindent 12 }}
+          {{- end }}
+          ports:
+            - containerPort: {{ add .Values.engine.ports.ip.port 1 }}
+              name: ip-lsr
+              protocol: TCP
+            {{- if .Values.engine.ports.metrics.enabled }}
+            - containerPort: {{ .Values.engine.ports.metrics.port }}
+              name: metrics-lsr
+              protocol: TCP
+            {{- end }}
+            {{- if  .Values.engine.ports.healthcheck.enabled }}
+            - containerPort: {{ .Values.engine.ports.healthcheck.port }}
+              name: healthcheck-lsr
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: healthcheck-lsr
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: healthcheck-lsr
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 3
+            {{- end }}
+          {{- with .Values.engine.resources }}
+          resources:
+          {{- toYaml . | nindent 12 }}
+          {{- end }}
+          volumeMounts:
+            - name: data
+              mountPath: {{ .Values.common.basePath }}
+            - name: keys
+              mountPath: {{ .Values.common.keys.keysPath }}
+              readOnly: true
+          {{- if $migrationMode }}
+            - name: settings-lsr
+          {{- else}}
+            - name: settings
+          {{- end }}
+              mountPath: {{ .Values.common.basePath }}/config
+              readOnly: true
+          {{- with .Values.engine.extraEnv }}
+          env:
+          {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.engine.extraEnvFrom }}
+          envFrom:
+          {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- end }}
       {{- with .Values.engine.affinity }}
       affinity:
           {{- toYaml . | nindent 8 }}
@@ -121,6 +191,17 @@ spec:
         - name: settings
           configMap:
             name: {{ .Values.engine.settings.existingConfigMap | default (include "chainflip-engine.fullname" .) }}
+            items:
+              - key: Settings.toml
+                path: Settings.toml
+        {{- if and $migrationMode $lrsGtCurrent }}
+        - name: settings-lsr
+          configMap:
+            name: {{ .Values.engine.settings.existingConfigMap | default (include "chainflip-engine.fullname" .) }}
+            items:
+              - key: lsr.Settings.toml
+                path: Settings.toml
+        {{- end}}
         - name: keys
           secret:
             secretName: {{ .Values.common.keys.existingSecret | default (include "node.fullname" . ) }}

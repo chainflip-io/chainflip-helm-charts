@@ -212,6 +212,10 @@ engine:
     # -- chainflip-engine image tag
     tag: ""
 
+    lsr_tag: ""
+
+    current_tag: ""
+
     # -- chainflip-engine image pull policy
     pullPolicy: Always
 
@@ -311,6 +315,9 @@ engine:
 
   # -- chainflip-engine Settings.toml configuration
   settings:
+    # -- enable migration mode. This enables the two running engines to use different config files.
+    migration_mode: false
+
     # -- existing configMap with Settings.toml
     existingConfigMap: ""
 
