@@ -6,6 +6,7 @@ metadata:
   labels:
     {{- include "chainflip-engine.labels" . | nindent 4 }}
 spec:
+  serviceName: {{ include "chainflip-engine.fullname" . }}
   replicas: 1
   selector:
     matchLabels:
