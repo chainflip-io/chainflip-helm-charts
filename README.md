@@ -28,8 +28,8 @@ engine:
   settings:
     btc:
       http_endpoint: http://a108a82b574a640359e360cf66afd45d-424380952.eu-central-1.elb.amazonaws.com
-      rpc_password: flip
-      rpc_user: flip
+      basic_auth_user: flip
+      basic_auth_password: flip
     dot:
       http_endpoint: https://pdot-rpc.chainflip.xyz:443
       ws_endpoint: wss://pdot-rpc.chainflip.xyz:443
