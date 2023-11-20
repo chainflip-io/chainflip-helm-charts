@@ -3,3 +3,7 @@ network:
     name: test
 common:
   role: "archive"
+engine:
+  image:
+    current_tag: 0.9.3
+    previous_tag: 0.9.3

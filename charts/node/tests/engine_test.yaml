@@ -1,6 +1,8 @@
 suite: chainflip-engine tests
 templates:
   - engine-statefulset.yaml
+values:
+  - values/happy.values.yaml
 tests:
   - it: should template the node statefulset
     asserts:

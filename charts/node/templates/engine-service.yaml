@@ -68,4 +68,73 @@ spec:
   selector:
   {{- include "chainflip-engine.selectorLabels" . | nindent 4 }}
 {{- end }}
+---
+{{- if .Values.runtime_upgrade_mode.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "chainflip-engine.fullname" . }}-prv
+  {{- with .Values.engine.ports.ip.service.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  labels:
+  {{- include "chainflip-engine.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.engine.ports.ip.service.type }}
+  {{- if .Values.engine.settings.node_p2p.allow_local_ip }}
+  clusterIP: {{ .Values.engine.settings.node_p2p.ip_address }}
+  {{- end }}
+  ports:
+    - name: ip
+      port: {{ .Values.runtime_upgrade_mode.previous_engine_port }}
+      targetPort: ip-prv
+      protocol: TCP
+  selector:
+    {{- include "chainflip-engine.selectorLabels" . | nindent 4 }}
+---
+{{- if .Values.engine.ports.metrics.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "chainflip-engine.fullname" . }}-metrics-prv
+  {{- with .Values.engine.ports.metrics.service.annotations }}
+  annotations:
+    {{ . | toYaml | nindent 4 }}
+  {{- end }}
+  labels:
+  {{- include "chainflip-engine.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.engine.ports.metrics.service.type }}
+  ports:
+    - name: metrics
+      port: {{ .Values.engine.ports.metrics.port }}
+      targetPort: metrics-prv
+      protocol: TCP
+  selector:
+  {{- include "chainflip-engine.selectorLabels" . | nindent 4 }}
+---
+{{- end }}
+{{- if .Values.engine.ports.healthcheck.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "chainflip-engine.fullname" . }}-healthcheck-prv
+  {{- with .Values.engine.ports.healthcheck.service.annotations }}
+  annotations:
+    {{ . | toYaml | nindent 4 }}
+  {{- end }}
+  labels:
+  {{- include "chainflip-engine.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.engine.ports.healthcheck.service.type }}
+  ports:
+    - name: healthcheck
+      port: {{ .Values.engine.ports.healthcheck.port }}
+      targetPort: healthcheck-prv
+      protocol: TCP
+  selector:
+  {{- include "chainflip-engine.selectorLabels" . | nindent 4 }}
+{{- end }}
+{{- end }}
 {{- end }}

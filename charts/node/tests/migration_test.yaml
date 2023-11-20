@@ -3,7 +3,7 @@ release:
   name: validator
 templates:
   - engine-statefulset.yaml
-  - engine-service-lsr.yaml
+  - engine-service-prv.yaml
   - engine-cm.yaml
 values:
   - values/happy.values.yaml
@@ -13,7 +13,7 @@ tests:
       - engine-statefulset.yaml
     set:
       engine.image.current_tag: "0.9.3"
-      engine.image.lsr_tag: "0.10.0"
+      engine.image.prv_tag: "0.10.0"
     asserts:
       - equal:
           path: spec.template.spec.containers[0].image
@@ -30,28 +30,28 @@ tests:
       - notEqual:
           path: spec.template.spec.volumes[1].name
           value: settings
-  - it: should use the lsr configmap if migration_mode is active
+  - it: should use the prv configmap if migration_mode is active
     templates:
       - engine-statefulset.yaml
     set:
       engine.image.current_tag: "0.9.3"
-      engine.image.lsr_tag: "0.10.0"
+      engine.image.prv_tag: "0.10.0"
       engine:
         settings:
           migration_mode: true
     asserts:
       - equal:
           path: spec.template.spec.containers[1].volumeMounts[2].name
-          value: settings-lsr
+          value: settings-prv
       - equal:
           path: spec.template.spec.volumes[1].name
-          value: settings-lsr
-  - it: should NOT create a statefulset with two engine containers if lsr_tag is equal to current_tag
+          value: settings-prv
+  - it: should NOT create a statefulset with two engine containers if prv_tag is equal to current_tag
     templates:
       - engine-statefulset.yaml
     set:
       engine.image.current_tag: "0.9.3"
-      engine.image.lsr_tag: "0.9.3"
+      engine.image.prv_tag: "0.9.3"
 
     asserts:
       - equal:
@@ -59,32 +59,32 @@ tests:
           value: "chainfliplabs/chainflip-engine:0.9.3"
       - notExists:
           path: spec.template.spec.containers[1]
-  - it: should NOT create a statefulset with two engine containers if lsr_tag is less than current_tag
+  - it: should NOT create a statefulset with two engine containers if prv_tag is less than current_tag
     templates:
       - engine-statefulset.yaml
     set:
       engine.image.current_tag: "0.9.3"
-      engine.image.lsr_tag: "0.9.1"
+      engine.image.prv_tag: "0.9.1"
     asserts:
       - equal:
           path: spec.template.spec.containers[0].image
           value: "chainfliplabs/chainflip-engine:0.9.3"
       - notExists:
           path: spec.template.spec.containers[1]
-  - it: should create a new service for the lsr engine
+  - it: should create a new service for the prv engine
     templates:
-      - engine-service-lsr.yaml
+      - engine-service-prv.yaml
     set:
       engine.image.current_tag: "0.9.3"
-      engine.image.lsr_tag: "0.10.0"
+      engine.image.prv_tag: "0.10.0"
     asserts:
       - equal:
           path: metadata.name
-          value: "validator-chainflip-engine-lsr"
+          value: "validator-chainflip-engine-prv"
         documentIndex: 0
       - equal:
           path: spec.ports[0].targetPort
-          value: ip-lsr
+          value: ip-prv
         documentIndex: 0
       - equal:
           path: spec.ports[0].nodePort
@@ -95,7 +95,7 @@ tests:
       - engine-cm.yaml
     set:
       engine.image.current_tag: "0.9.3"
-      engine.image.lsr_tag: "0.10.0"
+      engine.image.prv_tag: "0.10.0"
       engine:
         settings:
           migration_mode: true
@@ -105,7 +105,7 @@ tests:
           value: "validator-chainflip-engine"
         documentIndex: 0
       - exists:
-          path: "data['lsr.Settings.toml']"
+          path: "data['prv.Settings.toml']"
       - matchRegex:
-          path: "data['lsr.Settings.toml']"
+          path: "data['prv.Settings.toml']"
           pattern: "port = 30079"

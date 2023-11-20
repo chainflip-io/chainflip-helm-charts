@@ -28,9 +28,15 @@ tests:
       engine.settings.btc_backup.http_endpoint: "http://test"
       engine.settings.btc_backup.rpc_user: "test"
       engine.settings.btc_backup.rpc_password: "test"
+      engine:
+        image:
+          current_tag: 0.9.3
+          prv_tag: 0.10.0
+        settings:
+          migration_mode: true
     asserts:
       - hasDocuments:
           count: 1
       - matchRegex:
-          path: data['Settings.toml']
+          path: "data['prv.Settings.toml']"
           pattern: "[(eth|dot|btc)].backup_rpc"

@@ -32,7 +32,7 @@ chainflip.io/role: {{ .Values.common.role }}
 {{- end }}
 
 {{- define "compareVersions" -}}
-{{ lt (semver .Values.engine.image.lsr_tag | (semver .Values.engine.image.current_tag).Compare) 0 }}
+{{ lt (semver .Values.engine.image.previous_tag | (semver .Values.engine.image.current_tag).Compare) 0 }}
 {{- end -}}
 
 {{/*-----------*/}}
@@ -122,14 +122,14 @@ chainflip.io/unit: chainflip-engine
 chainflip-engine image
 */}}
 {{- define "chainflip-engine.image" -}}
-{{ printf "%s:%s" .Values.engine.image.repository (.Values.engine.image.current_tag | default .Values.network.chain.name) }}
+{{ printf "%s:%s" .Values.engine.image.repository .Values.engine.image.tag }}
 {{- end }}
 
 {{/*
-chainflip-engine lsr image
+chainflip-engine prv image
 */}}
-{{- define "chainflip-engine-lsr.image" -}}
-{{ printf "%s:%s" .Values.engine.image.repository (.Values.engine.image.lsr_tag) }}
+{{- define "chainflip-engine-prv.image" -}}
+{{ printf "%s:%s" .Values.engine.image.repository .Values.runtime_upgrade_mode.previous_engine_tag }}
 {{- end }}
 
 {{/*

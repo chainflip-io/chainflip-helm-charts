@@ -1,18 +1,16 @@
 {{- if and (eq .Values.common.role "validator") (eq .Values.engine.settings.existingConfigMap "") }}
-{{- $lrsGtCurrent := (lt (semver .Values.engine.image.lsr_tag | (semver .Values.engine.image.current_tag).Compare) 0) }}
 {{- $node_endpoint := printf "ws://%s:%s" (include "chainflip-node.fullname" .) (.Values.node.ports.rpc.port | toString) -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: {{ include "chainflip-engine.fullname" . }}
 data:
-{{- if and $lrsGtCurrent .Values.engine.settings.migration_mode }}
-  lsr.Settings.toml: |
+  Settings.toml: |
     # Default configurations for the CFE
     [node_p2p]
     node_key_file = "{{ .Values.common.keys.keysPath }}/{{ .Values.common.keys.nodeKeyFileName }}"
     ip_address = "{{ .Values.engine.settings.node_p2p.ip_address | required "You must set an IP address for the node_p2p section e.g. 172.20.220.1, 3.20.245.2" }}"
-    port = {{ add .Values.engine.ports.ip.port 1 }}
+    port = {{ .Values.engine.ports.ip.port }}
     allow_local_ip = {{ .Values.engine.settings.node_p2p.allow_local_ip }}
 
     [state_chain]
@@ -70,47 +68,4 @@ data:
     hostname = "{{ .Values.engine.ports.metrics.hostname }}"
     port = {{ .Values.engine.ports.metrics.port }}
     {{- end }}
-{{- end }}
-  Settings.toml: |
-      # Default configurations for the CFE
-      [node_p2p]
-      node_key_file = "{{ .Values.common.keys.keysPath }}/{{ .Values.common.keys.nodeKeyFileName }}"
-      ip_address = "{{ .Values.engine.settings.node_p2p.ip_address | required "You must set an IP address for the node_p2p section e.g. 172.20.220.1, 3.20.245.2" }}"
-      port = {{ .Values.engine.ports.ip.port }}
-      allow_local_ip = {{ .Values.engine.settings.node_p2p.allow_local_ip }}
-
-      [state_chain]
-      # 32 byte hex secret key - associated with the node's public id (public key)
-      signing_key_file = "{{ .Values.common.keys.keysPath }}/{{ .Values.common.keys.signingKeyFileName }}"
-      ws_endpoint = "{{ $node_endpoint }}"
-
-      [eth]
-      # Ethereum private key file path. Default is the docker secrets path. This file should contain a hex-encoded private key.
-      private_key_file = "{{ .Values.common.keys.keysPath }}/{{ .Values.common.keys.ethereumKeyFileName }}"
-      ws_node_endpoint = "{{ required "Please provide a ws_endpoint of an Ethereum node" .Values.engine.settings.eth.ws_endpoint }}"
-      http_node_endpoint = "{{ required "Please provide a http_endpoint of an Ethereum node" .Values.engine.settings.eth.http_endpoint }}"
-
-      {{ if .Values.engine.ports.healthcheck.enabled }}
-      [health_check]
-      hostname = "{{ .Values.engine.ports.healthcheck.hostname }}"
-      port = {{ .Values.engine.ports.healthcheck.port }}
-      {{- end }}
-
-      [signing]
-      db_file = "{{ .Values.common.basePath }}/data.db"
-
-      [dot]
-      ws_node_endpoint = "{{ required "Please provide a ws_endpoint of an Polkadot node" .Values.engine.settings.dot.ws_endpoint }}"
-      http_node_endpoint = "{{ required "Please provide a http_endpoint of an Polkadot node" .Values.engine.settings.dot.http_endpoint }}"
-
-      [btc]
-      http_node_endpoint = "{{ required "Please provide a http_endpoint of an Bitcoin node" .Values.engine.settings.btc.http_endpoint }}"
-      rpc_user = "{{ .Values.engine.settings.btc.basic_auth_user }}"
-      rpc_password = "{{ .Values.engine.settings.btc.basic_auth_password }}"
-
-      {{- if .Values.engine.ports.metrics.enabled }}
-      [prometheus]
-      hostname = "{{ .Values.engine.ports.metrics.hostname }}"
-      port = {{ .Values.engine.ports.metrics.port }}
-      {{- end }}
 {{- end }}

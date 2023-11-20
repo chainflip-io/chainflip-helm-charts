@@ -7,6 +7,22 @@ nameOverride: ""
 # -- select an existing secret where your repository credentials are stored
 imagePullSecrets: []
 
+# -- runtime upgrade mode
+runtime_upgrade_mode:
+  enabled: false
+
+  # -- specify the tag you just migrated from (e.g. 0.9.3)
+  previous_engine_tag: ""
+
+  # -- specify a new port for the previous engine to listen on
+  previous_engine_port: 31078
+
+  # -- if the engine settings have changed you will need to point the previous engine at the old settings files
+  engine_settings:
+
+    # -- specify the configmap containing the old Settings.toml
+    # existingConfigMap: ""
+
 # -- shared settings across the chainflip-engine and chainflip-node
 common:
   # -- desired role for your node; `validator` or `archive`
@@ -209,12 +225,7 @@ engine:
     # -- chainflip-engine image repository
     repository: chainfliplabs/chainflip-engine
 
-    # -- chainflip-engine image tag
     tag: ""
-
-    lsr_tag: ""
-
-    current_tag: ""
 
     # -- chainflip-engine image pull policy
     pullPolicy: Always
