@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ include "chainflip-prometheus-exporter.fullname" . }}"
+  labels:
+    app: "{{ include "chainflip-prometheus-exporter.fullname" . }}"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "{{ include "chainflip-prometheus-exporter.fullname" . }}"
+  template:
+    metadata:
+      name: "{{ include "chainflip-prometheus-exporter.fullname" . }}"
+      labels:
+        app: "{{ include "chainflip-prometheus-exporter.fullname" . }}"
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets: {{ toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: "{{ include "chainflip-prometheus-exporter.fullname" . }}"
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
+          ports:
+            - containerPort: {{ .Values.port }}
+              name: metrics
+          {{- if .Values.secret.getEnvFromSecret }}
+          envFrom:
+            - secretRef:
+                name: {{ .Values.secret.getEnvFromSecret }}
+                optional: false
+          {{- else }}
+          env:
+            {{- range $key, $value := .Values.env }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+            {{- end }}
+          {{- end }}
+          {{- with .Values.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          volumeMounts:
+            - mountPath: /usr/src/app/config.json
+              subPath: config.json
+              name: config
+      volumes:
+        - name: config
+          configMap:
+            optional: false
+            {{- if .Values.config.existingConfigMap }}
+            name: {{ .Values.config.existingConfigMap }}
+            {{- else }}
+            name: {{ include "chainflip-prometheus-exporter.fullname" . }}
+            {{- end }}
+
