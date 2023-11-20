@@ -1,6 +1,10 @@
+apiVersion: v2
 name: chainflip-prometheus-exporter
 version: 1.0.0
 appVersion: 1.0.0
-apiVersion: v2
 description: Scrape data from all supported chains
+maintainers:
+  - name: Chainflip Labs
+    email: dev@chainflip.io
+    url: https://chainflip.io
 type: application
