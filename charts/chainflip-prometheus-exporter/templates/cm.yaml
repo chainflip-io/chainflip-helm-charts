@@ -1,0 +1,9 @@
+{{- if not .Values.config.existingConfigMap }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "chainflip-prometheus-exporter.fullname" . }}
+data:
+  config.json: |
+    {{ .Values.config.json | nindent 4 }}
+{{- end }}

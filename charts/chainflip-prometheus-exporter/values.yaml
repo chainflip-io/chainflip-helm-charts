@@ -1,0 +1,104 @@
+nameOverride: ""
+fullnameOverride: ""
+
+image:
+  repository: ghcr.io/chainflip-io/chainflip-prometheus-exporter
+  tag: ""
+
+imagePullSecrets: []
+
+imagePullPolicy: IfNotPresent
+
+config:
+  existingConfigMap: ""
+
+  json: |
+    {
+      "dot": {
+        "enabled": false,
+        "network": "pdot",
+        "defaultMetrics": [],
+        "accounts": []
+      },
+      "flip": {
+        "enabled": true,
+        "network": "berghain",
+        "defaultMetrics": [],
+        "accounts": [],
+        "skipEvents": []
+      },
+      "btc": {
+        "enabled": false,
+        "network": "mainnet",
+        "defaultMetrics": [],
+        "wallets": []
+      },
+      "eth": {
+        "enabled": false,
+        "networkId": 1,
+        "network": "mainnet",
+        "defaultMetrics": [],
+        "contracts": [
+          {
+            "alias": "state-chain-gateway",
+            "address": "0x6995Ab7c4D7F4B03f467Cf4c8E920427d9621DBd"
+          },
+          {
+            "alias": "key-manager",
+            "address": "0xcd351d3626Dc244730796A3168D315168eBf08Be"
+          },
+          {
+            "alias": "vault",
+            "address": "0xF5e10380213880111522dd0efD3dbb45b9f62Bcc"
+          },
+          {
+            "alias": "flip",
+            "address": "0x826180541412D574cf1336d22c0C0a287822678A"
+          },
+          {
+            "alias": "usdc",
+            "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+          }
+        ],
+        "wallets": [
+          {
+            "alias": "vault",
+            "address": "0xF5e10380213880111522dd0efD3dbb45b9f62Bcc"
+          }
+        ],
+        "tokens": [
+          {
+            "address": "0x826180541412D574cf1336d22c0C0a287822678A",
+            "symbol": "FLIP"
+          },
+          {
+            "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+            "symbol": "USDC"
+          }
+        ]
+      },
+      "github": {
+        "enabled": false,
+        "repositories": []
+      }
+    }
+
+
+secret:
+  getEnvFromSecret: ""
+
+env:
+  CONFIG_PATH: "./config.json"
+  CF_NETWORK: "berghain"
+  CF_WS_ENDPOINT: "wss://mainnet-rpc.chainflip.io"
+  ETH_WS_ENDPOINT: ""
+  ETH_HTTP_ENDPOINT: ""
+  ETH_NETWORK_ID: "1"
+  DOT_WS_ENDPOINT: ""
+  BTC_HTTP_ENDPOINT: ""
+
+port: 9000
+
+resources: {}
+
+extraManifests: []
