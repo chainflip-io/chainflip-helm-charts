@@ -61,6 +61,9 @@ node:
   # -- override the default value of the node pod
   fullnameOverride: ""
 
+  # -- replicas; only available for archive nodes
+  replicas: 1
+
   # -- chainflip-node image settings
   image:
     # -- chainflip-node image repository

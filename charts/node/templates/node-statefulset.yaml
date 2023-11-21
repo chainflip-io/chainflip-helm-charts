@@ -6,6 +6,9 @@ metadata:
   {{- include "chainflip-node.labels" . | nindent 4 }}
 spec:
   serviceName: {{ include "chainflip-node.fullname" . }}
+  {{- if eq .Values.common.role "archive" }}
+  replicas: {{ .Values.node.replicas }}
+  {{- end }}
   selector:
     matchLabels:
   {{- include "chainflip-node.selectorLabels" . | nindent 6 }}

@@ -51,7 +51,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-          chart: [broker-api, node, lp-api]
+          chart: [broker-api, node, lp-api, chainflip-prometheus-exporter]
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
