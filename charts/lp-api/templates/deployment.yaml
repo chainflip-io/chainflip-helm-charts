@@ -55,6 +55,18 @@ spec:
           volumeMounts:
             - name: signing-key
               mountPath: {{ .Values.config.key.basePath }}
+      {{- with .Values.affinity }}
+      affinity:
+          {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+          {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+          {{- toYaml . | nindent 8 }}
+      {{- end }}
       volumes:
         - name: signing-key
           secret:

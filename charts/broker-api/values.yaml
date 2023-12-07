@@ -74,3 +74,13 @@ ingress:
 
 # -- set the resources for the pods
 resources: {}
+
+
+# -- set node selector
+nodeSelector: {}
+
+# -- set pod affinity
+affinity: {}
+
+# -- set pod tolerations
+tolerations: []
