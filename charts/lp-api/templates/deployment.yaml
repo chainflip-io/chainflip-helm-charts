@@ -38,6 +38,13 @@ spec:
               done
       containers:
         - name: {{ .Chart.Name }}
+        {{- with .Values.env }}
+          env:
+              {{- range $key, $value := . }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+        {{- end }}
+        {{- end }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command:
