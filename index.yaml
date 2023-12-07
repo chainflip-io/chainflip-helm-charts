@@ -3,6 +3,16 @@ entries:
   broker-api:
   - apiVersion: v2
     appVersion: 1.0.2
+    created: "2023-12-07T13:38:26.597154023Z"
+    description: A Helm chart for Kubernetes
+    digest: 98cec9d29990567a64ebb3c177ba98196d64a37785cf6dd5420e52e71ad4e218
+    name: broker-api
+    type: application
+    urls:
+    - https://github.com/chainflip-io/chainflip-helm-charts/releases/download/broker-api-0.3.0/broker-api-0.3.0.tgz
+    version: 0.3.0
+  - apiVersion: v2
+    appVersion: 1.0.2
     created: "2023-12-07T09:33:54.97364589Z"
     description: A Helm chart for Kubernetes
     digest: 0d80bf44e6780c7569ba0516a52ece06d5b2d7e4c4d8f92109a57bd99d03b31e
@@ -131,6 +141,16 @@ entries:
     - https://github.com/chainflip-io/chainflip-helm-charts/releases/download/chainflip-prometheus-exporter-1.0.0/chainflip-prometheus-exporter-1.0.0.tgz
     version: 1.0.0
   lp-api:
+  - apiVersion: v2
+    appVersion: 1.0.2
+    created: "2023-12-07T13:38:26.796316377Z"
+    description: Deploy a lp-api for the Chainflip network
+    digest: 4cdd43acb23796f9195d5d79d665594c4ceef482a39bdccd5d93ea6cd4b176e5
+    name: lp-api
+    type: application
+    urls:
+    - https://github.com/chainflip-io/chainflip-helm-charts/releases/download/lp-api-0.3.0/lp-api-0.3.0.tgz
+    version: 0.3.0
   - apiVersion: v2
     appVersion: 1.0.2
     created: "2023-12-07T09:33:55.232432203Z"
@@ -568,4 +588,4 @@ entries:
     urls:
     - https://github.com/chainflip-io/chainflip-helm-charts/releases/download/node-0.1.0/node-0.1.0.tgz
     version: 0.1.0
-generated: "2023-12-07T09:33:55.232531729Z"
+generated: "2023-12-07T13:38:26.796426191Z"
