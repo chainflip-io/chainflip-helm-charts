@@ -6,8 +6,12 @@ metadata:
   {{- include "chainflip-node.labels" . | nindent 4 }}
 spec:
   serviceName: {{ include "chainflip-node.fullname" . }}
-  {{- if eq .Values.common.role "archive" }}
+  {{- if or (eq .Values.common.role "archive") (eq .Values.common.role "full") }}
   replicas: {{ .Values.node.replicas }}
+  updateStrategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
   {{- end }}
   selector:
     matchLabels:
@@ -148,6 +152,24 @@ spec:
           {{- with .Values.node.extraEnvFrom }}
           envFrom:
           {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- if .Values.node.readinessProbe.enabled }}
+          readinessProbe:
+            tcpSocket:
+              port: {{ .Values.node.ports.p2p.port }}
+            initialDelaySeconds: {{ .Values.node.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.node.readinessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.node.readinessProbe.timeoutSeconds }}
+            failureThreshold: {{ .Values.node.readinessProbe.failureThreshold }}
+          {{- end }}
+          {{- if .Values.node.livenessProbe.enabled }}
+          livenessProbe:
+            tcpSocket:
+              port: {{ .Values.node.ports.p2p.port }}
+            initialDelaySeconds: {{ .Values.node.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.node.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.node.livenessProbe.timeoutSeconds }}
+            failureThreshold: {{ .Values.node.livenessProbe.failureThreshold }}
           {{- end }}
     {{- with .Values.node.affinity }}
       affinity:
