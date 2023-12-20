@@ -66,25 +66,26 @@ spec:
             {{- if  .Values.engine.ports.healthcheck.enabled }}
             - containerPort: {{ .Values.engine.ports.healthcheck.port }}
               name: healthcheck
+            {{- end }}
+          {{- if .Values.engine.readinessProbe.enabled }}
           readinessProbe:
-            httpGet:
-              path: /health
-              port: healthcheck
-            initialDelaySeconds: 10
-            periodSeconds: 10
-            timeoutSeconds: 5
-            successThreshold: 1
-            failureThreshold: 3
+            tcpSocket:
+              port: {{ .Values.engine.ports.ip.port }}
+            initialDelaySeconds: {{ .Values.engine.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.engine.readinessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.engine.readinessProbe.timeoutSeconds }}
+            failureThreshold: {{ .Values.engine.readinessProbe.failureThreshold }}
+          {{- end }}
+          {{- if .Values.engine.livenessProbe.enabled }}
           livenessProbe:
             httpGet:
+              port: {{ .Values.engine.ports.healthcheck.port }}
               path: /health
-              port: healthcheck
-            initialDelaySeconds: 10
-            periodSeconds: 10
-            timeoutSeconds: 5
-            successThreshold: 1
-            failureThreshold: 3
-            {{- end }}
+            initialDelaySeconds: {{ .Values.engine.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.engine.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.engine.livenessProbe.timeoutSeconds }}
+            failureThreshold: {{ .Values.engine.livenessProbe.failureThreshold }}
+          {{- end }}
           {{- with .Values.engine.resources }}
           resources:
           {{- toYaml . | nindent 12 }}
@@ -105,25 +106,6 @@ spec:
           {{- with .Values.engine.extraEnvFrom }}
           envFrom:
           {{- toYaml . | nindent 12 }}
-          {{- end }}
-          {{- if .Values.engine.readinessProbe.enabled }}
-          readinessProbe:
-            tcpSocket:
-              port: {{ .Values.engine.ports.ip.port }}
-            initialDelaySeconds: {{ .Values.engine.readinessProbe.initialDelaySeconds }}
-            periodSeconds: {{ .Values.engine.readinessProbe.periodSeconds }}
-            timeoutSeconds: {{ .Values.engine.readinessProbe.timeoutSeconds }}
-            failureThreshold: {{ .Values.engine.readinessProbe.failureThreshold }}
-          {{- end }}
-          {{- if .Values.engine.livenessProbe.enabled }}
-          livenessProbe:
-            httpGet:
-              port: {{ .Values.engine.ports.healthcheck.port }}
-              path: /health
-            initialDelaySeconds: {{ .Values.engine.livenessProbe.initialDelaySeconds }}
-            periodSeconds: {{ .Values.engine.livenessProbe.periodSeconds }}
-            timeoutSeconds: {{ .Values.engine.livenessProbe.timeoutSeconds }}
-            failureThreshold: {{ .Values.engine.livenessProbe.failureThreshold }}
           {{- end }}
       {{- with .Values.engine.affinity }}
       affinity:
