@@ -106,6 +106,25 @@ spec:
           envFrom:
           {{- toYaml . | nindent 12 }}
           {{- end }}
+          {{- if .Values.engine.readinessProbe.enabled }}
+          readinessProbe:
+            tcpSocket:
+              port: {{ .Values.engine.ports.ip.port }}
+            initialDelaySeconds: {{ .Values.engine.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.engine.readinessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.engine.readinessProbe.timeoutSeconds }}
+            failureThreshold: {{ .Values.engine.readinessProbe.failureThreshold }}
+          {{- end }}
+          {{- if .Values.engine.livenessProbe.enabled }}
+          livenessProbe:
+            httpGet:
+              port: {{ .Values.engine.ports.healthcheck.port }}
+              path: /health
+            initialDelaySeconds: {{ .Values.engine.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.engine.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.engine.livenessProbe.timeoutSeconds }}
+            failureThreshold: {{ .Values.engine.livenessProbe.failureThreshold }}
+          {{- end }}
       {{- with .Values.engine.affinity }}
       affinity:
           {{- toYaml . | nindent 8 }}

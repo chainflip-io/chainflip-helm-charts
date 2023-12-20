@@ -193,6 +193,44 @@ node:
     hosts: []
     tls: []
 
+  livenessProbe:
+    # -- enable liveness probe
+    enabled: true
+
+    # -- liveness probe initial delay
+    initialDelaySeconds: 30
+
+    # -- liveness probe timeout
+    timeoutSeconds: 30
+
+    # -- liveness probe period
+    periodSeconds: 30
+
+    # -- liveness probe failure threshold
+    failureThreshold: 3
+
+    # -- liveness probe success threshold
+    successThreshold: 1
+
+  readinessProbe:
+    # -- enable readiness probe
+    enabled: true
+
+    # -- readiness probe initial delay
+    initialDelaySeconds: 30
+
+    # -- readiness probe timeout
+    timeoutSeconds: 30
+
+    # -- readiness probe period
+    periodSeconds: 10
+
+    # -- readiness probe failure threshold
+    failureThreshold: 10
+
+    # -- readiness probe success threshold
+    successThreshold: 1
+
   # -- set node selector
   nodeSelector: {}
 
@@ -389,6 +427,44 @@ engine:
 
       # -- bitcoin backup rpc password
       rpc_password: ""
+
+  livenessProbe:
+    # -- enable liveness probe
+    enabled: true
+
+    # -- liveness probe initial delay
+    initialDelaySeconds: 30
+
+    # -- liveness probe timeout
+    timeoutSeconds: 30
+
+    # -- liveness probe period
+    periodSeconds: 30
+
+    # -- liveness probe failure threshold
+    failureThreshold: 3
+
+    # -- liveness probe success threshold
+    successThreshold: 1
+
+  readinessProbe:
+    # -- enable readiness probe
+    enabled: true
+
+    # -- readiness probe initial delay
+    initialDelaySeconds: 30
+
+    # -- readiness probe timeout
+    timeoutSeconds: 30
+
+    # -- readiness probe period
+    periodSeconds: 30
+
+    # -- readiness probe failure threshold
+    failureThreshold: 3
+
+    # -- readiness probe success threshold
+    successThreshold: 1
 
   # -- define extra init containers on the engine
   extraInitContainers: []
