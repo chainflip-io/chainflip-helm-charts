@@ -1,6 +1,9 @@
 nameOverride: ""
 fullnameOverride: ""
 
+service:
+  annotations: {}
+
 image:
   repository: ghcr.io/chainflip-io/chainflip-prometheus-exporter
   tag: ""
