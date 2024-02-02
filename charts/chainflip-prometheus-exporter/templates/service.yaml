@@ -2,9 +2,10 @@ apiVersion: v1
 kind: Service
 metadata:
   name: "{{ include "chainflip-prometheus-exporter.fullname" . }}-metrics"
+  {{- with .Values.service.annotations }}
   annotations:
-    prometheus.io/scrape: "true"
-    prometheus.io/port: "9000"
+  {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
   selector:
     app: "{{ include "chainflip-prometheus-exporter.fullname" . }}"
