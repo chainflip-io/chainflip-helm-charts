@@ -10,8 +10,6 @@ spec:
   replicas: {{ .Values.node.replicas }}
   updateStrategy:
     type: RollingUpdate
-    rollingUpdate:
-      maxUnavailable: 1
   {{- end }}
   selector:
     matchLabels:
