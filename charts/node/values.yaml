@@ -429,9 +429,6 @@ engine:
       rpc_password: ""
 
     arb:
-      # -- enabled
-      enabled: false
-
       # -- arb node ws endpoint
       ws_endpoint: ""
 
