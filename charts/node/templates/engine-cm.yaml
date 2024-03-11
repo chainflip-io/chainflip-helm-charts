@@ -63,6 +63,9 @@ data:
     rpc_password = "{{ .Values.engine.settings.btc_backup.rpc_password }}"
     {{- end }}
 
+    [arb]
+    private_key_file = "{{ .Values.common.keys.keysPath }}/{{ .Values.common.keys.arbitrumKeyFileName }}"
+
     [arb.rpc]
     http_endpoint = "{{ required "Please provide a http_endpoint of an Arbitrum node" .Values.engine.settings.arb.http_endpoint }}"
     ws_endpoint = "{{ required "Please provide a ws_endpoint of an Arbitrum node" .Values.engine.settings.arb.ws_endpoint }}"

@@ -41,6 +41,12 @@ common:
     # -- ethereum key; recommended to leave empty and provide through a secret
     ethereumKey: ""
 
+    # -- arbitrum key file name
+    arbitrumKeyFileName: arbitrum_key_file
+
+    # -- arbitrum key; recommended to leave empty and provide through a secret
+    arbitrumKey: ""
+
     # -- exiting secret with keys
     existingSecret: ""
 
