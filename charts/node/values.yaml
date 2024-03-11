@@ -428,6 +428,23 @@ engine:
       # -- bitcoin backup rpc password
       rpc_password: ""
 
+    arb:
+      # -- arb node ws endpoint
+      ws_endpoint: ""
+
+      # -- arb node http endpoint
+      http_endpoint: ""
+
+    arb_backup:
+      # -- enabled
+      enabled: false
+
+      # -- arb node ws endpoint
+      ws_endpoint: ""
+
+      # -- arb node http endpoint
+      http_endpoint: ""
+
   livenessProbe:
     # -- enable liveness probe
     enabled: true
