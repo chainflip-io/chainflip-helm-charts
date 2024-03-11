@@ -127,7 +127,7 @@ spec:
           secret:
             secretName: {{ .Values.common.keys.existingSecret | default (include "node.fullname" . ) }}
             items:
-              {{- with .Values.common.keys -}}
+              {{- with .Values.common.keys }}
               - key: node-key
                 path: {{ .nodeKeyFileName }}
               - key: signing-key
