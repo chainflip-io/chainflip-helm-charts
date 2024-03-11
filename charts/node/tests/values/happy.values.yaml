@@ -15,3 +15,6 @@ engine:
       http_endpoint: "test"
       basic_auth_user: "flip"
       basic_auth_password: "flip"
+    arb:
+      ws_endpoint: "test"
+      http_endpoint: "test"
