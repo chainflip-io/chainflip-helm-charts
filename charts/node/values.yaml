@@ -73,7 +73,7 @@ node:
   # -- chainflip-node image settings
   image:
     # -- chainflip-node image repository
-    repository: chainfliplabs/chainflip-node
+    repository: docker.io/chainfliplabs/chainflip-node
 
     # -- chainflip-node image tag; default to `network.chain.name`
     tag: ""
@@ -254,7 +254,7 @@ engine:
   # -- chainflip-engine image settings
   image:
     # -- chainflip-engine image repository
-    repository: chainfliplabs/chainflip-engine
+    repository: docker.io/chainfliplabs/chainflip-engine
 
     # -- chainflip-engine image tag
     tag: ""
