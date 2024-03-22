@@ -2,7 +2,7 @@
 image:
 
   # -- set the repository name
-  repository: chainfliplabs/chainflip-lp-api
+  repository: docker.io/chainfliplabs/chainflip-lp-api
 
   # -- set the pull policy
   pullPolicy: IfNotPresent

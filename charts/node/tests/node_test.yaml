@@ -8,7 +8,7 @@ tests:
           of: StatefulSet
       - equal:
           path: spec.template.spec.containers[0].image
-          value: chainfliplabs/chainflip-node:test
+          value: docker.io/chainfliplabs/chainflip-node:test
   - it: should not create a pvc if supplying an existing claim
     set:
       node.persistence.existingClaim: "test"
