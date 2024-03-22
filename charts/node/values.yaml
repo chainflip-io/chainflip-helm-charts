@@ -509,7 +509,7 @@ cli:
   # -- chainflip-cli image settings
   image:
     # -- chainflip-cli image repository
-    repository: chainfliplabs/chainflip-cli
+    repository: docker.io/chainfliplabs/chainflip-cli
 
     # -- chainflip-cli image tag
     tag: ""

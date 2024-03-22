@@ -14,7 +14,7 @@ tests:
           of: StatefulSet
       - equal:
           path: spec.template.spec.containers[0].image
-          value: chainfliplabs/chainflip-node:test
+          value: docker.io/chainfliplabs/chainflip-node:test
       - notExists:
           path: spec.template.spec.containers[0].volumeMounts[1]
   - it: should not create the engine template
