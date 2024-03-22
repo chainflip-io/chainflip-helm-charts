@@ -3,6 +3,16 @@ entries:
   broker-api:
   - apiVersion: v2
     appVersion: 1.0.2
+    created: "2024-03-22T16:37:11.898391653Z"
+    description: A Helm chart for Kubernetes
+    digest: 5464b4c75a40ab32b8a93c952a330c165d4d043caf64c2dcb8b277c27f09b7bc
+    name: broker-api
+    type: application
+    urls:
+    - https://github.com/chainflip-io/chainflip-helm-charts/releases/download/broker-api-0.3.1/broker-api-0.3.1.tgz
+    version: 0.3.1
+  - apiVersion: v2
+    appVersion: 1.0.2
     created: "2023-12-07T13:38:26.597154023Z"
     description: A Helm chart for Kubernetes
     digest: 98cec9d29990567a64ebb3c177ba98196d64a37785cf6dd5420e52e71ad4e218
@@ -255,6 +265,16 @@ entries:
   lp-api:
   - apiVersion: v2
     appVersion: 1.0.2
+    created: "2024-03-22T16:37:12.058847327Z"
+    description: Deploy a lp-api for the Chainflip network
+    digest: 293e2cd972c719b32807072372b9964cb7aa58bb6d35b1d53afd8cd519bc5b06
+    name: lp-api
+    type: application
+    urls:
+    - https://github.com/chainflip-io/chainflip-helm-charts/releases/download/lp-api-0.3.1/lp-api-0.3.1.tgz
+    version: 0.3.1
+  - apiVersion: v2
+    appVersion: 1.0.2
     created: "2023-12-07T13:38:26.796316377Z"
     description: Deploy a lp-api for the Chainflip network
     digest: 4cdd43acb23796f9195d5d79d665594c4ceef482a39bdccd5d93ea6cd4b176e5
@@ -294,6 +314,20 @@ entries:
     - https://github.com/chainflip-io/chainflip-helm-charts/releases/download/lp-api-0.1.0/lp-api-0.1.0.tgz
     version: 0.1.0
   node:
+  - apiVersion: v2
+    appVersion: 0.9.0
+    created: "2024-03-22T16:37:12.26979079Z"
+    description: 'Deploy a Chainflip Validator or Archive node on Kubernetes '
+    digest: 85cdb64014ab02f8eb6f0016f5bb7b3a725e8c6f88343fcc169777d059ecddf4
+    maintainers:
+    - email: dev@chainflip.io
+      name: Chainflip Labs
+      url: https://chainflip.io
+    name: node
+    type: application
+    urls:
+    - https://github.com/chainflip-io/chainflip-helm-charts/releases/download/node-0.6.3/node-0.6.3.tgz
+    version: 0.6.3
   - apiVersion: v2
     appVersion: 0.9.0
     created: "2024-03-11T15:45:00.652890409Z"
@@ -770,4 +804,4 @@ entries:
     urls:
     - https://github.com/chainflip-io/chainflip-helm-charts/releases/download/node-0.1.0/node-0.1.0.tgz
     version: 0.1.0
-generated: "2024-03-20T12:51:02.166041585Z"
+generated: "2024-03-22T16:37:12.270150033Z"
