@@ -4,12 +4,12 @@ description: |
   Deploy a Chainflip Validator or Archive node on Kubernetes
 
 maintainers:
-  - name: Chainflip Labs
+  - name: Chainflip Labs GmbH
     email: dev@chainflip.io
     url: https://chainflip.io
 
 type: application
 
-version: 0.7.0
+version: 0.7.1
 
 appVersion: "0.9.0"
