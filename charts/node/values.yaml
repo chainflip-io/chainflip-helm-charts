@@ -246,6 +246,14 @@ node:
   # -- set pod tolerations
   tolerations: []
 
+  # -- set topology spread constraints
+  topologySpreadConstraints: []
+
+  # -- set pod disruption budget
+  pdb:
+    enabled: false
+    minAvailable: 1
+
 # -- chainflip-engine configuration
 engine:
   # -- override the default value of the engine pod
@@ -500,6 +508,14 @@ engine:
 
   # -- set pod tolerations
   tolerations: []
+
+  # -- set topology spread constraints
+  topologySpreadConstraints: []
+
+  # -- set pod disruption budget
+  pdb:
+    enabled: false
+    minAvailable: 1
 
 # -- chainflip-cli configuration
 cli:
