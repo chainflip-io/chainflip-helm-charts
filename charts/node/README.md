@@ -1,6 +1,6 @@
 # node
 
-![Version: 0.2.2](https://img.shields.io/badge/Version-0.2.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.9.0](https://img.shields.io/badge/AppVersion-0.9.0-informational?style=flat-square)
+![Version: 0.7.0](https://img.shields.io/badge/Version-0.7.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.9.0](https://img.shields.io/badge/AppVersion-0.9.0-informational?style=flat-square)
 
 Deploy a Chainflip Validator or Archive node on Kubernetes
 
@@ -14,15 +14,17 @@ Deploy a Chainflip Validator or Archive node on Kubernetes
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| cli | object | `{"enabled":true,"image":{"pullPolicy":"Always","repository":"chainfliplabs/chainflip-cli","tag":""}}` | chainflip-cli configuration |
+| cli | object | `{"enabled":true,"image":{"pullPolicy":"Always","repository":"docker.io/chainfliplabs/chainflip-cli","tag":""}}` | chainflip-cli configuration |
 | cli.enabled | bool | `true` | enable chainflip-cli |
-| cli.image | object | `{"pullPolicy":"Always","repository":"chainfliplabs/chainflip-cli","tag":""}` | chainflip-cli image settings |
+| cli.image | object | `{"pullPolicy":"Always","repository":"docker.io/chainfliplabs/chainflip-cli","tag":""}` | chainflip-cli image settings |
 | cli.image.pullPolicy | string | `"Always"` | chainflip-cli image pull policy |
-| cli.image.repository | string | `"chainfliplabs/chainflip-cli"` | chainflip-cli image repository |
+| cli.image.repository | string | `"docker.io/chainfliplabs/chainflip-cli"` | chainflip-cli image repository |
 | cli.image.tag | string | `""` | chainflip-cli image tag |
-| common | object | `{"basePath":"/etc/chainflip","keys":{"ethereumKey":"","ethereumKeyFileName":"ethereum_key_file","existingSecret":"","generateKeysOnStart":false,"keysPath":"/etc/chainflip/keys","nodeKey":"","nodeKeyFileName":"node_key_file","signingKey":"","signingKeyFileName":"signing_key_file"},"role":"validator"}` | shared settings across the chainflip-engine and chainflip-node |
+| common | object | `{"basePath":"/etc/chainflip","keys":{"arbitrumKey":"","arbitrumKeyFileName":"arbitrum_key_file","ethereumKey":"","ethereumKeyFileName":"ethereum_key_file","existingSecret":"","generateKeysOnStart":false,"keysPath":"/etc/chainflip/keys","nodeKey":"","nodeKeyFileName":"node_key_file","signingKey":"","signingKeyFileName":"signing_key_file"},"role":"validator"}` | shared settings across the chainflip-engine and chainflip-node |
 | common.basePath | string | `"/etc/chainflip"` | root path for the chainflip configuration |
-| common.keys | object | `{"ethereumKey":"","ethereumKeyFileName":"ethereum_key_file","existingSecret":"","generateKeysOnStart":false,"keysPath":"/etc/chainflip/keys","nodeKey":"","nodeKeyFileName":"node_key_file","signingKey":"","signingKeyFileName":"signing_key_file"}` | default path for validator keys |
+| common.keys | object | `{"arbitrumKey":"","arbitrumKeyFileName":"arbitrum_key_file","ethereumKey":"","ethereumKeyFileName":"ethereum_key_file","existingSecret":"","generateKeysOnStart":false,"keysPath":"/etc/chainflip/keys","nodeKey":"","nodeKeyFileName":"node_key_file","signingKey":"","signingKeyFileName":"signing_key_file"}` | default path for validator keys |
+| common.keys.arbitrumKey | string | `""` | arbitrum key; recommended to leave empty and provide through a secret |
+| common.keys.arbitrumKeyFileName | string | `"arbitrum_key_file"` | arbitrum key file name |
 | common.keys.ethereumKey | string | `""` | ethereum key; recommended to leave empty and provide through a secret |
 | common.keys.ethereumKeyFileName | string | `"ethereum_key_file"` | ethereum key file name |
 | common.keys.existingSecret | string | `""` | exiting secret with keys |
@@ -33,93 +35,165 @@ Deploy a Chainflip Validator or Archive node on Kubernetes
 | common.keys.signingKey | string | `""` | signing key; recommended to leave empty and provide through a secret |
 | common.keys.signingKeyFileName | string | `"signing_key_file"` | signing key file name |
 | common.role | string | `"validator"` | desired role for your node; `validator` or `archive` |
-| engine | object | `{"affinity":{},"extraArgs":{},"extraEnv":[],"extraEnvFrom":[],"extraInitContainers":[],"fullnameOverride":"","healthcheck":{"enabled":true,"hostname":"0.0.0.0","port":"5555"},"image":{"pullPolicy":"Always","repository":"chainfliplabs/chainflip-engine","tag":""},"metrics":{"enabled":false,"hostname":"0.0.0.0","port":5566},"nodeSelector":{},"persistence":{"accessModes":["ReadWriteOnce"],"enabled":true,"existingClaim":"","size":"5Gi","storageClass":""},"ports":{"ip":"8078"},"resources":{},"service":{"annotations":{},"port":80,"type":"ClusterIP"},"settings":{"btc":{"http_endpoint":"","rpc_password":"flip","rpc_user":"flip"},"dot":{"http_endpoint":"","ws_endpoint":""},"eth":{"http_endpoint":"","ws_endpoint":""},"existingConfigMap":"","node_p2p":{"allow_local_ip":true,"ip_address":""}},"tolerations":[]}` | chainflip-engine configuration |
+| engine | object | `{"affinity":{},"extraArgs":{},"extraEnv":[],"extraEnvFrom":[],"extraInitContainers":[],"fullnameOverride":"","image":{"pullPolicy":"Always","repository":"docker.io/chainfliplabs/chainflip-engine","tag":""},"livenessProbe":{"enabled":true,"failureThreshold":3,"initialDelaySeconds":30,"periodSeconds":30,"successThreshold":1,"timeoutSeconds":30},"nodeSelector":{},"pdb":{"enabled":false,"minAvailable":1},"persistence":{"accessModes":["ReadWriteOnce"],"enabled":true,"existingClaim":"","size":"5Gi","storageClass":""},"ports":{"healthcheck":{"enabled":true,"hostname":"0.0.0.0","port":"5555","service":{"annotations":{},"port":5555,"type":"ClusterIP"}},"ip":{"expose":true,"port":30078,"service":{"annotations":{},"port":30078,"type":"NodePort"}},"metrics":{"enabled":false,"hostname":"0.0.0.0","port":5566,"service":{"annotations":{},"type":"ClusterIP"}}},"readinessProbe":{"enabled":true,"failureThreshold":3,"initialDelaySeconds":30,"periodSeconds":30,"successThreshold":1,"timeoutSeconds":30},"resources":{},"settings":{"arb":{"http_endpoint":"","ws_endpoint":""},"arb_backup":{"enabled":false,"http_endpoint":"","ws_endpoint":""},"btc":{"basic_auth_password":"","basic_auth_user":"","http_endpoint":""},"btc_backup":{"enabled":false,"http_endpoint":"","rpc_password":"","rpc_user":""},"dot":{"http_endpoint":"","ws_endpoint":""},"dot_backup":{"enabled":false,"http_endpoint":"","ws_endpoint":""},"eth":{"http_endpoint":"","ws_endpoint":""},"eth_backup":{"enabled":false,"http_endpoint":"","ws_endpoint":""},"existingConfigMap":"","node_p2p":{"allow_local_ip":false,"ip_address":""}},"tolerations":[],"topologySpreadConstraints":[]}` | chainflip-engine configuration |
 | engine.affinity | object | `{}` | set pod affinity |
 | engine.extraArgs | object | `{}` | chainflip-engine extra arguments |
 | engine.extraEnv | list | `[]` | set extra environment variables |
 | engine.extraEnvFrom | list | `[]` | set extra environment variables from a secret |
 | engine.extraInitContainers | list | `[]` | define extra init containers on the engine |
 | engine.fullnameOverride | string | `""` | override the default value of the engine pod |
-| engine.healthcheck | object | `{"enabled":true,"hostname":"0.0.0.0","port":"5555"}` | chainflip-engine healthcheck settings |
-| engine.healthcheck.enabled | bool | `true` | enable chainflip-engine healthcheck |
-| engine.healthcheck.hostname | string | `"0.0.0.0"` | chainflip-engine healthcheck hostname |
-| engine.healthcheck.port | string | `"5555"` | chainflip-engine healthcheck port |
-| engine.image | object | `{"pullPolicy":"Always","repository":"chainfliplabs/chainflip-engine","tag":""}` | chainflip-engine image settings |
+| engine.image | object | `{"pullPolicy":"Always","repository":"docker.io/chainfliplabs/chainflip-engine","tag":""}` | chainflip-engine image settings |
 | engine.image.pullPolicy | string | `"Always"` | chainflip-engine image pull policy |
-| engine.image.repository | string | `"chainfliplabs/chainflip-engine"` | chainflip-engine image repository |
+| engine.image.repository | string | `"docker.io/chainfliplabs/chainflip-engine"` | chainflip-engine image repository |
 | engine.image.tag | string | `""` | chainflip-engine image tag |
-| engine.metrics.enabled | bool | `false` | enable prometheus metrics |
-| engine.metrics.hostname | string | `"0.0.0.0"` | expose prometheus metrics |
-| engine.metrics.port | int | `5566` | prometheus metrics port |
+| engine.livenessProbe.enabled | bool | `true` | enable liveness probe |
+| engine.livenessProbe.failureThreshold | int | `3` | liveness probe failure threshold |
+| engine.livenessProbe.initialDelaySeconds | int | `30` | liveness probe initial delay |
+| engine.livenessProbe.periodSeconds | int | `30` | liveness probe period |
+| engine.livenessProbe.successThreshold | int | `1` | liveness probe success threshold |
+| engine.livenessProbe.timeoutSeconds | int | `30` | liveness probe timeout |
 | engine.nodeSelector | object | `{}` | set node selector |
+| engine.pdb | object | `{"enabled":false,"minAvailable":1}` | set pod disruption budget |
 | engine.persistence | object | `{"accessModes":["ReadWriteOnce"],"enabled":true,"existingClaim":"","size":"5Gi","storageClass":""}` | chainflip-engine persistence settings |
 | engine.persistence.accessModes | list | `["ReadWriteOnce"]` | chainflip-engine volume access mode |
 | engine.persistence.enabled | bool | `true` | enable chainflip-engine persistence |
 | engine.persistence.existingClaim | string | `""` | reference an existing PVC |
 | engine.persistence.size | string | `"5Gi"` | chainflip-engine volume size |
 | engine.persistence.storageClass | string | `""` | chainflip-engine volume storage class |
-| engine.ports | object | `{"ip":"8078"}` | chainflip-engine ports |
-| engine.ports.ip | string | `"8078"` | chainflip-engine p2p port |
+| engine.ports | object | `{"healthcheck":{"enabled":true,"hostname":"0.0.0.0","port":"5555","service":{"annotations":{},"port":5555,"type":"ClusterIP"}},"ip":{"expose":true,"port":30078,"service":{"annotations":{},"port":30078,"type":"NodePort"}},"metrics":{"enabled":false,"hostname":"0.0.0.0","port":5566,"service":{"annotations":{},"type":"ClusterIP"}}}` | chainflip-engine ports |
+| engine.ports.healthcheck | object | `{"enabled":true,"hostname":"0.0.0.0","port":"5555","service":{"annotations":{},"port":5555,"type":"ClusterIP"}}` | chainflip-engine healthcheck settings |
+| engine.ports.healthcheck.enabled | bool | `true` | enable chainflip-engine healthcheck |
+| engine.ports.healthcheck.hostname | string | `"0.0.0.0"` | chainflip-engine healthcheck hostname |
+| engine.ports.healthcheck.port | string | `"5555"` | chainflip-engine healthcheck port |
+| engine.ports.healthcheck.service | object | `{"annotations":{},"port":5555,"type":"ClusterIP"}` | chainflip-engine healthcheck service configuration |
+| engine.ports.healthcheck.service.annotations | object | `{}` | chainflip-engine healthcheck service annotations |
+| engine.ports.healthcheck.service.port | int | `5555` | chainflip-engine healthcheck service port |
+| engine.ports.healthcheck.service.type | string | `"ClusterIP"` | chainflip-engine healthcheck service type |
+| engine.ports.ip | object | `{"expose":true,"port":30078,"service":{"annotations":{},"port":30078,"type":"NodePort"}}` | chainflip-engine p2p port |
+| engine.ports.ip.expose | bool | `true` | expose chainflip-engine p2p port |
+| engine.ports.ip.port | int | `30078` | chainflip-engine p2p port |
+| engine.ports.ip.service | object | `{"annotations":{},"port":30078,"type":"NodePort"}` | chainflip-engine p2p service configuration |
+| engine.ports.ip.service.annotations | object | `{}` | chainflip-engine p2p service annotations |
+| engine.ports.ip.service.port | int | `30078` | chainflip-engine p2p service port |
+| engine.ports.ip.service.type | string | `"NodePort"` | chainflip-engine p2p service type |
+| engine.ports.metrics.enabled | bool | `false` | enable prometheus metrics |
+| engine.ports.metrics.hostname | string | `"0.0.0.0"` | expose prometheus metrics |
+| engine.ports.metrics.port | int | `5566` | prometheus metrics port |
+| engine.ports.metrics.service | object | `{"annotations":{},"type":"ClusterIP"}` | prometheus metrics service configuration |
+| engine.ports.metrics.service.annotations | object | `{}` | prometheus metrics service port |
+| engine.ports.metrics.service.type | string | `"ClusterIP"` | prometheus metrics service type |
+| engine.readinessProbe.enabled | bool | `true` | enable readiness probe |
+| engine.readinessProbe.failureThreshold | int | `3` | readiness probe failure threshold |
+| engine.readinessProbe.initialDelaySeconds | int | `30` | readiness probe initial delay |
+| engine.readinessProbe.periodSeconds | int | `30` | readiness probe period |
+| engine.readinessProbe.successThreshold | int | `1` | readiness probe success threshold |
+| engine.readinessProbe.timeoutSeconds | int | `30` | readiness probe timeout |
 | engine.resources | object | `{}` | chainflip-engine resources |
-| engine.service | object | `{"annotations":{},"port":80,"type":"ClusterIP"}` | chainflip-engine service configuration |
-| engine.service.annotations | object | `{}` | chainflip-engine service annotations |
-| engine.service.port | int | `80` | chainflip-engine service port |
-| engine.service.type | string | `"ClusterIP"` | chainflip-engine service type |
-| engine.settings | object | `{"btc":{"http_endpoint":"","rpc_password":"flip","rpc_user":"flip"},"dot":{"http_endpoint":"","ws_endpoint":""},"eth":{"http_endpoint":"","ws_endpoint":""},"existingConfigMap":"","node_p2p":{"allow_local_ip":true,"ip_address":""}}` | chainflip-engine Settings.toml configuration |
-| engine.settings.btc | object | `{"http_endpoint":"","rpc_password":"flip","rpc_user":"flip"}` | bitcoin settings |
+| engine.settings | object | `{"arb":{"http_endpoint":"","ws_endpoint":""},"arb_backup":{"enabled":false,"http_endpoint":"","ws_endpoint":""},"btc":{"basic_auth_password":"","basic_auth_user":"","http_endpoint":""},"btc_backup":{"enabled":false,"http_endpoint":"","rpc_password":"","rpc_user":""},"dot":{"http_endpoint":"","ws_endpoint":""},"dot_backup":{"enabled":false,"http_endpoint":"","ws_endpoint":""},"eth":{"http_endpoint":"","ws_endpoint":""},"eth_backup":{"enabled":false,"http_endpoint":"","ws_endpoint":""},"existingConfigMap":"","node_p2p":{"allow_local_ip":false,"ip_address":""}}` | chainflip-engine Settings.toml configuration |
+| engine.settings.arb.http_endpoint | string | `""` | arb node http endpoint |
+| engine.settings.arb.ws_endpoint | string | `""` | arb node ws endpoint |
+| engine.settings.arb_backup.enabled | bool | `false` | enabled |
+| engine.settings.arb_backup.http_endpoint | string | `""` | arb node http endpoint |
+| engine.settings.arb_backup.ws_endpoint | string | `""` | arb node ws endpoint |
+| engine.settings.btc | object | `{"basic_auth_password":"","basic_auth_user":"","http_endpoint":""}` | bitcoin settings |
+| engine.settings.btc.basic_auth_password | string | `""` | bitcoin rpc password |
+| engine.settings.btc.basic_auth_user | string | `""` | bitcoin rpc user |
 | engine.settings.btc.http_endpoint | string | `""` | bitcoin node http endpoint |
-| engine.settings.btc.rpc_password | string | `"flip"` | bitcoin rpc password |
-| engine.settings.btc.rpc_user | string | `"flip"` | bitcoin rpc user |
+| engine.settings.btc_backup.enabled | bool | `false` | enabled |
+| engine.settings.btc_backup.http_endpoint | string | `""` | bitcoin backup node http endpoint |
+| engine.settings.btc_backup.rpc_password | string | `""` | bitcoin backup rpc password |
+| engine.settings.btc_backup.rpc_user | string | `""` | bitcoin backup rpc user |
 | engine.settings.dot | object | `{"http_endpoint":"","ws_endpoint":""}` | polkadot settings |
 | engine.settings.dot.http_endpoint | string | `""` | polkadot node http endpoint |
 | engine.settings.dot.ws_endpoint | string | `""` | polkadot node ws endpoint |
+| engine.settings.dot_backup | object | `{"enabled":false,"http_endpoint":"","ws_endpoint":""}` | set up an optional backup ethereum node |
+| engine.settings.dot_backup.enabled | bool | `false` | enabled |
+| engine.settings.dot_backup.http_endpoint | string | `""` | polkadot backup node http endpoint |
+| engine.settings.dot_backup.ws_endpoint | string | `""` | polkadot backup node ws endpoint |
 | engine.settings.eth | object | `{"http_endpoint":"","ws_endpoint":""}` | ethereum settings |
 | engine.settings.eth.http_endpoint | string | `""` | ethereum node ws endpoint |
 | engine.settings.eth.ws_endpoint | string | `""` | ethereum node http endpoint |
+| engine.settings.eth_backup | object | `{"enabled":false,"http_endpoint":"","ws_endpoint":""}` | set up an optional backup ethereum node |
+| engine.settings.eth_backup.enabled | bool | `false` | enabled |
+| engine.settings.eth_backup.http_endpoint | string | `""` | ethereum backup node http endpoint |
+| engine.settings.eth_backup.ws_endpoint | string | `""` | ethereum backup node ws endpoint |
 | engine.settings.existingConfigMap | string | `""` | existing configMap with Settings.toml |
-| engine.settings.node_p2p | object | `{"allow_local_ip":true,"ip_address":""}` | node_p2p settings |
-| engine.settings.node_p2p.allow_local_ip | bool | `true` | allow local ip addresses |
+| engine.settings.node_p2p | object | `{"allow_local_ip":false,"ip_address":""}` | node_p2p settings |
+| engine.settings.node_p2p.allow_local_ip | bool | `false` | allow local ip addresses |
 | engine.settings.node_p2p.ip_address | string | `""` | local ip address; this will set the ClusterIP of the service |
 | engine.tolerations | list | `[]` | set pod tolerations |
+| engine.topologySpreadConstraints | list | `[]` | set topology spread constraints |
 | extraManifests | list | `[]` | create extra kubernetes manifests |
 | fullnameOverride | string | `""` | override the naming of the node chart |
 | hook | object | `{"extraAnnotations":{}}` | hook configuration |
 | hook.extraAnnotations | object | `{}` | add extra annotations to the create-keys hook |
 | imagePullSecrets | list | `[]` | select an existing secret where your repository credentials are stored |
 | nameOverride | string | `""` | override the default value of the name |
-| network.bootnodes | list | `["/ip4/167.99.129.29/tcp/30333/p2p/12D3KooWPFZo5JzqiWASDSrAtbyKgW2kw4Rb5FruE29PAhJ1u4xL"]` | network bootnodes |
+| network.bootnodes | list | `[]` | network bootnodes |
 | network.chain | object | `{"chainspecUrl":"","name":"test"}` | chain settings |
 | network.chain.chainspecUrl | string | `""` | download the chainspec from a URL |
 | network.chain.name | string | `"test"` | chain name; `perseverance` |
-| node | object | `{"affinity":{},"extraArgs":["--name=\"Chainflip Node\""],"extraEnv":[],"extraEnvFrom":[],"fullnameOverride":"","image":{"pullPolicy":"Always","repository":"chainfliplabs/chainflip-node","tag":""},"ingress":{"annotations":{},"enabled":false,"hosts":[],"ingressClassName":"","tls":{}},"metrics":{"enabled":true,"expose":true,"port":9615},"nodeSelector":{},"persistence":{"accessModes":["ReadWriteOnce"],"enabled":true,"existingClaim":"","size":"100Gi","storageClass":""},"ports":{"p2p":"30333","rpc":"9944"},"resources":{},"service":{"annotations":{},"port":80,"type":"ClusterIP"},"tolerations":[]}` | chainflip-node configuration |
+| node | object | `{"affinity":{},"extraArgs":["--name=\"Chainflip Node\""],"extraEnv":[],"extraEnvFrom":[],"fullnameOverride":"","image":{"pullPolicy":"Always","repository":"docker.io/chainfliplabs/chainflip-node","tag":""},"ingress":{"annotations":{},"enabled":false,"hosts":[],"ingressClassName":"","tls":[]},"legacyRpc":false,"livenessProbe":{"enabled":true,"failureThreshold":3,"initialDelaySeconds":30,"periodSeconds":30,"successThreshold":1,"timeoutSeconds":30},"nodeSelector":{},"pdb":{"enabled":false,"minAvailable":1},"persistence":{"accessModes":["ReadWriteOnce"],"enabled":true,"existingClaim":"","size":"100Gi","storageClass":""},"ports":{"metrics":{"enabled":false,"expose":true,"port":9615,"service":{"annotations":{},"type":"ClusterIP"}},"p2p":{"enabled":true,"port":30333,"service":{"annotations":{},"port":30333,"type":"NodePort"}},"rpc":{"enabled":true,"expose":true,"port":"9944","service":{"annotations":{},"port":9944,"type":"ClusterIP"}}},"readinessProbe":{"enabled":true,"failureThreshold":10,"initialDelaySeconds":30,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":30},"replicas":1,"resources":{},"service":{"annotations":{},"port":80,"type":"ClusterIP"},"tolerations":[],"topologySpreadConstraints":[]}` | chainflip-node configuration |
 | node.affinity | object | `{}` | set pod affinity |
 | node.extraArgs | list | `["--name=\"Chainflip Node\""]` | chainflip-node extra arguments |
 | node.extraEnv | list | `[]` | set extra environment variables |
 | node.extraEnvFrom | list | `[]` | set extra environment variables from a secret |
 | node.fullnameOverride | string | `""` | override the default value of the node pod |
-| node.image | object | `{"pullPolicy":"Always","repository":"chainfliplabs/chainflip-node","tag":""}` | chainflip-node image settings |
+| node.image | object | `{"pullPolicy":"Always","repository":"docker.io/chainfliplabs/chainflip-node","tag":""}` | chainflip-node image settings |
 | node.image.pullPolicy | string | `"Always"` | chainflip-node image pull policy |
-| node.image.repository | string | `"chainfliplabs/chainflip-node"` | chainflip-node image repository |
+| node.image.repository | string | `"docker.io/chainfliplabs/chainflip-node"` | chainflip-node image repository |
 | node.image.tag | string | `""` | chainflip-node image tag; default to `network.chain.name` |
-| node.metrics.enabled | bool | `true` | enable prometheus metrics |
-| node.metrics.expose | bool | `true` | expose prometheus metrics |
-| node.metrics.port | int | `9615` | prometheus metrics port |
+| node.legacyRpc | bool | `false` | use the legacy rpc commands for the node |
+| node.livenessProbe.enabled | bool | `true` | enable liveness probe |
+| node.livenessProbe.failureThreshold | int | `3` | liveness probe failure threshold |
+| node.livenessProbe.initialDelaySeconds | int | `30` | liveness probe initial delay |
+| node.livenessProbe.periodSeconds | int | `30` | liveness probe period |
+| node.livenessProbe.successThreshold | int | `1` | liveness probe success threshold |
+| node.livenessProbe.timeoutSeconds | int | `30` | liveness probe timeout |
 | node.nodeSelector | object | `{}` | set node selector |
+| node.pdb | object | `{"enabled":false,"minAvailable":1}` | set pod disruption budget |
 | node.persistence | object | `{"accessModes":["ReadWriteOnce"],"enabled":true,"existingClaim":"","size":"100Gi","storageClass":""}` | chaindata volume settings |
 | node.persistence.accessModes | list | `["ReadWriteOnce"]` | chaindata volume access mode |
 | node.persistence.enabled | bool | `true` | enable chaindata persistence |
 | node.persistence.existingClaim | string | `""` | reference an existing PVC |
 | node.persistence.size | string | `"100Gi"` | chaindata volume size |
 | node.persistence.storageClass | string | `""` | chaindata volume storage class |
-| node.ports | object | `{"p2p":"30333","rpc":"9944"}` | ports exposed by the chainflip-node |
-| node.ports.p2p | string | `"30333"` | chainflip-node p2p port |
-| node.ports.rpc | string | `"9944"` | chainflip-node rpc port |
+| node.ports | object | `{"metrics":{"enabled":false,"expose":true,"port":9615,"service":{"annotations":{},"type":"ClusterIP"}},"p2p":{"enabled":true,"port":30333,"service":{"annotations":{},"port":30333,"type":"NodePort"}},"rpc":{"enabled":true,"expose":true,"port":"9944","service":{"annotations":{},"port":9944,"type":"ClusterIP"}}}` | ports exposed by the chainflip-node |
+| node.ports.metrics.enabled | bool | `false` | enable prometheus metrics |
+| node.ports.metrics.expose | bool | `true` | expose prometheus metrics |
+| node.ports.metrics.port | int | `9615` | prometheus metrics port |
+| node.ports.metrics.service | object | `{"annotations":{},"type":"ClusterIP"}` | prometheus metrics service configuration |
+| node.ports.metrics.service.annotations | object | `{}` | prometheus metrics service port |
+| node.ports.metrics.service.type | string | `"ClusterIP"` | prometheus metrics service type |
+| node.ports.p2p | object | `{"enabled":true,"port":30333,"service":{"annotations":{},"port":30333,"type":"NodePort"}}` | chainflip-node p2p port |
+| node.ports.p2p.enabled | bool | `true` | enabled |
+| node.ports.p2p.port | int | `30333` | chainflip-node rpc port |
+| node.ports.p2p.service | object | `{"annotations":{},"port":30333,"type":"NodePort"}` | chainflip-node rpc service configuration |
+| node.ports.p2p.service.annotations | object | `{}` | chainflip-node rpc service annotations |
+| node.ports.p2p.service.port | int | `30333` | chainflip-node rpc service port |
+| node.ports.p2p.service.type | string | `"NodePort"` | chainflip-node rpc service type |
+| node.ports.rpc | object | `{"enabled":true,"expose":true,"port":"9944","service":{"annotations":{},"port":9944,"type":"ClusterIP"}}` | chainflip-node rpc port |
+| node.ports.rpc.enabled | bool | `true` | enabled |
+| node.ports.rpc.expose | bool | `true` | expose chainflip-node rpc port |
+| node.ports.rpc.port | string | `"9944"` | chainflip-node rpc port |
+| node.ports.rpc.service | object | `{"annotations":{},"port":9944,"type":"ClusterIP"}` | chainflip-node rpc service configuration |
+| node.ports.rpc.service.annotations | object | `{}` | chainflip-node rpc service annotations |
+| node.ports.rpc.service.port | int | `9944` | chainflip-node rpc service port |
+| node.ports.rpc.service.type | string | `"ClusterIP"` | chainflip-node rpc service type |
+| node.readinessProbe.enabled | bool | `true` | enable readiness probe |
+| node.readinessProbe.failureThreshold | int | `10` | readiness probe failure threshold |
+| node.readinessProbe.initialDelaySeconds | int | `30` | readiness probe initial delay |
+| node.readinessProbe.periodSeconds | int | `10` | readiness probe period |
+| node.readinessProbe.successThreshold | int | `1` | readiness probe success threshold |
+| node.readinessProbe.timeoutSeconds | int | `30` | readiness probe timeout |
+| node.replicas | int | `1` | replicas; only available for archive nodes |
 | node.resources | object | `{}` | chainflip-node resources |
 | node.service | object | `{"annotations":{},"port":80,"type":"ClusterIP"}` | chainflip-node service configuration |
 | node.service.annotations | object | `{}` | chainflip-node service annotations |
 | node.service.port | int | `80` | chainflip-node service port |
 | node.service.type | string | `"ClusterIP"` | chainflip-node service type |
 | node.tolerations | list | `[]` | set pod tolerations |
+| node.topologySpreadConstraints | list | `[]` | set topology spread constraints |
 
 ----------------------------------------------
-Autogenerated from chart metadata using [helm-docs v1.11.0](https://github.com/norwoodj/helm-docs/releases/v1.11.0)
+Autogenerated from chart metadata using [helm-docs v1.13.1](https://github.com/norwoodj/helm-docs/releases/v1.13.1)
