@@ -30,7 +30,7 @@ spec:
             - |
               set -xe
               while true; do
-                echo system_health | websocat {{ .Values.config.stateChainWsEndpoint }} --jsonrpc
+                echo system_health | websocat -k {{ .Values.config.stateChainWsEndpoint }} --jsonrpc
                 if [ $? -eq 0 ]; then
                   exit 0
                 fi
