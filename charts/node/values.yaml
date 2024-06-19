@@ -192,6 +192,9 @@ node:
     # -- chainflip-node service annotations
     annotations: {}
 
+    # -- Session affinity
+    sessionAffinity: {}
+
   ingress:
     enabled: false
     ingressClassName: ""

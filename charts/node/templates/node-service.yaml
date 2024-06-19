@@ -18,6 +18,9 @@ spec:
       port: {{ .Values.node.ports.rpc.port }}
       targetPort: rpc
       protocol: TCP
+  {{- with .Values.node.service.sessionAffinity }}
+  sessionAffinity: {{ . | toYaml | nindent 4 }}
+  {{- end }}
 ---
 {{- end }}
 {{- if .Values.node.ports.p2p.enabled }}
