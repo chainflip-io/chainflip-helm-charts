@@ -18,8 +18,11 @@ spec:
       port: {{ .Values.node.ports.rpc.port }}
       targetPort: rpc
       protocol: TCP
-  {{- with .Values.node.service.sessionAffinity }}
-  sessionAffinity: {{ . | toYaml | nindent 4 }}
+  {{- if .Values.node.service.sessionAffinity.enabled }}
+  sessionAffinity: ClientIP
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: {{ .Values.node.service.sessionAffinity.timeoutSeconds | default 10800 }}
   {{- end }}
 ---
 {{- end }}

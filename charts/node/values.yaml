@@ -193,7 +193,8 @@ node:
     annotations: {}
 
     # -- Session affinity
-    sessionAffinity: {}
+    sessionAffinity:
+      enabled: false
 
   ingress:
     enabled: false
