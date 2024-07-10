@@ -153,8 +153,10 @@ spec:
           {{- end }}
           {{- if .Values.node.readinessProbe.enabled }}
           readinessProbe:
-            tcpSocket:
-              port: {{ .Values.node.ports.p2p.port }}
+            exec:
+              command:
+                - /bin/sh
+                - /usr/local/bin/readiness.sh
             initialDelaySeconds: {{ .Values.node.readinessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.node.readinessProbe.periodSeconds }}
             timeoutSeconds: {{ .Values.node.readinessProbe.timeoutSeconds }}
@@ -162,8 +164,10 @@ spec:
           {{- end }}
           {{- if .Values.node.livenessProbe.enabled }}
           livenessProbe:
-            tcpSocket:
-              port: {{ .Values.node.ports.p2p.port }}
+            exec:
+              command:
+                - /bin/sh
+                - /usr/local/bin/liveness.sh
             initialDelaySeconds: {{ .Values.node.livenessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.node.livenessProbe.periodSeconds }}
             timeoutSeconds: {{ .Values.node.livenessProbe.timeoutSeconds }}
