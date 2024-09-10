@@ -18,3 +18,5 @@ engine:
     arb:
       ws_endpoint: "test"
       http_endpoint: "test"
+    sol:
+      http_endpoint: "test"
