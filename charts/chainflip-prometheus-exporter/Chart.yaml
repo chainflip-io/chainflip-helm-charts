@@ -1,7 +1,7 @@
 apiVersion: v2
 name: chainflip-prometheus-exporter
 version: 2.0.25
-appVersion: 2.7
+appVersion: 2.7.0
 description: Scrape data from all supported chains
 maintainers:
   - name: Chainflip Labs
