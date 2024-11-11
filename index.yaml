@@ -63,6 +63,20 @@ entries:
     version: 0.1.0
   chainflip-prometheus-exporter:
   - apiVersion: v2
+    appVersion: 2.7.4
+    created: "2024-11-11T13:11:00.017510837Z"
+    description: Scrape data from all supported chains
+    digest: eed74b6e819f517b8c906f23c8f5cf2aa4783ef7279f45f3ec7f586f3095654a
+    maintainers:
+    - email: dev@chainflip.io
+      name: Chainflip Labs
+      url: https://chainflip.io
+    name: chainflip-prometheus-exporter
+    type: application
+    urls:
+    - https://github.com/chainflip-io/chainflip-helm-charts/releases/download/chainflip-prometheus-exporter-2.0.29/chainflip-prometheus-exporter-2.0.29.tgz
+    version: 2.0.29
+  - apiVersion: v2
     appVersion: 2.7.3
     created: "2024-11-04T13:17:41.146586065Z"
     description: Scrape data from all supported chains
@@ -1150,4 +1164,4 @@ entries:
     urls:
     - https://github.com/chainflip-io/chainflip-helm-charts/releases/download/node-0.1.0/node-0.1.0.tgz
     version: 0.1.0
-generated: "2024-11-04T13:17:41.147046582Z"
+generated: "2024-11-11T13:11:00.01794646Z"
