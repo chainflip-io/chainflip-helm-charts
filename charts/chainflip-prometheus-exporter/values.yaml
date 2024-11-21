@@ -105,3 +105,18 @@ port: 9000
 resources: {}
 
 extraManifests: []
+
+serviceMonitor:
+  enabled: false
+  labels:
+    release: prometheus
+  portName: metrics
+  path: /metrics
+  interval: 2s
+  relabelings:
+    - sourceLabels: [__meta_kubernetes_pod_label_app]
+      action: keep
+      regex: chainflip-prometheus-exporter
+  metricRelabelings:
+    - regex: (instance)
+      action: labeldrop
