@@ -19,6 +19,18 @@ Expand the name of the chart.
 {{- end }}
 
 {{/*
+Common labels
+*/}}
+{{- define "chainflip-prometheus-exporter.labels" -}}
+helm.sh/chart: {{ include "chainflip-prometheus-exporter.name" . }}
+{{ include "chainflip-prometheus-exporter.selectorLabels" . }}
+{{- if .Chart.AppVersion }}
+app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+{{- end }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- end }}
+
+{{/*
 Selector labels
 */}}
 {{- define "chainflip-prometheus-exporter.selectorLabels" -}}

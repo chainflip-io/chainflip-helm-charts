@@ -2,18 +2,15 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: "{{ include "chainflip-prometheus-exporter.fullname" . }}"
-  labels:
-    app: "{{ include "chainflip-prometheus-exporter.fullname" . }}"
+  labels: {{ include "chainflip-prometheus-exporter.labels" . | nindent 4 }}
 spec:
   replicas: 1
   selector:
-    matchLabels:
-      app: "{{ include "chainflip-prometheus-exporter.fullname" . }}"
+    matchLabels: {{ include "chainflip-prometheus-exporter.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       name: "{{ include "chainflip-prometheus-exporter.fullname" . }}"
-      labels:
-        app: "{{ include "chainflip-prometheus-exporter.fullname" . }}"
+      labels: {{ include "chainflip-prometheus-exporter.labels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets: {{ toYaml . | nindent 8 }}
