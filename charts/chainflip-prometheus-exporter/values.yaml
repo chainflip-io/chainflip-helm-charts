@@ -113,10 +113,6 @@ serviceMonitor:
   portName: metrics
   path: /metrics
   interval: 2s
-  relabelings:
-    - sourceLabels: [__meta_kubernetes_pod_label_app]
-      action: keep
-      regex: chainflip-prometheus-exporter
   metricRelabelings:
     - regex: (pod|instance)
       action: labeldrop
