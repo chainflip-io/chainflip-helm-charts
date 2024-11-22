@@ -118,5 +118,5 @@ serviceMonitor:
       action: keep
       regex: chainflip-prometheus-exporter
   metricRelabelings:
-    - regex: (instance)
+    - regex: (pod|instance)
       action: labeldrop
