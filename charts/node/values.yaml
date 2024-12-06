@@ -9,8 +9,8 @@ imagePullSecrets: []
 
 # -- shared settings across the chainflip-engine and chainflip-node
 common:
-  # -- desired role for your node; `validator` or `archive`
-  role: "validator" # validator, archive
+  # -- desired role for your node; `validator`, `archive` or `rpc`
+  role: "rpc" # validator, archive, rpc
 
   # -- root path for the chainflip configuration
   basePath: /etc/chainflip
