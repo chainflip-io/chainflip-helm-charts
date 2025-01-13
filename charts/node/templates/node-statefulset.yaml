@@ -90,6 +90,9 @@ spec:
             - --blocks-pruning=archive
             - --state-pruning=archive
             {{- end }}
+            {{- if ne .Values.common.role "archive" }}
+            - --sync={{ .Values.node.syncMode }}
+            {{- end }}
             - --port={{ .Values.node.ports.p2p.port  }}
             {{- if .Values.node.ports.metrics.enabled }}
             - --prometheus-port={{ .Values.node.ports.metrics.port }}
