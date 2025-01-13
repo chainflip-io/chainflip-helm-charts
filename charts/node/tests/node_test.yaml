@@ -46,6 +46,7 @@ tests:
             - --trie-cache-size=0
             - --node-key-file=/etc/chainflip/keys/node_key_file
             - --validator
+            - --sync=warp
             - --port=30333
             - --rpc-port=9933
             - --ws-port=9944
@@ -66,6 +67,7 @@ tests:
             - --trie-cache-size=0
             - --node-key-file=/etc/chainflip/keys/node_key_file
             - --validator
+            - --sync=warp
             - --port=30333
             - --rpc-port=9944
             - --rpc-cors=all
