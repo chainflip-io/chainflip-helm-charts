@@ -257,7 +257,7 @@ node:
   pdb:
     enabled: false
     minAvailable: 1
-
+  syncMode: "warp" # warp, full
 # -- chainflip-engine configuration
 engine:
   # -- override the default value of the engine pod
