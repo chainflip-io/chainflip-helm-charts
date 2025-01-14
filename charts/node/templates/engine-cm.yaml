@@ -70,12 +70,18 @@ data:
     http_endpoint = "{{ required "Please provide a http_endpoint of an Arbitrum node" .Values.engine.settings.arb.http_endpoint }}"
     ws_endpoint = "{{ required "Please provide a ws_endpoint of an Arbitrum node" .Values.engine.settings.arb.ws_endpoint }}"
 
-    [sol.rpc]
-    http_endpoint = "{{ required "Please provide a http_endpoint of a Solana RPC Node" .Values.engine.settings.sol.http_endpoint }}"
-
     {{ if .Values.engine.settings.arb_backup.enabled }}
     [arb.backup_rpc]
     http_endpoint = "{{ .Values.engine.settings.arb_backup.http_endpoint }}"
+    ws_endpoint = "{{ .Values.engine.settings.arb_backup.ws_endpoint }}"
+    {{- end }}
+
+    [sol.rpc]
+    http_endpoint = "{{ required "Please provide a http_endpoint of a Solana RPC Node" .Values.engine.settings.sol.http_endpoint }}"
+
+    {{ if .Values.engine.settings.sol_backup.enabled }}
+    [sol.backup_rpc]
+    http_endpoint = "{{ .Values.engine.settings.sol_backup.http_endpoint }}"
     {{- end }}
 
     {{- if .Values.engine.ports.metrics.enabled }}

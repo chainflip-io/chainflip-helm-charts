@@ -465,6 +465,13 @@ engine:
     sol:
       # -- solana node http endpoint
       http_endpoint: ""
+
+    sol_backup:
+      # -- enabled
+      enabled: false
+
+      # -- solana backup node http endpoint
+      http_endpoint: ""
   livenessProbe:
     # -- enable liveness probe
     enabled: true
