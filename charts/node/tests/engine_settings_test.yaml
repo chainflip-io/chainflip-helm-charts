@@ -28,6 +28,11 @@ tests:
       engine.settings.btc_backup.http_endpoint: "http://test"
       engine.settings.btc_backup.rpc_user: "test"
       engine.settings.btc_backup.rpc_password: "test"
+      engine.settings.arb_backup.enabled: true
+      engine.settings.arb_backup.ws_endpoint: "ws://test"
+      engine.settings.arb_backup.http_endpoint: "http://test"
+      engine.settings.sol_backup.enabled: true
+      engine.settings.sol_backup.http_endpoint: "http://test"
     asserts:
       - hasDocuments:
           count: 1
