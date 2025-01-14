@@ -200,6 +200,8 @@ spec:
                 path: {{ .Values.common.keys.nodeKeyFileName }}
               - key: ethereum-key
                 path: {{ .Values.common.keys.ethereumKeyFileName }}
+              - key: arbitrum-key
+                path: {{ .Values.common.keys.arbitrumKeyFileName }}
         {{- end }}
   {{- if .Values.node.persistence.existingClaim }}
         - name: data
