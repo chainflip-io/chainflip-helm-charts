@@ -441,10 +441,10 @@ engine:
       http_endpoint: ""
 
       # -- bitcoin backup rpc user
-      rpc_user: ""
+      basic_auth_user: ""
 
       # -- bitcoin backup rpc password
-      rpc_password: ""
+      basic_auth_password: ""
 
     arb:
       # -- arb node ws endpoint
