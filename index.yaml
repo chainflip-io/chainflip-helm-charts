@@ -3,6 +3,16 @@ entries:
   broker-api:
   - apiVersion: v2
     appVersion: 1.0.2
+    created: "2025-04-30T13:19:05.438858692Z"
+    description: A Helm chart for Kubernetes
+    digest: 86da91b0a2da50637730d4fec3558e410ae049a4dba0d45c331d6a761b659185
+    name: broker-api
+    type: application
+    urls:
+    - https://github.com/chainflip-io/chainflip-helm-charts/releases/download/broker-api-0.3.3/broker-api-0.3.3.tgz
+    version: 0.3.3
+  - apiVersion: v2
+    appVersion: 1.0.2
     created: "2024-06-14T10:48:20.255151401Z"
     description: A Helm chart for Kubernetes
     digest: 64b8e23c9ed7a25dcac9ca717084c34a62d2eecebac3dd1056a8843d7fe45588
@@ -1430,4 +1440,4 @@ entries:
     urls:
     - https://github.com/chainflip-io/chainflip-helm-charts/releases/download/node-0.1.0/node-0.1.0.tgz
     version: 0.1.0
-generated: "2025-03-21T14:13:38.438300151Z"
+generated: "2025-04-30T13:19:05.439150607Z"
