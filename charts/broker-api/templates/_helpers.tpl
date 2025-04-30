@@ -46,7 +46,7 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 Selector labels
 */}}
 {{- define "broker-api.selectorLabels" -}}
-chainflip.io/unit: chainflip-broker-api
+{{- printf "chainflip.io/unit: chainflip-%s" .Chart.Name | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 chainflip.io/name: {{ .Release.Name }}
 {{- end }}
 
