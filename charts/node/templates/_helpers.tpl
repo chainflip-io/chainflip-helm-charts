@@ -142,3 +142,10 @@ chainflip-cli image
 {{- define "chainflip-cli.image" -}}
 {{ printf "%s:%s" .Values.cli.image.repository (.Values.cli.image.tag | default .Values.network.chain.name) }}
 {{- end }}
+
+{{/*
+snapshot clone image
+*/}}
+{{- define "chainflip-node.snapshotClone.image" -}}
+{{ printf "%s:%s" .Values.node.snapshotClone.image.repository (.Values.node.snapshotClone.image.tag | default "latest") }}
+{{- end }}

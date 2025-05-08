@@ -88,6 +88,37 @@ node:
   extraArgs:
     - --name="Chainflip Node"
 
+  # -- chain cleanup init configuration
+  # WARNING: This will remove the chaindata directory, use with caution!
+  # NOTE: You probably want to disable this after sync.
+  chainCleanup:
+    # -- enable chain data cleanup
+    enabled: false
+
+  # -- snapshot clone init configuration
+  snapshotClone:
+    # -- enable snapshot clone
+    enabled: false
+
+    # -- snapshot clone remote
+    remote: ""
+
+    # -- snapshot clone retries
+    retries: 6
+
+    # -- snapshot clone debug
+    debug: false
+
+    # -- snapshot clone image settings
+    image:
+      # -- snapshot clone image repository
+      repository: docker.io/rclone/rclone
+
+      # -- snapshot clone image tag
+      tag: "latest"
+
+      # -- snapshot clone image pull policy
+      pullPolicy: Always
   # -- set extra environment variables
   extraEnv: []
 
