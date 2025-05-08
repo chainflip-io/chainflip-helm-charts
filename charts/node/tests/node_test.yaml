@@ -43,10 +43,11 @@ tests:
           value:
             - --base-path=/etc/chainflip
             - --chain=test
+            - --database=paritydb
             - --trie-cache-size=0
             - --node-key-file=/etc/chainflip/keys/node_key_file
             - --validator
-            - --sync=warp
+            - --sync=full
             - --port=30333
             - --rpc-port=9933
             - --ws-port=9944
@@ -64,10 +65,11 @@ tests:
           value:
             - --base-path=/etc/chainflip
             - --chain=test
+            - --database=paritydb
             - --trie-cache-size=0
             - --node-key-file=/etc/chainflip/keys/node_key_file
             - --validator
-            - --sync=warp
+            - --sync=full
             - --port=30333
             - --rpc-port=9944
             - --rpc-cors=all

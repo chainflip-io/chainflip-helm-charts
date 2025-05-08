@@ -9,8 +9,8 @@ imagePullSecrets: []
 
 # -- shared settings across the chainflip-engine and chainflip-node
 common:
-  # -- desired role for your node; `validator` or `archive`
-  role: "validator" # validator, archive
+  # -- desired role for your node; `validator`, `archive` or `full`
+  role: "validator" # validator, archive, full
 
   # -- root path for the chainflip configuration
   basePath: /etc/chainflip
@@ -53,7 +53,7 @@ common:
 network:
   # -- chain settings
   chain:
-    # -- chain name; `perseverance`
+    # -- chain name: (perseverance, berghain, etc.)
     name: "test"
 
     # -- download the chainspec from a URL
@@ -87,6 +87,42 @@ node:
   # -- chainflip-node extra arguments
   extraArgs:
     - --name="Chainflip Node"
+
+  # -- chainflip-node database settings
+  chainData:
+    # -- database type (rocksdb, paritydb, auto, paritydb-experimental)
+    type: paritydb
+
+    # -- enable paritydb removal
+    # WARNING: This will remove the paritydb (../paritydb) directory, use with caution!
+    # NOTE: You probably want to disable this after use.
+    removeParitydb: false
+
+    # -- enable rocksdb removal
+    # WARNING: This will remove the rocksdb (../db) directory, use with caution!
+    # NOTE: This will cleanup disk space after migrating to paritydb
+    removeRocksdb: false
+
+    # -- pruning settings
+    pruning:
+      # -- enable pruning
+      enabled: false
+      # -- blocks pruning depth
+      blocks: 256
+      # -- state pruning depth
+      state: 256
+
+    # -- snapshot init configuration
+    snapshot:
+      # -- enable snapshot download on init
+      enabled: true
+
+      # -- snapshot download retries
+      retries: 6
+
+      # -- snapshot download debug
+      debug: false
+
 
   # -- set extra environment variables
   extraEnv: []
@@ -257,7 +293,7 @@ node:
   pdb:
     enabled: false
     minAvailable: 1
-  syncMode: "warp" # warp, full
+  syncMode: "full" # warp, full (using full default for snapshot compatibility)
 # -- chainflip-engine configuration
 engine:
   # -- override the default value of the engine pod
