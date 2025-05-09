@@ -84,6 +84,16 @@ data:
     http_endpoint = "{{ .Values.engine.settings.sol_backup.http_endpoint }}"
     {{- end }}
 
+    [hub.rpc]
+    http_endpoint = "{{ required "Please provide a http_endpoint of a Hub RPC Node" .Values.engine.settings.hub.http_endpoint }}"
+    ws_endpoint = "{{ required "Please provide a ws_endpoint of a Hub RPC Node" .Values.engine.settings.hub.ws_endpoint }}"
+
+    {{ if .Values.engine.settings.hub_backup.enabled }}
+    [hub.backup_rpc]
+    http_endpoint = "{{ .Values.engine.settings.hub_backup.http_endpoint }}"
+    ws_endpoint = "{{ .Values.engine.settings.hub_backup.ws_endpoint }}"
+    {{- end }}
+
     {{- if .Values.engine.ports.metrics.enabled }}
     [prometheus]
     hostname = "{{ .Values.engine.ports.metrics.hostname }}"

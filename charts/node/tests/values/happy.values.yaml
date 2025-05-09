@@ -20,3 +20,7 @@ engine:
       http_endpoint: "test"
     sol:
       http_endpoint: "test"
+    hub:
+      http_endpoint: "test"
+      ws_endpoint: "test"
+      

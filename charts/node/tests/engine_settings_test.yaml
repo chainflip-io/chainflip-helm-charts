@@ -33,6 +33,9 @@ tests:
       engine.settings.arb_backup.http_endpoint: "http://test"
       engine.settings.sol_backup.enabled: true
       engine.settings.sol_backup.http_endpoint: "http://test"
+      engine.settings.hub_backup.enabled: true
+      engine.settings.hub_backup.http_endpoint: "http://test"
+      engine.settings.hub_backup.ws_endpoint: "ws://test"
     asserts:
       - hasDocuments:
           count: 1

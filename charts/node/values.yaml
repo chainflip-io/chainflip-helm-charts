@@ -472,6 +472,24 @@ engine:
 
       # -- solana backup node http endpoint
       http_endpoint: ""
+
+    hub:
+      # -- AssetHub node ws endpoint
+      ws_endpoint: ""
+
+      # -- AssetHub node http endpoint
+      http_endpoint: ""
+
+    hub_backup:
+      # -- enabled
+      enabled: false
+
+      # -- AssetHub backup node ws endpoint
+      ws_endpoint: ""
+
+      # -- AssetHub backup node http endpoint
+      http_endpoint: ""
+
   livenessProbe:
     # -- enable liveness probe
     enabled: true
