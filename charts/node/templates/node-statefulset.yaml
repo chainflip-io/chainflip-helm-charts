@@ -31,7 +31,7 @@ spec:
       initContainers:
         {{- if .Values.network.chain.chainspecUrl }}
         - name: download-chainspec
-          image: curlimages/curl:latest
+          image: curlimages/curl@sha256:9a1ed35addb45476afa911696297f8e115993df459278ed036182dd2cd22b67b
           command:
             - /bin/sh
             - -c
@@ -41,7 +41,66 @@ spec:
             - name: data
               mountPath: {{ .Values.common.basePath }}
         {{- end }}
-        {{- if eq .Values.common.role "validator" }}
+        {{- if .Values.node.chainData.removeParitydb }}
+        - name: remove-paritydb
+          image: curlimages/curl@sha256:9a1ed35addb45476afa911696297f8e115993df459278ed036182dd2cd22b67b
+          command:
+            - /bin/sh
+            - -c
+            - |
+              if [ -d "{{ include "chainflip-node.databasePath" . }}/paritydb" ]; then
+                echo "Cleaning up paritydb directory..."
+                rm -rvf {{ include "chainflip-node.databasePath" . }}/paritydb
+                echo "Done!"
+              else
+                echo "Paritydb directory does not exist. Skipping removal!"
+              fi
+          volumeMounts:
+            - name: data
+              mountPath: {{ .Values.common.basePath }}
+        {{- end }}
+        {{- if .Values.node.chainData.removeRocksdb }}
+        - name: remove-rocksdb
+          image: curlimages/curl@sha256:9a1ed35addb45476afa911696297f8e115993df459278ed036182dd2cd22b67b
+          command:
+            - /bin/sh
+            - -c
+            - |
+              if [ -d "{{ include "chainflip-node.databasePath" . }}/db" ]; then
+                echo "Cleaning up rocksdb directory..."
+                rm -rvf {{ include "chainflip-node.databasePath" . }}/db
+                echo "Done!"
+              else
+                echo "Rocksdb directory does not exist. Skipping removal!"
+              fi
+          volumeMounts:
+            - name: data
+              mountPath: {{ .Values.common.basePath }}
+        {{- end }}
+        {{- if and .Values.node.chainData.snapshot.enabled (eq .Values.node.chainData.type "paritydb") }}
+        - name: download-snapshot
+          image: netdata/wget@sha256:b367d0f3c65320eac0d574d4219c6c7c5be8d45863b9875d815e2f77d678e4a3
+          command:
+            - /bin/sh
+            - -c
+            - |
+              set -eu -o pipefail {{ if .Values.node.chainData.snapshot.debug }}-x{{ end }}
+              if [ -d "{{ include "chainflip-node.databasePath" . }}/paritydb" ]; then
+                echo "ParityDB directory already exists. Skipping chain snapshot download!"
+              else
+                if [ -d "{{ include "chainflip-node.databasePath" . }}/db" ]; then
+                  echo "RocksDB directory already exists. You may want to clean it up to free up space!"
+                fi
+                mkdir -p "{{ include "chainflip-node.databasePath" . }}"
+                echo "Downloading and extracting snapshot. This can take a while..."
+                wget --no-verbose --show-progress --progress=dot:mega -O - https://snapshots.chainflip.io/{{ .Values.network.chain.name }}/cf_chaindata_pruned_paritydb.tar.gz | tar -xzf - -C "{{ include "chainflip-node.databasePath" . }}"
+                echo "Snapshot extraction completed!"
+              fi
+          volumeMounts:
+            - name: data
+              mountPath: {{ .Values.common.basePath }}
+        {{- end }}
+        {{- if eq .Values.common.role "validator" }}    
         - name: inject-keys
           image: {{ include "chainflip-node.image" . }}
           securityContext:
@@ -78,6 +137,7 @@ spec:
           args:
             - --base-path={{ .Values.common.basePath }}
             - --chain={{ include "chainflip-node.chain" . }}
+            - --database={{ .Values.node.chainData.type }}
             - --trie-cache-size=0
             {{- range .Values.network.bootnodes }}
             - --bootnodes={{ . }}
@@ -92,6 +152,10 @@ spec:
             {{- end }}
             {{- if ne .Values.common.role "archive" }}
             - --sync={{ .Values.node.syncMode }}
+            {{- end }}
+            {{- if .Values.node.chainData.pruning.enabled }}
+            - --blocks-pruning={{ .Values.node.chainData.pruning.blocks }}
+            - --state-pruning={{ .Values.node.chainData.pruning.state }}
             {{- end }}
             - --port={{ .Values.node.ports.p2p.port  }}
             {{- if .Values.node.ports.metrics.enabled }}

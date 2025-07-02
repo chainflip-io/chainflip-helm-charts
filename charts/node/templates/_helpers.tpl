@@ -77,6 +77,13 @@ chainflip-node image
 {{ printf "%s:%s" .Values.node.image.repository (.Values.node.image.tag | default .Values.network.chain.name) }}
 {{- end }}
 
+{{/*
+Database path */}}
+{{- define "chainflip-node.databasePath" -}}
+{{- $titlechain := .Values.network.chain.name | title | required ".Values.network.chain.name is required." -}}
+{{- printf "%s/chains/Chainflip-%s" .Values.common.basePath $titlechain }}
+{{- end }}
+
 {{/*---------*/}}
 
 {{- define "chainflip-engine.fullname" -}}
