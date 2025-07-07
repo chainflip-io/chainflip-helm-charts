@@ -47,23 +47,9 @@ common:
     # -- arbitrum key; recommended to leave empty and provide through a secret
     arbitrumKey: ""
 
-    # -- lp key file name
-    lpKeyFileName: lp_key_file
-
-    # TODO: It may be better to just use the signingKey for easier migration of secrets.
-    # -- lp key; recommended to leave empty and provide through a secret
-    lpKey: ""
-
-    # -- broker key file name
-    brokerKeyFileName: broker_key_file
-
-    # -- broker key; recommended to leave empty and provide through a secret
-    brokerKey: ""
-
     # -- exiting secret with keys
     # for validator nodes, should contain signing-key, node-key, ethereum-key and arbitrum-key.
-    # for lp nodes, should contain lp-key.
-    # for broker nodes, should contain broker-key.
+    # for lp and broker nodes, should contain signing-key. 
     existingSecret: ""
 
 network:

@@ -146,7 +146,7 @@ spec:
                 --key-type 'lqpr' \
                 --scheme sr25519 \
                 --chain {{ include "chainflip-node.chain" . }} \
-                --suri "0x$(cat {{ .Values.common.keys.keysPath }}/keys/lp/{{ .Values.common.keys.lpKeyFileName }})" \
+                --suri "0x$(cat {{ .Values.common.keys.keysPath }}/keys/lp/{{ .Values.common.keys.signingKeyFileName }})" \
                 --base-path {{ .Values.common.basePath }}
           {{- end }}
         {{- if eq .Values.common.role "broker" }}    
@@ -168,7 +168,7 @@ spec:
                 --key-type 'broker' \
                 --scheme sr25519 \
                 --chain {{ include "chainflip-node.chain" . }} \
-                --suri "0x$(cat {{ .Values.common.keys.keysPath }}/keys/broker/{{ .Values.common.keys.brokerKeyFileName }})" \
+                --suri "0x$(cat {{ .Values.common.keys.keysPath }}/keys/broker/{{ .Values.common.keys.signingKeyFileName }})" \
                 --base-path {{ .Values.common.basePath }}
           {{- end }}
           {{- end }}
@@ -318,16 +318,16 @@ spec:
           secret:
             secretName: {{ .Values.common.keys.existingSecret | default (include "node.fullname" .) }}
             items:
-              - key: lp-key
-                path: {{ .Values.common.keys.lpKeyFileName }}
+              - key: signing-key
+                path: {{ .Values.common.keys.signingKeyFileName }}
         {{- end }}
         {{- if eq .Values.common.role "broker" }}
         - name: keys
           secret:
             secretName: {{ .Values.common.keys.existingSecret | default (include "node.fullname" .) }}
             items:
-              - key: broker-key
-                path: {{ .Values.common.keys.brokerKeyFileName }}
+              - key: signing-key
+                path: {{ .Values.common.keys.signingKeyFileName }}
         {{- end }}
   {{- if .Values.node.persistence.existingClaim }}
         - name: data
