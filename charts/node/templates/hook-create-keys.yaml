@@ -52,6 +52,9 @@ spec:
               jq -j '.signing_key.secret_key' /tmp/keys.json > /tmp/signing-key
               jq -j '.node_key.secret_key' /tmp/keys.json > /tmp/node-key
               jq -j '.ethereum_key.secret_key' /tmp/keys.json > /tmp/ethereum-key
+              jq -j '.signing_key.secret_key' /tmp/keys.json > /tmp/lp-key
+              jq -j '.signing_key.secret_key' /tmp/keys.json > /tmp/broker-key
+              
       containers:
         - name: kubectl-create-secret
           image: "bitnami/kubectl:latest"
@@ -69,7 +72,9 @@ spec:
                 kubectl create secret generic {{ include "node.fullname" . }} \
                   --from-file=/tmp/signing-key \
                   --from-file=/tmp/node-key \
-                  --from-file=/tmp/ethereum-key
+                  --from-file=/tmp/ethereum-key \
+                  --from-file=/tmp/lp-key \
+                  --from-file=/tmp/broker-key
               else
                 echo "Secret already exists, skipping..."
               fi

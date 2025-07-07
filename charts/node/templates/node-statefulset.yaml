@@ -127,6 +127,50 @@ spec:
                 --suri "0x$(cat {{ .Values.common.keys.keysPath }}/{{ .Values.common.keys.signingKeyFileName }})" \
                 --base-path {{ .Values.common.basePath }}
           {{- end }}
+        {{- if eq .Values.common.role "lp" }}    
+        - name: inject-lp-keys
+          image: {{ include "chainflip-node.image" . }}
+          securityContext:
+            allowPrivilegeEscalation: false
+          volumeMounts:
+            - name: data
+              mountPath: {{ .Values.common.basePath }}
+            - name: keys
+              mountPath: {{ .Values.common.keys.keysPath }}
+          command:
+            - /bin/sh
+            - -c
+            - |
+              mkdir -p {{ .Values.common.basePath }}/keys/lp
+              chainflip-node key insert \
+                --key-type 'lqpr' \
+                --scheme sr25519 \
+                --chain {{ include "chainflip-node.chain" . }} \
+                --suri "0x$(cat {{ .Values.common.keys.keysPath }}/keys/lp/{{ .Values.common.keys.lpKeyFileName }})" \
+                --base-path {{ .Values.common.basePath }}
+          {{- end }}
+        {{- if eq .Values.common.role "broker" }}    
+        - name: inject-broker-keys
+          image: {{ include "chainflip-node.image" . }}
+          securityContext:
+            allowPrivilegeEscalation: false
+          volumeMounts:
+            - name: data
+              mountPath: {{ .Values.common.basePath }}
+            - name: keys
+              mountPath: {{ .Values.common.keys.keysPath }}
+          command:
+            - /bin/sh
+            - -c
+            - |
+              mkdir -p {{ .Values.common.basePath }}/keys/broker
+              chainflip-node key insert \
+                --key-type 'broker' \
+                --scheme sr25519 \
+                --chain {{ include "chainflip-node.chain" . }} \
+                --suri "0x$(cat {{ .Values.common.keys.keysPath }}/keys/broker/{{ .Values.common.keys.brokerKeyFileName }})" \
+                --base-path {{ .Values.common.basePath }}
+          {{- end }}
           {{- end }}
       containers:
         - name: chainflip-node
@@ -150,7 +194,9 @@ spec:
             - --blocks-pruning=archive
             - --state-pruning=archive
             {{- end }}
-            {{- if ne .Values.common.role "archive" }}
+            {{- if or (eq .Values.common.role "broker") (eq .Values.common.role "lp") }}
+            - --sync=light-rpc
+            {{- else if ne .Values.common.role "archive"  }}
             - --sync={{ .Values.node.syncMode }}
             {{- end }}
             {{- if .Values.node.chainData.pruning.enabled }}
@@ -266,6 +312,22 @@ spec:
                 path: {{ .Values.common.keys.ethereumKeyFileName }}
               - key: arbitrum-key
                 path: {{ .Values.common.keys.arbitrumKeyFileName }}
+        {{- end }}
+        {{- if eq .Values.common.role "lp" }}
+        - name: keys
+          secret:
+            secretName: {{ .Values.common.keys.existingSecret | default (include "node.fullname" .) }}
+            items:
+              - key: lp-key
+                path: {{ .Values.common.keys.lpKeyFileName }}
+        {{- end }}
+        {{- if eq .Values.common.role "broker" }}
+        - name: keys
+          secret:
+            secretName: {{ .Values.common.keys.existingSecret | default (include "node.fullname" .) }}
+            items:
+              - key: broker-key
+                path: {{ .Values.common.keys.brokerKeyFileName }}
         {{- end }}
   {{- if .Values.node.persistence.existingClaim }}
         - name: data
