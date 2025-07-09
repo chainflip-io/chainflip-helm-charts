@@ -27,8 +27,8 @@ spec:
         runAsUser: 1000
         runAsGroup: 1000
         fsGroup: 1000
-      {{- if or .Values.network.chain.chainspecUrl (eq .Values.common.role "validator") .Values.common.keys.generateKeysOnStart }}
       initContainers:
+        {{- if or .Values.network.chain.chainspecUrl (eq .Values.common.role "validator") .Values.common.keys.generateKeysOnStart }}
         {{- if .Values.network.chain.chainspecUrl }}
         - name: download-chainspec
           image: curlimages/curl@sha256:9a1ed35addb45476afa911696297f8e115993df459278ed036182dd2cd22b67b
@@ -41,6 +41,7 @@ spec:
             - name: data
               mountPath: {{ .Values.common.basePath }}
         {{- end }}
+        {{- end }}
         {{- if .Values.node.chainData.removeParitydb }}
         - name: remove-paritydb
           image: curlimages/curl@sha256:9a1ed35addb45476afa911696297f8e115993df459278ed036182dd2cd22b67b
@@ -48,13 +49,13 @@ spec:
             - /bin/sh
             - -c
             - |
-              if [ -d "{{ include "chainflip-node.databasePath" . }}/paritydb" ]; then
-                echo "Cleaning up paritydb directory..."
-                rm -rvf {{ include "chainflip-node.databasePath" . }}/paritydb
-                echo "Done!"
-              else
-                echo "Paritydb directory does not exist. Skipping removal!"
-              fi
+            if [ -d "{{ include "chainflip-node.databasePath" . }}/paritydb" ]; then
+              echo "Cleaning up paritydb directory..."
+              rm -rvf {{ include "chainflip-node.databasePath" . }}/paritydb
+              echo "Done!"
+            else
+              echo "Paritydb directory does not exist. Skipping removal!"
+            fi
           volumeMounts:
             - name: data
               mountPath: {{ .Values.common.basePath }}
@@ -126,7 +127,7 @@ spec:
                 --chain {{ include "chainflip-node.chain" . }} \
                 --suri "0x$(cat {{ .Values.common.keys.keysPath }}/{{ .Values.common.keys.signingKeyFileName }})" \
                 --base-path {{ .Values.common.basePath }}
-          {{- end }}
+        {{- end }}
         {{- if eq .Values.common.role "lp" }}    
         - name: inject-lp-keys
           image: {{ include "chainflip-node.image" . }}
@@ -141,14 +142,14 @@ spec:
             - /bin/sh
             - -c
             - |
-              mkdir -p {{ .Values.common.basePath }}/keys/lp
+              mkdir -p {{ .Values.common.keys.keysPath }}/lp
               chainflip-node key insert \
                 --key-type 'lqpr' \
                 --scheme sr25519 \
                 --chain {{ include "chainflip-node.chain" . }} \
-                --suri "0x$(cat {{ .Values.common.keys.keysPath }}/keys/lp/{{ .Values.common.keys.signingKeyFileName }})" \
+                --suri "0x$(cat {{ .Values.common.keys.keysPath }}/lp/{{ .Values.common.keys.signingKeyFileName }})" \
                 --base-path {{ .Values.common.basePath }}
-          {{- end }}
+        {{- end }}
         {{- if eq .Values.common.role "broker" }}    
         - name: inject-broker-keys
           image: {{ include "chainflip-node.image" . }}
@@ -163,15 +164,14 @@ spec:
             - /bin/sh
             - -c
             - |
-              mkdir -p {{ .Values.common.basePath }}/keys/broker
+              mkdir -p {{ .Values.common.keys.keysPath }}/broker
               chainflip-node key insert \
                 --key-type 'broker' \
                 --scheme sr25519 \
                 --chain {{ include "chainflip-node.chain" . }} \
-                --suri "0x$(cat {{ .Values.common.keys.keysPath }}/keys/broker/{{ .Values.common.keys.signingKeyFileName }})" \
+                --suri "0x$(cat {{ .Values.common.keys.keysPath }}/broker/{{ .Values.common.keys.signingKeyFileName }})" \
                 --base-path {{ .Values.common.basePath }}
-          {{- end }}
-          {{- end }}
+        {{- end }}
       containers:
         - name: chainflip-node
           image: "{{ include "chainflip-node.image" . }}"
@@ -255,6 +255,14 @@ spec:
         {{- if eq .Values.common.role "validator" }}
             - name: keys
               mountPath: {{ .Values.common.keys.keysPath }}
+        {{- end }}
+        {{- if eq .Values.common.role "lp" }}
+            - name: keys
+              mountPath: {{ .Values.common.keys.keysPath }}/lp
+        {{- end }}
+        {{- if eq .Values.common.role "broker" }}
+            - name: keys
+              mountPath: {{ .Values.common.keys.keysPath }}/broker
         {{- end }}
           {{- with .Values.node.extraEnv }}
           env:
