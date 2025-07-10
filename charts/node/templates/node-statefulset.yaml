@@ -252,7 +252,7 @@ spec:
           volumeMounts:
             - name: data
               mountPath: {{ .Values.common.basePath }}
-        {{- if eq .Values.common.role "validator" }}
+        {{- if or (eq .Values.common.role "validator") (eq .Values.common.role "broker") (eq .Values.common.role "lp") }}
             - name: keys
               mountPath: {{ .Values.common.keys.keysPath }}
         {{- end }}
@@ -321,15 +321,7 @@ spec:
               - key: arbitrum-key
                 path: {{ .Values.common.keys.arbitrumKeyFileName }}
         {{- end }}
-        {{- if eq .Values.common.role "lp" }}
-        - name: keys
-          secret:
-            secretName: {{ .Values.common.keys.existingSecret | default (include "node.fullname" .) }}
-            items:
-              - key: signing-key
-                path: {{ .Values.common.keys.signingKeyFileName }}
-        {{- end }}
-        {{- if eq .Values.common.role "broker" }}
+        {{- if or (eq .Values.common.role "lp") (eq .Values.common.role "broker") }}
         - name: keys
           secret:
             secretName: {{ .Values.common.keys.existingSecret | default (include "node.fullname" .) }}
