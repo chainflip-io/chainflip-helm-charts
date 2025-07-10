@@ -199,9 +199,12 @@ spec:
             {{- else if ne .Values.common.role "archive"  }}
             - --sync={{ .Values.node.syncMode }}
             {{- end }}
-            {{- if .Values.node.chainData.pruning.enabled }}
+            {{- if and .Values.node.chainData.pruning.enabled ( ne .Values.common.role "broker" ) ( ne .Values.common.role "lp" ) }}
             - --blocks-pruning={{ .Values.node.chainData.pruning.blocks }}
             - --state-pruning={{ .Values.node.chainData.pruning.state }}
+            {{- else if or ( eq .Values.common.role "broker" ) ( eq .Values.common.role "lp" ) }}
+            - --blocks-pruning=128
+            - --state-pruning=128
             {{- end }}
             - --port={{ .Values.node.ports.p2p.port  }}
             {{- if .Values.node.ports.metrics.enabled }}

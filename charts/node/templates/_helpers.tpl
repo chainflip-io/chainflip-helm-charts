@@ -147,5 +147,5 @@ chainflip.io/unit: chainflip-cli
 chainflip-cli image
 */}}
 {{- define "chainflip-cli.image" -}}
-{{ printf "%s:%s" .Values.cli.image.repository (.Values.cli.image.tag | default .Values.network.chain.name) }}
+{{ printf "%s:%s" .Values.cli.image.repository (.Values.cli.image.tag | default .Values.node.image.tag | default .Values.network.chain.name) }}
 {{- end }}
