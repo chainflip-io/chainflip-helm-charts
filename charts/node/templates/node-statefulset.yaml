@@ -55,7 +55,7 @@ spec:
                 echo "Done!"
               else
                 echo "Paritydb directory does not exist. Skipping removal!"
-            fi
+              fi
           volumeMounts:
             - name: data
               mountPath: {{ .Values.common.basePath }}
