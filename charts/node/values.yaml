@@ -9,8 +9,8 @@ imagePullSecrets: []
 
 # -- shared settings across the chainflip-engine and chainflip-node
 common:
-  # -- desired role for your node; `validator`, `archive` or `full`
-  role: "validator" # validator, archive, full
+  # -- desired role for your node; `validator`, `archive`, `full`, `broker`, `lp`
+  role: "validator" # validator, archive, full, broker, lp
 
   # -- root path for the chainflip configuration
   basePath: /etc/chainflip
@@ -48,6 +48,8 @@ common:
     arbitrumKey: ""
 
     # -- exiting secret with keys
+    # for validator nodes, should contain signing-key, node-key, ethereum-key and arbitrum-key.
+    # for lp and broker nodes, should contain signing-key. 
     existingSecret: ""
 
 network:
@@ -293,7 +295,7 @@ node:
   pdb:
     enabled: false
     minAvailable: 1
-  syncMode: "full" # warp, full (using full default for snapshot compatibility)
+  syncMode: "full" # warp, full, light-rpc (using full default for snapshot compatibility)
 # -- chainflip-engine configuration
 engine:
   # -- override the default value of the engine pod

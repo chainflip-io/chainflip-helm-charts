@@ -27,8 +27,8 @@ spec:
         runAsUser: 1000
         runAsGroup: 1000
         fsGroup: 1000
-      {{- if or .Values.network.chain.chainspecUrl (eq .Values.common.role "validator") .Values.common.keys.generateKeysOnStart }}
       initContainers:
+        {{- if or .Values.network.chain.chainspecUrl (eq .Values.common.role "validator") .Values.common.keys.generateKeysOnStart }}
         {{- if .Values.network.chain.chainspecUrl }}
         - name: download-chainspec
           image: curlimages/curl@sha256:9a1ed35addb45476afa911696297f8e115993df459278ed036182dd2cd22b67b
@@ -40,6 +40,7 @@ spec:
           volumeMounts:
             - name: data
               mountPath: {{ .Values.common.basePath }}
+        {{- end }}
         {{- end }}
         {{- if .Values.node.chainData.removeParitydb }}
         - name: remove-paritydb
@@ -126,8 +127,51 @@ spec:
                 --chain {{ include "chainflip-node.chain" . }} \
                 --suri "0x$(cat {{ .Values.common.keys.keysPath }}/{{ .Values.common.keys.signingKeyFileName }})" \
                 --base-path {{ .Values.common.basePath }}
-          {{- end }}
-          {{- end }}
+        {{- end }}
+        {{- if eq .Values.common.role "lp" }}    
+        - name: inject-lp-keys
+          image: {{ include "chainflip-node.image" . }}
+          securityContext:
+            allowPrivilegeEscalation: false
+          volumeMounts:
+            - name: data
+              mountPath: {{ .Values.common.basePath }}
+            - name: keys
+              mountPath: {{ .Values.common.keys.keysPath }}/lp
+          command:
+            - /bin/sh
+            - -c
+            - |
+              mkdir -p {{ .Values.common.keys.keysPath }}/lp
+              chainflip-node key insert \
+                --key-type 'lqpr' \
+                --scheme sr25519 \
+                --chain {{ include "chainflip-node.chain" . }} \
+                --suri "0x$(cat {{ .Values.common.keys.keysPath }}/lp/{{ .Values.common.keys.signingKeyFileName }})" \
+                --base-path {{ .Values.common.basePath }}
+        {{- end }}
+        {{- if eq .Values.common.role "broker" }}    
+        - name: inject-broker-keys
+          image: {{ include "chainflip-node.image" . }}
+          securityContext:
+            allowPrivilegeEscalation: false
+          volumeMounts:
+            - name: data
+              mountPath: {{ .Values.common.basePath }}
+            - name: keys
+              mountPath: {{ .Values.common.keys.keysPath }}/broker
+          command:
+            - /bin/sh
+            - -c
+            - |
+              mkdir -p {{ .Values.common.keys.keysPath }}/broker
+              chainflip-node key insert \
+                --key-type 'broker' \
+                --scheme sr25519 \
+                --chain {{ include "chainflip-node.chain" . }} \
+                --suri "0x$(cat {{ .Values.common.keys.keysPath }}/broker/{{ .Values.common.keys.signingKeyFileName }})" \
+                --base-path {{ .Values.common.basePath }}
+        {{- end }}
       containers:
         - name: chainflip-node
           image: "{{ include "chainflip-node.image" . }}"
@@ -150,12 +194,17 @@ spec:
             - --blocks-pruning=archive
             - --state-pruning=archive
             {{- end }}
-            {{- if ne .Values.common.role "archive" }}
+            {{- if or (eq .Values.common.role "broker") (eq .Values.common.role "lp") }}
+            - --sync=light-rpc
+            {{- else if ne .Values.common.role "archive"  }}
             - --sync={{ .Values.node.syncMode }}
             {{- end }}
-            {{- if .Values.node.chainData.pruning.enabled }}
+            {{- if and .Values.node.chainData.pruning.enabled ( ne .Values.common.role "broker" ) ( ne .Values.common.role "lp" ) }}
             - --blocks-pruning={{ .Values.node.chainData.pruning.blocks }}
             - --state-pruning={{ .Values.node.chainData.pruning.state }}
+            {{- else if or ( eq .Values.common.role "broker" ) ( eq .Values.common.role "lp" ) }}
+            - --blocks-pruning=128
+            - --state-pruning=128
             {{- end }}
             - --port={{ .Values.node.ports.p2p.port  }}
             {{- if .Values.node.ports.metrics.enabled }}
@@ -209,6 +258,14 @@ spec:
         {{- if eq .Values.common.role "validator" }}
             - name: keys
               mountPath: {{ .Values.common.keys.keysPath }}
+        {{- end }}
+        {{- if eq .Values.common.role "lp" }}
+            - name: keys
+              mountPath: {{ .Values.common.keys.keysPath }}/lp
+        {{- end }}
+        {{- if eq .Values.common.role "broker" }}
+            - name: keys
+              mountPath: {{ .Values.common.keys.keysPath }}/broker
         {{- end }}
           {{- with .Values.node.extraEnv }}
           env:
@@ -266,6 +323,14 @@ spec:
                 path: {{ .Values.common.keys.ethereumKeyFileName }}
               - key: arbitrum-key
                 path: {{ .Values.common.keys.arbitrumKeyFileName }}
+        {{- end }}
+        {{- if or (eq .Values.common.role "lp") (eq .Values.common.role "broker") }}
+        - name: keys
+          secret:
+            secretName: {{ .Values.common.keys.existingSecret | default (include "node.fullname" .) }}
+            items:
+              - key: signing-key
+                path: {{ .Values.common.keys.signingKeyFileName }}
         {{- end }}
   {{- if .Values.node.persistence.existingClaim }}
         - name: data
