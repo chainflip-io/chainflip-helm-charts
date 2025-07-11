@@ -49,12 +49,12 @@ spec:
             - /bin/sh
             - -c
             - |
-            if [ -d "{{ include "chainflip-node.databasePath" . }}/paritydb" ]; then
-              echo "Cleaning up paritydb directory..."
-              rm -rvf {{ include "chainflip-node.databasePath" . }}/paritydb
-              echo "Done!"
-            else
-              echo "Paritydb directory does not exist. Skipping removal!"
+              if [ -d "{{ include "chainflip-node.databasePath" . }}/paritydb" ]; then
+                echo "Cleaning up paritydb directory..."
+                rm -rvf {{ include "chainflip-node.databasePath" . }}/paritydb
+                echo "Done!"
+              else
+                echo "Paritydb directory does not exist. Skipping removal!"
             fi
           volumeMounts:
             - name: data
@@ -137,7 +137,7 @@ spec:
             - name: data
               mountPath: {{ .Values.common.basePath }}
             - name: keys
-              mountPath: {{ .Values.common.keys.keysPath }}
+              mountPath: {{ .Values.common.keys.keysPath }}/lp
           command:
             - /bin/sh
             - -c
@@ -159,7 +159,7 @@ spec:
             - name: data
               mountPath: {{ .Values.common.basePath }}
             - name: keys
-              mountPath: {{ .Values.common.keys.keysPath }}
+              mountPath: {{ .Values.common.keys.keysPath }}/broker
           command:
             - /bin/sh
             - -c
@@ -255,7 +255,7 @@ spec:
           volumeMounts:
             - name: data
               mountPath: {{ .Values.common.basePath }}
-        {{- if or (eq .Values.common.role "validator") (eq .Values.common.role "broker") (eq .Values.common.role "lp") }}
+        {{- if eq .Values.common.role "validator" }}
             - name: keys
               mountPath: {{ .Values.common.keys.keysPath }}
         {{- end }}
