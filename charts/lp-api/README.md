@@ -4,6 +4,8 @@
 
 Deploy a lp-api for the Chainflip network
 
+WARNING: This chart is going to be deprecated in favor of the `node` chart with `common.role=lp`.
+
 ## Values
 
 | Key | Type | Default | Description |

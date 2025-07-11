@@ -4,6 +4,8 @@
 
 A Helm chart for Kubernetes
 
+WARNING: This chart is going to be deprecated in favor of the `node` chart with `common.role=broker`.
+
 ## Values
 
 | Key | Type | Default | Description |
