@@ -1,6 +1,6 @@
 # node
 
-![Version: 0.7.0](https://img.shields.io/badge/Version-0.7.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.9.0](https://img.shields.io/badge/AppVersion-0.9.0-informational?style=flat-square)
+![Version: 0.18.0](https://img.shields.io/badge/Version-0.18.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.9.5](https://img.shields.io/badge/AppVersion-1.9.5-informational?style=flat-square)
 
 Deploy a Chainflip Validator or Archive node on Kubernetes
 
@@ -8,7 +8,7 @@ Deploy a Chainflip Validator or Archive node on Kubernetes
 
 | Name | Email | Url |
 | ---- | ------ | --- |
-| Chainflip Labs | <dev@chainflip.io> | <https://chainflip.io> |
+| Chainflip Labs GmbH | <dev@chainflip.io> | <https://chainflip.io> |
 
 ## Values
 
@@ -27,15 +27,15 @@ Deploy a Chainflip Validator or Archive node on Kubernetes
 | common.keys.arbitrumKeyFileName | string | `"arbitrum_key_file"` | arbitrum key file name |
 | common.keys.ethereumKey | string | `""` | ethereum key; recommended to leave empty and provide through a secret |
 | common.keys.ethereumKeyFileName | string | `"ethereum_key_file"` | ethereum key file name |
-| common.keys.existingSecret | string | `""` | exiting secret with keys |
+| common.keys.existingSecret | string | `""` | exiting secret with keys for validator nodes, should contain signing-key, node-key, ethereum-key and arbitrum-key. for lp and broker nodes, should contain signing-key.  |
 | common.keys.generateKeysOnStart | bool | `false` | use the chainflip-cli to inject all keys on start |
 | common.keys.keysPath | string | `"/etc/chainflip/keys"` | base path for all keys |
 | common.keys.nodeKey | string | `""` | node key; recommended to leave empty and provide through a secret |
 | common.keys.nodeKeyFileName | string | `"node_key_file"` | node key file name |
 | common.keys.signingKey | string | `""` | signing key; recommended to leave empty and provide through a secret |
 | common.keys.signingKeyFileName | string | `"signing_key_file"` | signing key file name |
-| common.role | string | `"validator"` | desired role for your node; `validator` or `archive` |
-| engine | object | `{"affinity":{},"extraArgs":{},"extraEnv":[],"extraEnvFrom":[],"extraInitContainers":[],"fullnameOverride":"","image":{"pullPolicy":"Always","repository":"docker.io/chainfliplabs/chainflip-engine","tag":""},"livenessProbe":{"enabled":true,"failureThreshold":3,"initialDelaySeconds":30,"periodSeconds":30,"successThreshold":1,"timeoutSeconds":30},"nodeSelector":{},"pdb":{"enabled":false,"minAvailable":1},"persistence":{"accessModes":["ReadWriteOnce"],"enabled":true,"existingClaim":"","size":"5Gi","storageClass":""},"ports":{"healthcheck":{"enabled":true,"hostname":"0.0.0.0","port":"5555","service":{"annotations":{},"port":5555,"type":"ClusterIP"}},"ip":{"expose":true,"port":30078,"service":{"annotations":{},"port":30078,"type":"NodePort"}},"metrics":{"enabled":false,"hostname":"0.0.0.0","port":5566,"service":{"annotations":{},"type":"ClusterIP"}}},"readinessProbe":{"enabled":true,"failureThreshold":3,"initialDelaySeconds":30,"periodSeconds":30,"successThreshold":1,"timeoutSeconds":30},"resources":{},"settings":{"arb":{"http_endpoint":"","ws_endpoint":""},"arb_backup":{"enabled":false,"http_endpoint":"","ws_endpoint":""},"btc":{"basic_auth_password":"","basic_auth_user":"","http_endpoint":""},"btc_backup":{"enabled":false,"http_endpoint":"","rpc_password":"","rpc_user":""},"dot":{"http_endpoint":"","ws_endpoint":""},"dot_backup":{"enabled":false,"http_endpoint":"","ws_endpoint":""},"eth":{"http_endpoint":"","ws_endpoint":""},"eth_backup":{"enabled":false,"http_endpoint":"","ws_endpoint":""},"existingConfigMap":"","node_p2p":{"allow_local_ip":false,"ip_address":""}},"tolerations":[],"topologySpreadConstraints":[]}` | chainflip-engine configuration |
+| common.role | string | `"validator"` | desired role for your node; `validator`, `archive`, `full`, `broker`, `lp` |
+| engine | object | `{"affinity":{},"extraArgs":{},"extraEnv":[],"extraEnvFrom":[],"extraInitContainers":[],"fullnameOverride":"","image":{"pullPolicy":"Always","repository":"docker.io/chainfliplabs/chainflip-engine","tag":""},"livenessProbe":{"enabled":true,"failureThreshold":3,"initialDelaySeconds":30,"periodSeconds":30,"successThreshold":1,"timeoutSeconds":30},"nodeSelector":{},"pdb":{"enabled":false,"minAvailable":1},"persistence":{"accessModes":["ReadWriteOnce"],"enabled":true,"existingClaim":"","size":"5Gi","storageClass":""},"ports":{"healthcheck":{"enabled":true,"hostname":"0.0.0.0","port":"5555","service":{"annotations":{},"port":5555,"type":"ClusterIP"}},"ip":{"expose":true,"port":30078,"service":{"annotations":{},"port":30078,"type":"NodePort"}},"metrics":{"enabled":false,"hostname":"0.0.0.0","port":5566,"service":{"annotations":{},"type":"ClusterIP"}}},"readinessProbe":{"enabled":true,"failureThreshold":3,"initialDelaySeconds":30,"periodSeconds":30,"successThreshold":1,"timeoutSeconds":30},"resources":{},"settings":{"arb":{"http_endpoint":"","ws_endpoint":""},"arb_backup":{"enabled":false,"http_endpoint":"","ws_endpoint":""},"btc":{"basic_auth_password":"","basic_auth_user":"","http_endpoint":""},"btc_backup":{"basic_auth_password":"","basic_auth_user":"","enabled":false,"http_endpoint":""},"dot":{"http_endpoint":"","ws_endpoint":""},"dot_backup":{"enabled":false,"http_endpoint":"","ws_endpoint":""},"eth":{"http_endpoint":"","ws_endpoint":""},"eth_backup":{"enabled":false,"http_endpoint":"","ws_endpoint":""},"existingConfigMap":"","hub":{"http_endpoint":"","ws_endpoint":""},"hub_backup":{"enabled":false,"http_endpoint":"","ws_endpoint":""},"node_p2p":{"allow_local_ip":false,"ip_address":""},"sol":{"http_endpoint":""},"sol_backup":{"enabled":false,"http_endpoint":""}},"tolerations":[],"topologySpreadConstraints":[]}` | chainflip-engine configuration |
 | engine.affinity | object | `{}` | set pod affinity |
 | engine.extraArgs | object | `{}` | chainflip-engine extra arguments |
 | engine.extraEnv | list | `[]` | set extra environment variables |
@@ -89,7 +89,7 @@ Deploy a Chainflip Validator or Archive node on Kubernetes
 | engine.readinessProbe.successThreshold | int | `1` | readiness probe success threshold |
 | engine.readinessProbe.timeoutSeconds | int | `30` | readiness probe timeout |
 | engine.resources | object | `{}` | chainflip-engine resources |
-| engine.settings | object | `{"arb":{"http_endpoint":"","ws_endpoint":""},"arb_backup":{"enabled":false,"http_endpoint":"","ws_endpoint":""},"btc":{"basic_auth_password":"","basic_auth_user":"","http_endpoint":""},"btc_backup":{"enabled":false,"http_endpoint":"","rpc_password":"","rpc_user":""},"dot":{"http_endpoint":"","ws_endpoint":""},"dot_backup":{"enabled":false,"http_endpoint":"","ws_endpoint":""},"eth":{"http_endpoint":"","ws_endpoint":""},"eth_backup":{"enabled":false,"http_endpoint":"","ws_endpoint":""},"existingConfigMap":"","node_p2p":{"allow_local_ip":false,"ip_address":""}}` | chainflip-engine Settings.toml configuration |
+| engine.settings | object | `{"arb":{"http_endpoint":"","ws_endpoint":""},"arb_backup":{"enabled":false,"http_endpoint":"","ws_endpoint":""},"btc":{"basic_auth_password":"","basic_auth_user":"","http_endpoint":""},"btc_backup":{"basic_auth_password":"","basic_auth_user":"","enabled":false,"http_endpoint":""},"dot":{"http_endpoint":"","ws_endpoint":""},"dot_backup":{"enabled":false,"http_endpoint":"","ws_endpoint":""},"eth":{"http_endpoint":"","ws_endpoint":""},"eth_backup":{"enabled":false,"http_endpoint":"","ws_endpoint":""},"existingConfigMap":"","hub":{"http_endpoint":"","ws_endpoint":""},"hub_backup":{"enabled":false,"http_endpoint":"","ws_endpoint":""},"node_p2p":{"allow_local_ip":false,"ip_address":""},"sol":{"http_endpoint":""},"sol_backup":{"enabled":false,"http_endpoint":""}}` | chainflip-engine Settings.toml configuration |
 | engine.settings.arb.http_endpoint | string | `""` | arb node http endpoint |
 | engine.settings.arb.ws_endpoint | string | `""` | arb node ws endpoint |
 | engine.settings.arb_backup.enabled | bool | `false` | enabled |
@@ -99,10 +99,10 @@ Deploy a Chainflip Validator or Archive node on Kubernetes
 | engine.settings.btc.basic_auth_password | string | `""` | bitcoin rpc password |
 | engine.settings.btc.basic_auth_user | string | `""` | bitcoin rpc user |
 | engine.settings.btc.http_endpoint | string | `""` | bitcoin node http endpoint |
+| engine.settings.btc_backup.basic_auth_password | string | `""` | bitcoin backup rpc password |
+| engine.settings.btc_backup.basic_auth_user | string | `""` | bitcoin backup rpc user |
 | engine.settings.btc_backup.enabled | bool | `false` | enabled |
 | engine.settings.btc_backup.http_endpoint | string | `""` | bitcoin backup node http endpoint |
-| engine.settings.btc_backup.rpc_password | string | `""` | bitcoin backup rpc password |
-| engine.settings.btc_backup.rpc_user | string | `""` | bitcoin backup rpc user |
 | engine.settings.dot | object | `{"http_endpoint":"","ws_endpoint":""}` | polkadot settings |
 | engine.settings.dot.http_endpoint | string | `""` | polkadot node http endpoint |
 | engine.settings.dot.ws_endpoint | string | `""` | polkadot node ws endpoint |
@@ -118,9 +118,17 @@ Deploy a Chainflip Validator or Archive node on Kubernetes
 | engine.settings.eth_backup.http_endpoint | string | `""` | ethereum backup node http endpoint |
 | engine.settings.eth_backup.ws_endpoint | string | `""` | ethereum backup node ws endpoint |
 | engine.settings.existingConfigMap | string | `""` | existing configMap with Settings.toml |
+| engine.settings.hub.http_endpoint | string | `""` | AssetHub node http endpoint |
+| engine.settings.hub.ws_endpoint | string | `""` | AssetHub node ws endpoint |
+| engine.settings.hub_backup.enabled | bool | `false` | enabled |
+| engine.settings.hub_backup.http_endpoint | string | `""` | AssetHub backup node http endpoint |
+| engine.settings.hub_backup.ws_endpoint | string | `""` | AssetHub backup node ws endpoint |
 | engine.settings.node_p2p | object | `{"allow_local_ip":false,"ip_address":""}` | node_p2p settings |
 | engine.settings.node_p2p.allow_local_ip | bool | `false` | allow local ip addresses |
 | engine.settings.node_p2p.ip_address | string | `""` | local ip address; this will set the ClusterIP of the service |
+| engine.settings.sol.http_endpoint | string | `""` | solana node http endpoint |
+| engine.settings.sol_backup.enabled | bool | `false` | enabled |
+| engine.settings.sol_backup.http_endpoint | string | `""` | solana backup node http endpoint |
 | engine.tolerations | list | `[]` | set pod tolerations |
 | engine.topologySpreadConstraints | list | `[]` | set topology spread constraints |
 | extraManifests | list | `[]` | create extra kubernetes manifests |
@@ -132,9 +140,21 @@ Deploy a Chainflip Validator or Archive node on Kubernetes
 | network.bootnodes | list | `[]` | network bootnodes |
 | network.chain | object | `{"chainspecUrl":"","name":"test"}` | chain settings |
 | network.chain.chainspecUrl | string | `""` | download the chainspec from a URL |
-| network.chain.name | string | `"test"` | chain name; `perseverance` |
-| node | object | `{"affinity":{},"extraArgs":["--name=\"Chainflip Node\""],"extraEnv":[],"extraEnvFrom":[],"fullnameOverride":"","image":{"pullPolicy":"Always","repository":"docker.io/chainfliplabs/chainflip-node","tag":""},"ingress":{"annotations":{},"enabled":false,"hosts":[],"ingressClassName":"","tls":[]},"legacyRpc":false,"livenessProbe":{"enabled":true,"failureThreshold":3,"initialDelaySeconds":30,"periodSeconds":30,"successThreshold":1,"timeoutSeconds":30},"nodeSelector":{},"pdb":{"enabled":false,"minAvailable":1},"persistence":{"accessModes":["ReadWriteOnce"],"enabled":true,"existingClaim":"","size":"100Gi","storageClass":""},"ports":{"metrics":{"enabled":false,"expose":true,"port":9615,"service":{"annotations":{},"type":"ClusterIP"}},"p2p":{"enabled":true,"port":30333,"service":{"annotations":{},"port":30333,"type":"NodePort"}},"rpc":{"enabled":true,"expose":true,"port":"9944","service":{"annotations":{},"port":9944,"type":"ClusterIP"}}},"readinessProbe":{"enabled":true,"failureThreshold":10,"initialDelaySeconds":30,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":30},"replicas":1,"resources":{},"service":{"annotations":{},"port":80,"type":"ClusterIP"},"tolerations":[],"topologySpreadConstraints":[]}` | chainflip-node configuration |
+| network.chain.name | string | `"test"` | chain name: (perseverance, berghain, etc.) |
+| node | object | `{"affinity":{},"chainData":{"pruning":{"blocks":256,"enabled":false,"state":256},"removeParitydb":false,"removeRocksdb":false,"snapshot":{"debug":false,"enabled":true,"retries":6},"type":"paritydb"},"extraArgs":["--name=\"Chainflip Node\""],"extraEnv":[],"extraEnvFrom":[],"fullnameOverride":"","image":{"pullPolicy":"Always","repository":"docker.io/chainfliplabs/chainflip-node","tag":""},"ingress":{"annotations":{},"enabled":false,"hosts":[],"ingressClassName":"","tls":[]},"legacyRpc":false,"livenessProbe":{"enabled":true,"failureThreshold":3,"initialDelaySeconds":30,"periodSeconds":30,"successThreshold":1,"timeoutSeconds":30},"nodeSelector":{},"pdb":{"enabled":false,"minAvailable":1},"persistence":{"accessModes":["ReadWriteOnce"],"enabled":true,"existingClaim":"","size":"100Gi","storageClass":""},"ports":{"metrics":{"enabled":false,"expose":true,"port":9615,"service":{"annotations":{},"type":"ClusterIP"}},"p2p":{"enabled":true,"port":30333,"service":{"annotations":{},"port":30333,"type":"NodePort"}},"rpc":{"enabled":true,"expose":true,"port":"9944","service":{"annotations":{},"port":9944,"type":"ClusterIP"}}},"readinessProbe":{"enabled":true,"failureThreshold":10,"initialDelaySeconds":30,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":30},"replicas":1,"resources":{},"service":{"annotations":{},"port":80,"sessionAffinity":{"enabled":false},"type":"ClusterIP"},"syncMode":"full","tolerations":[],"topologySpreadConstraints":[]}` | chainflip-node configuration |
 | node.affinity | object | `{}` | set pod affinity |
+| node.chainData | object | `{"pruning":{"blocks":256,"enabled":false,"state":256},"removeParitydb":false,"removeRocksdb":false,"snapshot":{"debug":false,"enabled":true,"retries":6},"type":"paritydb"}` | chainflip-node database settings |
+| node.chainData.pruning | object | `{"blocks":256,"enabled":false,"state":256}` | pruning settings |
+| node.chainData.pruning.blocks | int | `256` | blocks pruning depth |
+| node.chainData.pruning.enabled | bool | `false` | enable pruning |
+| node.chainData.pruning.state | int | `256` | state pruning depth |
+| node.chainData.removeParitydb | bool | `false` | enable paritydb removal WARNING: This will remove the paritydb (../paritydb) directory, use with caution! NOTE: You probably want to disable this after use. |
+| node.chainData.removeRocksdb | bool | `false` | enable rocksdb removal WARNING: This will remove the rocksdb (../db) directory, use with caution! NOTE: This will cleanup disk space after migrating to paritydb |
+| node.chainData.snapshot | object | `{"debug":false,"enabled":true,"retries":6}` | snapshot init configuration |
+| node.chainData.snapshot.debug | bool | `false` | snapshot download debug |
+| node.chainData.snapshot.enabled | bool | `true` | enable snapshot download on init |
+| node.chainData.snapshot.retries | int | `6` | snapshot download retries |
+| node.chainData.type | string | `"paritydb"` | database type (rocksdb, paritydb, auto, paritydb-experimental) |
 | node.extraArgs | list | `["--name=\"Chainflip Node\""]` | chainflip-node extra arguments |
 | node.extraEnv | list | `[]` | set extra environment variables |
 | node.extraEnvFrom | list | `[]` | set extra environment variables from a secret |
@@ -188,12 +208,13 @@ Deploy a Chainflip Validator or Archive node on Kubernetes
 | node.readinessProbe.timeoutSeconds | int | `30` | readiness probe timeout |
 | node.replicas | int | `1` | replicas; only available for archive nodes |
 | node.resources | object | `{}` | chainflip-node resources |
-| node.service | object | `{"annotations":{},"port":80,"type":"ClusterIP"}` | chainflip-node service configuration |
+| node.service | object | `{"annotations":{},"port":80,"sessionAffinity":{"enabled":false},"type":"ClusterIP"}` | chainflip-node service configuration |
 | node.service.annotations | object | `{}` | chainflip-node service annotations |
 | node.service.port | int | `80` | chainflip-node service port |
+| node.service.sessionAffinity | object | `{"enabled":false}` | Session affinity |
 | node.service.type | string | `"ClusterIP"` | chainflip-node service type |
 | node.tolerations | list | `[]` | set pod tolerations |
 | node.topologySpreadConstraints | list | `[]` | set topology spread constraints |
 
 ----------------------------------------------
-Autogenerated from chart metadata using [helm-docs v1.13.1](https://github.com/norwoodj/helm-docs/releases/v1.13.1)
+Autogenerated from chart metadata using [helm-docs v1.14.2](https://github.com/norwoodj/helm-docs/releases/v1.14.2)

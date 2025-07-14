@@ -27,7 +27,7 @@ spec:
       {{- end }}
       initContainers:
         - name: create-keys
-          image: "chainfliplabs/chainflip-cli:{{ .Values.network.chain.name }}"
+          image: "{{ include "chainflip-cli.image" . }}"
           securityContext:
             allowPrivilegeEscalation: false
           volumeMounts:
@@ -64,14 +64,14 @@ spec:
             - /bin/sh
             - -c
             - |
-              if ! kubectl get secret {{ include "node.fullname" . }}; then
-                echo "Secret does not exist, creating..."
-                kubectl create secret generic {{ include "node.fullname" . }} \
-                  --from-file=/tmp/signing-key \
-                  --from-file=/tmp/node-key \
-                  --from-file=/tmp/ethereum-key
-              else
-                echo "Secret already exists, skipping..."
+              set -x
+              output=$(kubectl create secret generic {{ include "node.fullname" . }} \
+                --from-file=/tmp/signing-key \
+                --from-file=/tmp/node-key \
+                --from-file=/tmp/ethereum-key 2>&1)
+              if echo "$output" | grep -q "already exists"; then
+                  echo "Secret already exists, skipping..."
+                  exit 0
               fi
       volumes:
         - name: keys
