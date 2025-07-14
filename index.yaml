@@ -3,6 +3,16 @@ entries:
   broker-api:
   - apiVersion: v2
     appVersion: 1.0.2
+    created: "2025-07-14T10:45:48.186911607Z"
+    description: A Helm chart for Kubernetes
+    digest: b07d059f6a9055e58fe2ce34099d730a4531b1ed18234e272f0530c925ba3641
+    name: broker-api
+    type: application
+    urls:
+    - https://github.com/chainflip-io/chainflip-helm-charts/releases/download/broker-api-0.3.4/broker-api-0.3.4.tgz
+    version: 0.3.4
+  - apiVersion: v2
+    appVersion: 1.0.2
     created: "2025-04-30T13:19:05.438858692Z"
     description: A Helm chart for Kubernetes
     digest: 86da91b0a2da50637730d4fec3558e410ae049a4dba0d45c331d6a761b659185
@@ -72,6 +82,20 @@ entries:
     - https://github.com/chainflip-io/chainflip-helm-charts/releases/download/broker-api-0.1.0/broker-api-0.1.0.tgz
     version: 0.1.0
   chainflip-prometheus-exporter:
+  - apiVersion: v2
+    appVersion: 2.11.0
+    created: "2025-07-14T10:45:48.327910259Z"
+    description: Scrape data from all supported chains
+    digest: 1bf5295903d6ae45631379c0578adc3cf7febcb9f8a8586bacf5b3b9d5befbce
+    maintainers:
+    - email: dev@chainflip.io
+      name: Chainflip Labs
+      url: https://chainflip.io
+    name: chainflip-prometheus-exporter
+    type: application
+    urls:
+    - https://github.com/chainflip-io/chainflip-helm-charts/releases/download/chainflip-prometheus-exporter-2.0.49/chainflip-prometheus-exporter-2.0.49.tgz
+    version: 2.0.49
   - apiVersion: v2
     appVersion: 2.11.0
     created: "2025-07-09T13:55:40.862424023Z"
@@ -803,6 +827,16 @@ entries:
   lp-api:
   - apiVersion: v2
     appVersion: 1.0.2
+    created: "2025-07-14T10:45:48.443019904Z"
+    description: Deploy a lp-api for the Chainflip network
+    digest: 66b47eed3d483fc3a0eab8502dbc01b9a0f1974f2516bacb9351370867b9ea64
+    name: lp-api
+    type: application
+    urls:
+    - https://github.com/chainflip-io/chainflip-helm-charts/releases/download/lp-api-0.3.2/lp-api-0.3.2.tgz
+    version: 0.3.2
+  - apiVersion: v2
+    appVersion: 1.0.2
     created: "2024-03-22T16:37:12.058847327Z"
     description: Deploy a lp-api for the Chainflip network
     digest: 293e2cd972c719b32807072372b9964cb7aa58bb6d35b1d53afd8cd519bc5b06
@@ -852,6 +886,20 @@ entries:
     - https://github.com/chainflip-io/chainflip-helm-charts/releases/download/lp-api-0.1.0/lp-api-0.1.0.tgz
     version: 0.1.0
   node:
+  - apiVersion: v2
+    appVersion: 1.9.5
+    created: "2025-07-14T10:45:48.564776484Z"
+    description: 'Deploy a Chainflip Validator or Archive node on Kubernetes '
+    digest: f9a5c272a57028d311fed62712b77dd6f700f1cbdfb6480f41173e7f0cc3daf9
+    maintainers:
+    - email: dev@chainflip.io
+      name: Chainflip Labs GmbH
+      url: https://chainflip.io
+    name: node
+    type: application
+    urls:
+    - https://github.com/chainflip-io/chainflip-helm-charts/releases/download/node-0.18.0/node-0.18.0.tgz
+    version: 0.18.0
   - apiVersion: v2
     appVersion: 1.9.5
     created: "2025-07-02T09:33:02.610730187Z"
@@ -1524,4 +1572,4 @@ entries:
     urls:
     - https://github.com/chainflip-io/chainflip-helm-charts/releases/download/node-0.1.0/node-0.1.0.tgz
     version: 0.1.0
-generated: "2025-07-09T13:55:40.862746591Z"
+generated: "2025-07-14T10:45:48.565269661Z"
