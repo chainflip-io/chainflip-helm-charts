@@ -166,7 +166,7 @@ spec:
             - |
               mkdir -p {{ .Values.common.keys.keysPath }}/broker
               chainflip-node key insert \
-                --key-type 'broker' \
+                --key-type 'brok' \
                 --scheme sr25519 \
                 --chain {{ include "chainflip-node.chain" . }} \
                 --suri "0x$(cat {{ .Values.common.keys.keysPath }}/broker/{{ .Values.common.keys.signingKeyFileName }})" \
