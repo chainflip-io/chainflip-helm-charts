@@ -1,7 +1,7 @@
 apiVersion: v2
 name: node
 description: |
-  Deploy a Chainflip Validator or Archive node on Kubernetes
+  Deploy a Chainflip Validator, Archive, Broker or LP node on Kubernetes
 
 maintainers:
   - name: Chainflip Labs GmbH
@@ -10,6 +10,6 @@ maintainers:
 
 type: application
 
-version: 0.18.0
+version: 0.18.1
 
 appVersion: "1.9.5"
