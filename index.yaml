@@ -888,6 +888,20 @@ entries:
   node:
   - apiVersion: v2
     appVersion: 1.9.5
+    created: "2025-07-15T14:36:49.94294479Z"
+    description: 'Deploy a Chainflip Validator, Archive, Broker or LP node on Kubernetes '
+    digest: 2fcd5817da8b9f54240090efb02f2c189dd326047eb81ee276e728121b401a15
+    maintainers:
+    - email: dev@chainflip.io
+      name: Chainflip Labs GmbH
+      url: https://chainflip.io
+    name: node
+    type: application
+    urls:
+    - https://github.com/chainflip-io/chainflip-helm-charts/releases/download/node-0.18.1/node-0.18.1.tgz
+    version: 0.18.1
+  - apiVersion: v2
+    appVersion: 1.9.5
     created: "2025-07-14T10:45:48.564776484Z"
     description: 'Deploy a Chainflip Validator or Archive node on Kubernetes '
     digest: f9a5c272a57028d311fed62712b77dd6f700f1cbdfb6480f41173e7f0cc3daf9
@@ -1572,4 +1586,4 @@ entries:
     urls:
     - https://github.com/chainflip-io/chainflip-helm-charts/releases/download/node-0.1.0/node-0.1.0.tgz
     version: 0.1.0
-generated: "2025-07-14T10:45:48.565269661Z"
+generated: "2025-07-15T14:36:49.943331999Z"
