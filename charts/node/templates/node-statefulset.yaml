@@ -78,7 +78,7 @@ spec:
             - name: data
               mountPath: {{ .Values.common.basePath }}
         {{- end }}
-        {{- if and .Values.node.chainData.snapshot.enabled (eq .Values.node.chainData.type "paritydb") }}
+        {{- if and .Values.node.chainData.snapshot.enabled (eq .Values.node.chainData.type "paritydb") ( ne .Values.common.role "lp" ) ( ne .Values.common.role "broker" ) }}
         - name: download-snapshot
           image: netdata/wget@sha256:b367d0f3c65320eac0d574d4219c6c7c5be8d45863b9875d815e2f77d678e4a3
           command:
