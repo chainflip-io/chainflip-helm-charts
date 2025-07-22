@@ -181,7 +181,11 @@ spec:
           args:
             - --base-path={{ .Values.common.basePath }}
             - --chain={{ include "chainflip-node.chain" . }}
+            {{- if or (eq .Values.common.role "lp") (eq .Values.common.role "broker") }}
+            - --database=rocksdb
+            {{- else }}
             - --database={{ .Values.node.chainData.type }}
+            {{- end }}
             - --trie-cache-size=0
             {{- range .Values.network.bootnodes }}
             - --bootnodes={{ . }}
