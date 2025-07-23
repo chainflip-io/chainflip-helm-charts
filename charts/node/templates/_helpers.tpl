@@ -38,7 +38,11 @@ chainflip.io/role: {{ .Values.common.role }}
 {{- if .Values.node.fullnameOverride }}
 {{- .Values.node.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
+{{- if or (eq .Values.common.role "lp") (eq .Values.common.role "broker") }}
+{{- printf "%s-%s-%s" .Release.Name $name .Values.common.role | trunc 63 | trimSuffix "-" }}
+{{- else }}
 {{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" }}
+{{- end }}
 {{- end }}
 {{- end }}
 
