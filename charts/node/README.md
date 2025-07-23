@@ -1,8 +1,8 @@
 # node
 
-![Version: 0.18.0](https://img.shields.io/badge/Version-0.18.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.9.5](https://img.shields.io/badge/AppVersion-1.9.5-informational?style=flat-square)
+![Version: 0.18.4](https://img.shields.io/badge/Version-0.18.4-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.10.0](https://img.shields.io/badge/AppVersion-1.10.0-informational?style=flat-square)
 
-Deploy a Chainflip Validator or Archive node on Kubernetes
+Deploy a Chainflip Validator, Archive, Broker or LP node on Kubernetes
 
 ## Maintainers
 
