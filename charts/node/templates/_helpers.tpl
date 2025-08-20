@@ -59,7 +59,7 @@ Selector labels
 */}}
 {{- define "chainflip-node.selectorLabels" -}}
 chainflip.io/unit: chainflip-node
-chainflip.io/name: {{ .Release.Name }}
+chainflip.io/name: {{ include "node.fullname" . }}
 {{- end }}
 
 {{/*
@@ -111,7 +111,7 @@ Common labels
 Selector labels
 */}}
 {{- define "chainflip-engine.selectorLabels" -}}
-chainflip.io/name: {{ .Release.Name }}
+chainflip.io/name: {{ include "node.fullname" . }}
 chainflip.io/unit: chainflip-engine
 {{- end }}
 
