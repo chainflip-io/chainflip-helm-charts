@@ -210,6 +210,9 @@ spec:
             - --blocks-pruning=128
             - --state-pruning=128
             {{- end }}
+            {{- if and .Values.node.chainData.pruning.enabled .Values.node.chainData.pruning.pruneBlockHeaders }}
+            - --prune-block-headers
+            {{- end }}
             - --port={{ .Values.node.ports.p2p.port  }}
             {{- if .Values.node.ports.metrics.enabled }}
             - --prometheus-port={{ .Values.node.ports.metrics.port }}

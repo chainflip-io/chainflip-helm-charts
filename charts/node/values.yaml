@@ -113,7 +113,8 @@ node:
       blocks: 256
       # -- state pruning depth
       state: 256
-
+      # -- prune block headers
+      pruneBlockHeaders: false
     # -- snapshot init configuration
     snapshot:
       # -- enable snapshot download on init

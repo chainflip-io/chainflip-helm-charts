@@ -148,6 +148,7 @@ Deploy a Chainflip Validator, Archive, Broker or LP node on Kubernetes
 | node.chainData.pruning.blocks | int | `256` | blocks pruning depth |
 | node.chainData.pruning.enabled | bool | `false` | enable pruning |
 | node.chainData.pruning.state | int | `256` | state pruning depth |
+| node.chainData.pruning.pruneBlockHeaders | bool | `false` | enable pruning block headers |
 | node.chainData.removeParitydb | bool | `false` | enable paritydb removal WARNING: This will remove the paritydb (../paritydb) directory, use with caution! NOTE: You probably want to disable this after use. |
 | node.chainData.removeRocksdb | bool | `false` | enable rocksdb removal WARNING: This will remove the rocksdb (../db) directory, use with caution! NOTE: This will cleanup disk space after migrating to paritydb |
 | node.chainData.snapshot | object | `{"debug":false,"enabled":true,"retries":6}` | snapshot init configuration |
