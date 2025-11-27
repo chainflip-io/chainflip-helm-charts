@@ -69,7 +69,7 @@ In this case, the public key is `cFK1ay7YMLjQ6Zg25bm7Hg46SKJYw3EuQQKgM8Uvv5KhAaB
 
 Head to https://auctions-perseverance.chainflip.io/auction
 
-Click "Add Node", and fund your account with tFLIP. If you need tFLIP, head to our Discord channel.
+Click "Register Node", and fund your account with tFLIP. If you need tFLIP, head to our Discord channel.
 
 #### Run the chainflip-cli commands
 
