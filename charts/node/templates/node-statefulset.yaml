@@ -281,8 +281,15 @@ spec:
           {{- end }}
           {{- if .Values.node.readinessProbe.enabled }}
           readinessProbe:
-            tcpSocket:
-              port: {{ .Values.node.ports.p2p.port }}
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - |
+                  curl -sf -H "Content-Type: application/json" \
+                    -d '{"jsonrpc":"2.0","id":"1","method":"system_health","params":[]}' \
+                    http://localhost:{{ .Values.node.ports.rpc.port }} | \
+                  jq -e '.result.isSyncing == false'
             initialDelaySeconds: {{ .Values.node.readinessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.node.readinessProbe.periodSeconds }}
             timeoutSeconds: {{ .Values.node.readinessProbe.timeoutSeconds }}
