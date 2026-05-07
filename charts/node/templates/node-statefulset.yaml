@@ -94,7 +94,7 @@ spec:
                 fi
                 mkdir -p "{{ include "chainflip-node.databasePath" . }}"
                 echo "Downloading and extracting snapshot. This can take a while..."
-                wget --no-verbose --show-progress --progress=dot:mega -O - https://snapshots.chainflip.io/{{ .Values.network.chain.name }}/cf_chaindata_pruned_paritydb.tar.gz | tar -xzf - -C "{{ include "chainflip-node.databasePath" . }}"
+                wget -S -O - https://snapshots.chainflip.io/{{ .Values.network.chain.name }}/cf_chaindata_pruned_paritydb.tar.gz | tar -xzvf - -C "{{ include "chainflip-node.databasePath" . }}"
                 echo "Snapshot extraction completed!"
               fi
           volumeMounts:
