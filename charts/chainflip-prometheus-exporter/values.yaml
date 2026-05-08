@@ -4,6 +4,13 @@ fullnameOverride: ""
 service:
   annotations: {}
 
+ingress:
+  enabled: false
+  ingressClassName: ""
+  annotations: {}
+  hosts: []
+  tls: []
+
 image:
   repository: ghcr.io/chainflip-io/chainflip-prometheus-exporter
   tag: ""
@@ -85,7 +92,6 @@ config:
         "repositories": []
       }
     }
-
 
 secret:
   getEnvFromSecret: ""
