@@ -27,7 +27,7 @@ spec:
       {{- end }}
       initContainers:
         - name: port-check
-          image: alpine:latest
+          image: alpine:3
           command:
             - sh
             - -c

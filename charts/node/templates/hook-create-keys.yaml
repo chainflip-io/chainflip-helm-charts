@@ -39,7 +39,7 @@ spec:
             - |
               chainflip-cli generate-keys --json > /tmp/keys.json
         - name: extract-keys
-          image: stedolan/jq:latest
+          image: ghcr.io/jqlang/jq:latest
           securityContext:
             allowPrivilegeEscalation: false
           volumeMounts:

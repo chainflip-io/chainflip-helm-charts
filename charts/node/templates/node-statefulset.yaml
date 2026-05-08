@@ -6,7 +6,7 @@ metadata:
   {{- include "chainflip-node.labels" . | nindent 4 }}
 spec:
   serviceName: {{ include "chainflip-node.fullname" . }}
-  {{- if or (eq .Values.common.role "archive") (eq .Values.common.role "full") }}
+  {{- if or (eq .Values.common.role "archive") (eq .Values.common.role "full") (eq .Values.common.role "broker") }}
   replicas: {{ .Values.node.replicas }}
   updateStrategy:
     type: RollingUpdate
