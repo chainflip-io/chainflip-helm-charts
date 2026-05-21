@@ -89,7 +89,7 @@ Deploy a Chainflip Validator, Archive, Broker or LP node on Kubernetes
 | engine.readinessProbe.successThreshold | int | `1` | readiness probe success threshold |
 | engine.readinessProbe.timeoutSeconds | int | `30` | readiness probe timeout |
 | engine.resources | object | `{}` | chainflip-engine resources |
-| engine.settings | object | `{"arb":{"http_endpoint":"","ws_endpoint":""},"arb_backup":{"enabled":false,"http_endpoint":"","ws_endpoint":""},"btc":{"basic_auth_password":"","basic_auth_user":"","http_endpoint":""},"btc_backup":{"basic_auth_password":"","basic_auth_user":"","enabled":false,"http_endpoint":""},"dot":{"http_endpoint":"","ws_endpoint":""},"dot_backup":{"enabled":false,"http_endpoint":"","ws_endpoint":""},"eth":{"http_endpoint":"","ws_endpoint":""},"eth_backup":{"enabled":false,"http_endpoint":"","ws_endpoint":""},"existingConfigMap":"","hub":{"http_endpoint":"","ws_endpoint":""},"hub_backup":{"enabled":false,"http_endpoint":"","ws_endpoint":""},"node_p2p":{"allow_local_ip":false,"ip_address":""},"sol":{"http_endpoint":""},"sol_backup":{"enabled":false,"http_endpoint":""}}` | chainflip-engine Settings.toml configuration |
+| engine.settings | object | `{"arb":{"http_endpoint":"","ws_endpoint":""},"arb_backup":{"enabled":false,"http_endpoint":"","ws_endpoint":""},"btc":{"basic_auth_password":"","basic_auth_user":"","http_endpoint":""},"btc_backup":{"basic_auth_password":"","basic_auth_user":"","enabled":false,"http_endpoint":""},"dot":{"http_endpoint":"","ws_endpoint":""},"dot_backup":{"enabled":false,"http_endpoint":"","ws_endpoint":""},"eth":{"http_endpoint":"","ws_endpoint":""},"eth_backup":{"enabled":false,"http_endpoint":"","ws_endpoint":""},"existingConfigMap":"","hub":{"http_endpoint":"","ws_endpoint":""},"hub_backup":{"enabled":false,"http_endpoint":"","ws_endpoint":""},"node_p2p":{"allow_local_ip":false,"ip_address":""},"sol":{"http_endpoint":""},"sol_backup":{"enabled":false,"http_endpoint":""},"tron":{"http_endpoint":"","json_rpc_endpoint":""},"tron_backup":{"enabled":false,"http_endpoint":"","json_rpc_endpoint":""}}` | chainflip-engine Settings.toml configuration |
 | engine.settings.arb.http_endpoint | string | `""` | arb node http endpoint |
 | engine.settings.arb.ws_endpoint | string | `""` | arb node ws endpoint |
 | engine.settings.arb_backup.enabled | bool | `false` | enabled |
@@ -129,6 +129,11 @@ Deploy a Chainflip Validator, Archive, Broker or LP node on Kubernetes
 | engine.settings.sol.http_endpoint | string | `""` | solana node http endpoint |
 | engine.settings.sol_backup.enabled | bool | `false` | enabled |
 | engine.settings.sol_backup.http_endpoint | string | `""` | solana backup node http endpoint |
+| engine.settings.tron.http_endpoint | string | `""` | tron node HTTP endpoint |
+| engine.settings.tron.json_rpc_endpoint | string | `""` | tron node JSON-RPC endpoint |
+| engine.settings.tron_backup.enabled | bool | `false` | enabled |
+| engine.settings.tron_backup.http_endpoint | string | `""` | tron backup node HTTP endpoint |
+| engine.settings.tron_backup.json_rpc_endpoint | string | `""` | tron backup node JSON-RPC endpoint |
 | engine.tolerations | list | `[]` | set pod tolerations |
 | engine.topologySpreadConstraints | list | `[]` | set topology spread constraints |
 | extraManifests | list | `[]` | create extra kubernetes manifests |

@@ -76,6 +76,19 @@ data:
     ws_endpoint = "{{ .Values.engine.settings.arb_backup.ws_endpoint }}"
     {{- end }}
 
+    [tron]
+    private_key_file = "{{ .Values.common.keys.keysPath }}/{{ .Values.common.keys.ethereumKeyFileName }}"
+
+    [tron.rpc]
+    json_rpc_endpoint = "{{ required "Please provide a json_rpc_endpoint of a Tron node" .Values.engine.settings.tron.json_rpc_endpoint }}"
+    http_endpoint = "{{ required "Please provide a http_endpoint of a Tron node" .Values.engine.settings.tron.http_endpoint }}"
+
+    {{ if .Values.engine.settings.tron_backup.enabled }}
+    [tron.backup_rpc]
+    json_rpc_endpoint = "{{ .Values.engine.settings.tron_backup.json_rpc_endpoint }}"
+    http_endpoint = "{{ .Values.engine.settings.tron_backup.http_endpoint }}"
+    {{- end }}
+
     [sol.rpc]
     http_endpoint = "{{ required "Please provide a http_endpoint of a Solana RPC Node" .Values.engine.settings.sol.http_endpoint }}"
 

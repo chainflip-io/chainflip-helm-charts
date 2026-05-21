@@ -500,6 +500,24 @@ engine:
 
       # -- arb node http endpoint
       http_endpoint: ""
+
+    tron:
+      # -- tron node JSON-RPC endpoint
+      json_rpc_endpoint: ""
+
+      # -- tron node HTTP endpoint
+      http_endpoint: ""
+
+    tron_backup:
+      # -- enabled
+      enabled: false
+
+      # -- tron backup node JSON-RPC endpoint
+      json_rpc_endpoint: ""
+
+      # -- tron backup node HTTP endpoint
+      http_endpoint: ""
+
     sol:
       # -- solana node http endpoint
       http_endpoint: ""
