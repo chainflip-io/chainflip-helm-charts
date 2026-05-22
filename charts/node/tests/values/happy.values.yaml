@@ -18,6 +18,9 @@ engine:
     arb:
       ws_endpoint: "test"
       http_endpoint: "test"
+    tron:
+      json_rpc_endpoint: "test"
+      http_endpoint: "test"
     sol:
       http_endpoint: "test"
     hub:

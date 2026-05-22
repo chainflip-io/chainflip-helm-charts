@@ -36,9 +36,28 @@ tests:
       engine.settings.hub_backup.enabled: true
       engine.settings.hub_backup.http_endpoint: "http://test"
       engine.settings.hub_backup.ws_endpoint: "ws://test"
+      engine.settings.tron_backup.enabled: true
+      engine.settings.tron_backup.json_rpc_endpoint: "test"
+      engine.settings.tron_backup.http_endpoint: "test"
     asserts:
       - hasDocuments:
           count: 1
       - matchRegex:
           path: data['Settings.toml']
           pattern: "[(eth|dot|btc)].backup_rpc"
+      - matchRegex:
+          path: data['Settings.toml']
+          pattern: '\[tron\.backup_rpc\][\s\S]*json_rpc_endpoint = "test"[\s\S]*http_endpoint = "test"'
+  - it: should specify tron settings
+    set:
+      engine.settings.tron.json_rpc_endpoint: "test"
+      engine.settings.tron.http_endpoint: "test"
+    asserts:
+      - hasDocuments:
+          count: 1
+      - matchRegex:
+          path: data['Settings.toml']
+          pattern: '\[tron\][\s\S]*private_key_file = "/etc/chainflip/keys/ethereum_key_file"'
+      - matchRegex:
+          path: data['Settings.toml']
+          pattern: '\[tron\.rpc\][\s\S]*json_rpc_endpoint = "test"[\s\S]*http_endpoint = "test"'
