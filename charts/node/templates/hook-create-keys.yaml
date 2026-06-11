@@ -39,7 +39,7 @@ spec:
             - |
               chainflip-cli generate-keys --json > /tmp/keys.json
         - name: extract-keys
-          image: ghcr.io/jqlang/jq:latest
+          image: alpine/k8s:1.30.0
           securityContext:
             allowPrivilegeEscalation: false
           volumeMounts:
@@ -49,13 +49,14 @@ spec:
             - /bin/sh
             - -c
             - |
+              set -e
               jq -j '.signing_key.secret_key' /tmp/keys.json > /tmp/signing-key
               jq -j '.node_key.secret_key' /tmp/keys.json > /tmp/node-key
               jq -j '.ethereum_key.secret_key' /tmp/keys.json > /tmp/ethereum-key
               jq -j '.arbitrum_key.secret_key' /tmp/keys.json > /tmp/arbitrum-key
       containers:
         - name: kubectl-create-secret
-          image: "bitnami/kubectl:latest"
+          image: alpine/k8s:1.30.0
           securityContext:
             allowPrivilegeEscalation: false
           volumeMounts:
