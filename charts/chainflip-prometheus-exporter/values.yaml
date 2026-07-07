@@ -106,6 +106,16 @@ env:
   DOT_WS_ENDPOINT: ""
   BTC_HTTP_ENDPOINT: ""
 
+heapDumps:
+  enabled: false
+  mountPath: /heapdumps
+  existingClaim: ""
+  annotations: {}
+  storageClassName: ""
+  accessModes:
+    - ReadWriteOnce
+  size: 4Gi
+
 port: 9000
 
 resources: {}

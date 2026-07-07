@@ -5,6 +5,10 @@ metadata:
   labels: {{ include "chainflip-prometheus-exporter.labels" . | nindent 4 }}
 spec:
   replicas: 1
+  {{- if .Values.heapDumps.enabled }}
+  strategy:
+    type: Recreate
+  {{- end }}
   selector:
     matchLabels: {{ include "chainflip-prometheus-exporter.selectorLabels" . | nindent 6 }}
   template:
@@ -46,6 +50,10 @@ spec:
             - mountPath: /usr/src/app/config.json
               subPath: config.json
               name: config
+            {{- if .Values.heapDumps.enabled }}
+            - mountPath: {{ .Values.heapDumps.mountPath | quote }}
+              name: heapdumps
+            {{- end }}
       volumes:
         - name: config
           configMap:
@@ -55,4 +63,9 @@ spec:
             {{- else }}
             name: {{ include "chainflip-prometheus-exporter.fullname" . }}
             {{- end }}
+        {{- if .Values.heapDumps.enabled }}
+        - name: heapdumps
+          persistentVolumeClaim:
+            claimName: {{ default (printf "%s-heapdumps" (include "chainflip-prometheus-exporter.fullname" .)) .Values.heapDumps.existingClaim | quote }}
+        {{- end }}
 

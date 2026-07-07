@@ -1,0 +1,19 @@
+{{- if and .Values.heapDumps.enabled (not .Values.heapDumps.existingClaim) }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ printf "%s-heapdumps" (include "chainflip-prometheus-exporter.fullname" .) }}
+  labels: {{ include "chainflip-prometheus-exporter.labels" . | nindent 4 }}
+  {{- with .Values.heapDumps.annotations }}
+  annotations: {{ toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  accessModes:
+    {{- toYaml .Values.heapDumps.accessModes | nindent 4 }}
+  resources:
+    requests:
+      storage: {{ .Values.heapDumps.size | quote }}
+  {{- if .Values.heapDumps.storageClassName }}
+  storageClassName: {{ .Values.heapDumps.storageClassName | quote }}
+  {{- end }}
+{{- end }}
