@@ -5,6 +5,10 @@ metadata:
   labels: {{ include "chainflip-prometheus-exporter.labels" . | nindent 4 }}
 spec:
   replicas: 1
+  {{- if .Values.persistentVolumes }}
+  strategy:
+    type: Recreate
+  {{- end }}
   selector:
     matchLabels: {{ include "chainflip-prometheus-exporter.selectorLabels" . | nindent 6 }}
   template:
@@ -46,6 +50,16 @@ spec:
             - mountPath: /usr/src/app/config.json
               subPath: config.json
               name: config
+            {{- range .Values.persistentVolumes }}
+            - name: {{ required "persistentVolumes[].name is required" .name }}
+              mountPath: {{ required "persistentVolumes[].mountPath is required" .mountPath }}
+              {{- with .subPath }}
+              subPath: {{ . }}
+              {{- end }}
+              {{- if .readOnly }}
+              readOnly: true
+              {{- end }}
+            {{- end }}
       volumes:
         - name: config
           configMap:
@@ -55,4 +69,9 @@ spec:
             {{- else }}
             name: {{ include "chainflip-prometheus-exporter.fullname" . }}
             {{- end }}
+        {{- range .Values.persistentVolumes }}
+        - name: {{ required "persistentVolumes[].name is required" .name }}
+          persistentVolumeClaim:
+            claimName: {{ required "persistentVolumes[].name is required" .name }}
+        {{- end }}
 
