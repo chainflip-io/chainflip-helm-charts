@@ -110,6 +110,20 @@ port: 9000
 
 resources: {}
 
+persistentVolumes: []
+# Example:
+# persistentVolumes:
+#   - name: heapdump
+#     mountPath: /heapdump
+#     size: 10Gi
+#     storageClassName: gp3
+#     accessModes:
+#       - ReadWriteOnce
+#     subPath: ""
+#     readOnly: false
+#     annotations: {}
+#     labels: {}
+
 extraManifests: []
 
 serviceMonitor:

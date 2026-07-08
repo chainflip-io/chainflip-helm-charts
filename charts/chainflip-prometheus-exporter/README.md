@@ -1,6 +1,6 @@
 # chainflip-prometheus-exporter
 
-![Version: 2.0.47](https://img.shields.io/badge/Version-2.0.47-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.10.0](https://img.shields.io/badge/AppVersion-2.10.0-informational?style=flat-square)
+![Version: 2.0.64](https://img.shields.io/badge/Version-2.0.64-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.16.0](https://img.shields.io/badge/AppVersion-2.16.0-informational?style=flat-square)
 
 Scrape data from all supported chains
 
@@ -31,6 +31,7 @@ Scrape data from all supported chains
 | imagePullPolicy | string | `"IfNotPresent"` |  |
 | imagePullSecrets | list | `[]` |  |
 | nameOverride | string | `""` |  |
+| persistentVolumes | list | `[]` |  |
 | port | int | `9000` |  |
 | resources | object | `{}` |  |
 | secret.getEnvFromSecret | string | `""` |  |
