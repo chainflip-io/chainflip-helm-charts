@@ -5,6 +5,10 @@ metadata:
   labels: {{ include "chainflip-prometheus-exporter.labels" . | nindent 4 }}
 spec:
   replicas: 1
+  {{- if .Values.persistentVolumes }}
+  strategy:
+    type: Recreate
+  {{- end }}
   selector:
     matchLabels: {{ include "chainflip-prometheus-exporter.selectorLabels" . | nindent 6 }}
   template:
