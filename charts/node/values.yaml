@@ -193,10 +193,30 @@ node:
         # -- prometheus metrics service type
         type: ClusterIP
 
-        # -- prometheus metrics service port
+        # -- prometheus metrics service annotations
         annotations: {}
-  #        prometheus.io/chainflip-unit: "chainflip-engine"
-  #        prometheus.io/port: "metrics"
+
+    serviceMonitor:
+      # -- create a ServiceMonitor for chainflip-node metrics
+      enabled: false
+
+      # -- extra labels for the ServiceMonitor
+      labels: {}
+
+      # -- metrics path
+      path: /metrics
+
+      # -- scrape interval
+      interval: ""
+
+      # -- scrape timeout
+      scrapeTimeout: ""
+
+      # -- target relabelings
+      relabelings: []
+
+      # -- metric relabelings
+      metricRelabelings: []
 
   # -- chainflip-node resources
   resources: {}
