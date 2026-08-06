@@ -59,8 +59,8 @@ data:
     {{ if .Values.engine.settings.btc_backup.enabled }}
     [btc.backup_rpc]
     http_endpoint = "{{ .Values.engine.settings.btc_backup.http_endpoint }}"
-    rpc_user = "{{ .Values.engine.settings.btc_backup.basic_auth_user }}"
-    rpc_password = "{{ .Values.engine.settings.btc_backup.basic_auth_password }}"
+    basic_auth_user = "{{ .Values.engine.settings.btc_backup.basic_auth_user }}"
+    basic_auth_password = "{{ .Values.engine.settings.btc_backup.basic_auth_password }}"
     {{- end }}
 
     [arb]
