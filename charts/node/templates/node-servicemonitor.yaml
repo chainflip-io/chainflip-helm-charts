@@ -22,8 +22,14 @@ spec:
       {{- with .Values.node.serviceMonitor.scrapeTimeout }}
       scrapeTimeout: {{ . }}
       {{- end }}
-      {{- with .Values.node.serviceMonitor.relabelings }}
       relabelings:
+        - sourceLabels:
+            - __meta_kubernetes_service_label_chainflip_io_chain
+          targetLabel: network
+        - sourceLabels:
+            - __meta_kubernetes_service_label_chainflip_io_role
+          targetLabel: role
+      {{- with .Values.node.serviceMonitor.relabelings }}
         {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- with .Values.node.serviceMonitor.metricRelabelings }}
