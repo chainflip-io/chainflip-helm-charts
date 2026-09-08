@@ -1,0 +1,28 @@
+suite: node service monitor tests
+release:
+  name: validator
+templates:
+  - node-servicemonitor.yaml
+values:
+  - values/happy.values.yaml
+capabilities:
+  apiVersions:
+    - monitoring.coreos.com/v1
+tests:
+  - it: should add chain and role labels to scraped metrics
+    set:
+      node.ports.metrics.enabled: true
+      node.serviceMonitor.enabled: true
+    asserts:
+      - equal:
+          path: spec.endpoints[0].relabelings[0].sourceLabels[0]
+          value: __meta_kubernetes_service_label_chainflip_io_chain
+      - equal:
+          path: spec.endpoints[0].relabelings[0].targetLabel
+          value: network
+      - equal:
+          path: spec.endpoints[0].relabelings[1].sourceLabels[0]
+          value: __meta_kubernetes_service_label_chainflip_io_role
+      - equal:
+          path: spec.endpoints[0].relabelings[1].targetLabel
+          value: role
