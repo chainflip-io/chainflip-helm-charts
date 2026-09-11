@@ -119,7 +119,7 @@ chainflip.io/unit: chainflip-engine
 {{- define "chainflip-cli.fullname" -}}
 {{- $name := "chainflip-cli" }}
 {{- if .Values.cli.fullnameOverride }}
-{{- .Values.node.fullnameOverride | trunc 63 | trimSuffix "-" }}
+{{- .Values.cli.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
 {{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" }}
 {{- end }}
